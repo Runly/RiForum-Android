@@ -1,8 +1,10 @@
 package com.github.runly.riforum_android.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +17,9 @@ import com.github.runly.riforum_android.ui.adapter.RecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.github.runly.riforum_android.R.id.recyclerView;
+import static com.github.runly.riforum_android.R.id.withText;
 
 /**
  * Created by ranly on 17-2-7.
@@ -34,10 +39,23 @@ public class FollowFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RecyclerView recyclerView = (RecyclerView) inflater.inflate(
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
                 R.layout.fragment_follow, container, false);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorBase);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                },500);
+            }
+        });
+        RecyclerView recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
         setupRecyclerView(recyclerView);
-        return recyclerView;
+        return swipeRefreshLayout;
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {

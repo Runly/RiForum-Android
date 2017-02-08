@@ -5,7 +5,7 @@ package com.github.runly.riforum_android.utils;
  */
 
 public class Constant {
-    public static int SCREEN_WIDTH;
-    public static int SCREEN_HEIGHT;
-    public static int STATUS_HEIGHT;
+    public static int SCREEN_WIDTH;  // 屏幕宽度
+    public static int SCREEN_HEIGHT;  // 屏幕高度
+    public static int STATUS_HEIGHT;  // 状态栏高度
 }

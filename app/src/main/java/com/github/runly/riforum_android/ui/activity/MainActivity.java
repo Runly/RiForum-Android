@@ -20,7 +20,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.ui.fragment.FollowFrag;
 import com.github.runly.riforum_android.ui.fragment.ForumFrag;
+import com.github.runly.riforum_android.ui.fragment.NotifyFrag;
 import com.github.runly.riforum_android.ui.fragment.RecommendFrag;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.UnitConvert;
@@ -66,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(RecommendFrag.createInstance(20), getString(R.string.tab_1));
         pagerAdapter.addFragment(ForumFrag.createInstance(20), getString(R.string.tab_2));
-        pagerAdapter.addFragment(ForumFrag.createInstance(20), getString(R.string.tab_3));
-        pagerAdapter.addFragment(ForumFrag.createInstance(20), getString(R.string.tab_4));
+        pagerAdapter.addFragment(FollowFrag.createInstance(20), getString(R.string.tab_3));
+        pagerAdapter.addFragment(NotifyFrag.createInstance(20), getString(R.string.tab_4));
         viewPager.setAdapter(pagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
