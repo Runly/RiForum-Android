@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">RiForum</string>
+    <string name="action_settings">Settings</string>
+    <string name="tab_1">推荐</string>
+    <string name="tab_2">论坛</string>
+    <string name="tab_3">关注</string>
+    <string name="tab_4">通知</string>
+</resources>

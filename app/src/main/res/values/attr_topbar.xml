@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TopBar">
+        <attr name="avatar_width" format="integer" />
+        <attr name="avatar_height" format="integer" />
+        <attr name="title_size" format="integer" />
+        <attr name="title_color" format="color" />
+        <attr name="title_content" format="string" />
+    </declare-styleable>
+
+</resources>
