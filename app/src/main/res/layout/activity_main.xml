@@ -22,7 +22,8 @@
             <com.github.runly.riforum_android.ui.view.TopBar
                 android:id="@+id/top_bar"
                 android:layout_width="match_parent"
-                app:title_content="@string/app_name"
+                app:txt_left="@string/not_login"
+                app:img_left_default="@drawable/avatar_default"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways" />
 

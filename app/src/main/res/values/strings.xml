@@ -5,4 +5,14 @@
     <string name="tab_2">论坛</string>
     <string name="tab_3">关注</string>
     <string name="tab_4">通知</string>
+    <string name="not_login">未登录</string>
+    <string name="click_to_login">点击头像登录</string>
+    <string name="sign_in_hint">邮箱或手机号</string>
+    <string name="sign_in_txt_left">注册账号</string>
+    <string name="password">密码</string>
+    <string name="sign_button">注册</string>
+    <string name="sign_to_login">已有账号登录</string>
+    <string name="login_txt_left">用户登录</string>
+    <string name="login_button">登录</string>
+    <string name="login_to_sign">新用户注册</string>
 </resources>

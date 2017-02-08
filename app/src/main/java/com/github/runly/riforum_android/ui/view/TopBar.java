@@ -21,11 +21,11 @@ import com.pkmmte.view.CircularImageView;
 
 public class TopBar extends LinearLayout {
     private Context mContext;
-    private CircularImageView avatarImgV;
-    private TextView titleTxtV;
+    private CircularImageView imgLeft;
+    private TextView txtLeft;
 
-    private int avatarWidth, avatarHeight, titleSize, titleColor;
-    private String titleContent;
+    private int imgLeftWidth, imgLeftHeight, imgLeftDefault, txtLeftSize, txtLeftColor;
+    private String txtLeftContent;
 
     public TopBar(Context context) {
         super(context);
@@ -36,11 +36,12 @@ public class TopBar extends LinearLayout {
         super(context, attrs);
         mContext = context;
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.TopBar);
-        avatarWidth = UnitConvert.dipToPixels(mContext, array.getInt(R.styleable.TopBar_avatar_width, 40));
-        avatarHeight = UnitConvert.dipToPixels(mContext, array.getInt(R.styleable.TopBar_avatar_height, 40));
-        titleSize = array.getInt(R.styleable.TopBar_title_size, 22);
-        titleContent = array.getString(R.styleable.TopBar_title_content);
-        titleColor = array.getColor(R.styleable.TopBar_title_color, Color.WHITE);
+        imgLeftWidth = UnitConvert.dipToPixels(mContext, array.getInt(R.styleable.TopBar_img_left_width, 40));
+        imgLeftHeight = UnitConvert.dipToPixels(mContext, array.getInt(R.styleable.TopBar_img_left_height, 40));
+        imgLeftDefault = array.getResourceId(R.styleable.TopBar_img_left_default, -1);
+        txtLeftSize = array.getInt(R.styleable.TopBar_txt_left_size, 16);
+        txtLeftContent = array.getString(R.styleable.TopBar_txt_left);
+        txtLeftColor = array.getColor(R.styleable.TopBar_txt_left_color, Color.WHITE);
         array.recycle();
 
         init();
@@ -52,24 +53,26 @@ public class TopBar extends LinearLayout {
     }
 
     private void init() {
-        View mTopBar = View.inflate(mContext, R.layout.top_bar, this);
-        avatarImgV = (CircularImageView) mTopBar.findViewById(R.id.avatar);
-        ViewGroup.LayoutParams layoutParams = avatarImgV.getLayoutParams();
-        layoutParams.width = avatarWidth;
-        layoutParams.height = avatarHeight;
-        avatarImgV.setLayoutParams(layoutParams);
+        View mTopBar = View.inflate(mContext, R.layout.layout_top_bar, this);
+        imgLeft = (CircularImageView) mTopBar.findViewById(R.id.img_left);
+        ViewGroup.LayoutParams layoutParams = imgLeft.getLayoutParams();
+        layoutParams.width = imgLeftWidth;
+        layoutParams.height = imgLeftHeight;
+        imgLeft.setLayoutParams(layoutParams);
+        if (imgLeftDefault != -1)
+            imgLeft.setImageResource(imgLeftDefault);
 
-        titleTxtV = (TextView) mTopBar.findViewById(R.id.title);
-        titleTxtV.setText(titleContent);
-        titleTxtV.setTextSize(TypedValue.COMPLEX_UNIT_SP, titleSize);
-        titleTxtV.setTextColor(titleColor);
+        txtLeft = (TextView) mTopBar.findViewById(R.id.txt_left);
+        txtLeft.setText(txtLeftContent);
+        txtLeft.setTextSize(TypedValue.COMPLEX_UNIT_SP, txtLeftSize);
+        txtLeft.setTextColor(txtLeftColor);
     }
 
-    public ImageView getAvatarImgV() {
-        return avatarImgV;
+    public ImageView getImgLeft() {
+        return imgLeft;
     }
 
-    public TextView getTitleTxtV() {
-        return titleTxtV;
+    public TextView getTxtLeft() {
+        return txtLeft;
     }
 }

@@ -1,25 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="290dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="#f9f9f9"
+    android:background="@android:color/white"
     >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/darker_gray" />
+    <FrameLayout
+        android:id="@+id/user_info_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="导航栏"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:textSize="25sp"
-        />
+        <ImageView
+            android:id="@+id/navigation_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navigation"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription"
+            />
+
+        <com.pkmmte.view.CircularImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/avatar_default"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical"
+            />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="60dp"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/click_to_login"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            />
+
+    </FrameLayout>
+
+
+
+
+
+
 
 </RelativeLayout>

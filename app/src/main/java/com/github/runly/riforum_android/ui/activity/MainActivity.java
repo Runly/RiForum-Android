@@ -1,6 +1,6 @@
 package com.github.runly.riforum_android.ui.activity;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -12,11 +12,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.github.runly.riforum_android.R;
@@ -25,20 +22,21 @@ import com.github.runly.riforum_android.ui.fragment.ForumFrag;
 import com.github.runly.riforum_android.ui.fragment.NotifyFrag;
 import com.github.runly.riforum_android.ui.fragment.RecommendFrag;
 import com.github.runly.riforum_android.ui.view.TopBar;
+import com.github.runly.riforum_android.utils.Constant;
 import com.github.runly.riforum_android.utils.UnitConvert;
+import com.pkmmte.view.CircularImageView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppThemeColorBase);
         setContentView(R.layout.activity_main);
-        translucent();
+
         initViewPagerAndTabs();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -51,18 +49,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TopBar topBar = (TopBar) findViewById(R.id.top_bar);
-        topBar.getAvatarImgV().setOnClickListener(new View.OnClickListener() {
+        topBar.getImgLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawerLayout.openDrawer(Gravity.LEFT);
             }
         });
+        topBar.getTxtLeft().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        CircularImageView circularImageView = (CircularImageView) findViewById(R.id.user_avatar);
+        circularImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initViewPagerAndTabs() {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        coordinatorLayout.setPadding(0, getStatusBarHeight(), 0, 0);
+        coordinatorLayout.setPadding(0, Constant.STATUS_HEIGHT, 0, 0);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
@@ -144,27 +158,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void translucent() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-    }
-
-    private int getStatusBarHeight() {
-        int statusBarHeight1 = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            statusBarHeight1 = getResources().getDimensionPixelSize(resourceId);
-        }
-        return statusBarHeight1;
-    }
+//    private int getStatusBarHeight() {
+//        int statusBarHeight1 = 0;
+//        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+//        if (resourceId > 0) {
+//            statusBarHeight1 = getResources().getDimensionPixelSize(resourceId);
+//        }
+//        return statusBarHeight1;
+//    }
 }
