@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorBase"
-                app:tabTextColor="#e6e6e6"
+                app:tabTextColor="@color/tabTextColor"
                 app:tabSelectedTextColor="@android:color/white"
                 app:tabTextAppearance="@android:style/TextAppearance.Holo.Widget.TextView"
                 app:tabIndicatorColor="@android:color/white"

@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.ui.adapter.ChooseRecyclerAdapter;
 import com.github.runly.riforum_android.ui.adapter.RecyclerAdapter;
 
 import java.util.ArrayList;
@@ -39,13 +40,14 @@ public class ChoosePlateActivity extends TopBarActivity {
                 startActivity(intent);
             }
         };
-        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(createItemList(), onClickListener);
+        ChooseRecyclerAdapter recyclerAdapter = new ChooseRecyclerAdapter(createItemList(), onClickListener);
         recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
     }
 
     private List<String> createItemList() {
         List<String> itemList = new ArrayList<>();
-            int itemsCount = 30;
+            int itemsCount = 5;
             for (int i = 0; i < itemsCount; i++) {
                 itemList.add("Item " + i);
             }
@@ -56,6 +58,6 @@ public class ChoosePlateActivity extends TopBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        topBar.getTxtLeft().setText(getString(R.string.choose_plate_txt_left));
+        topBar.getTxtCenter().setText(getString(R.string.choose_plate_txt_left));
     }
 }
