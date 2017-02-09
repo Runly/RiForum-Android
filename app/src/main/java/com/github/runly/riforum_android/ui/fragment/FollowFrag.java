@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,6 @@ import com.github.runly.riforum_android.ui.adapter.RecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.github.runly.riforum_android.R.id.recyclerView;
-import static com.github.runly.riforum_android.R.id.withText;
 
 /**
  * Created by ranly on 17-2-7.

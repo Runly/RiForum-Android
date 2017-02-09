@@ -7,6 +7,12 @@
         <attr name="txt_left_size" format="integer" />
         <attr name="txt_left_color" format="color" />
         <attr name="txt_left" format="string" />
+        <attr name="txt_center_size" format="integer" />
+        <attr name="txt_center_color" format="color" />
+        <attr name="txt_center" format="string" />
+        <attr name="txt_right_size" format="integer" />
+        <attr name="txt_right_color" format="color" />
+        <attr name="txt_right" format="string" />
     </declare-styleable>
 
 </resources>

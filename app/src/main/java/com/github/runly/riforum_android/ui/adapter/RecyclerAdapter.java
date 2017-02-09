@@ -15,14 +15,23 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<String> mItemList;
+    private View.OnClickListener onClickListener;
 
     public RecyclerAdapter(List<String> itemList) {
-        mItemList = itemList;
+        this.mItemList = itemList;
+    }
+
+    public RecyclerAdapter(List<String> itemList, View.OnClickListener onClickListener) {
+        this.mItemList = itemList;
+        this.onClickListener = onClickListener;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
+        if (onClickListener != null) {
+            view.setOnClickListener(onClickListener);
+        }
         return RecyclerViewHolder.newInstance(view);
     }
 

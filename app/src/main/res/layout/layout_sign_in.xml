@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sign_in_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.github.runly.riforum_android.ui.view.TopBar
-        android:id="@+id/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:txt_left="@string/sign_in_txt_left"
-        app:txt_left_size="18"
-        app:img_left_default="@drawable/back"
-        app:img_left_width="30"
-        app:img_left_height="30"
-        />
-
+    <!-- layout_marginTop="140dp" 140dp = 64dp + 74dp, 74dp为topBar的高度-->
     <EditText
         android:id="@+id/account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="140dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:hint="@string/sign_in_hint"

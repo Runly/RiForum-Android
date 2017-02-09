@@ -22,10 +22,10 @@ import com.pkmmte.view.CircularImageView;
 public class TopBar extends LinearLayout {
     private Context mContext;
     private CircularImageView imgLeft;
-    private TextView txtLeft;
+    private TextView txtLeft, txtCenter, txtRight;
 
-    private int imgLeftWidth, imgLeftHeight, imgLeftDefault, txtLeftSize, txtLeftColor;
-    private String txtLeftContent;
+    private int imgLeftWidth, imgLeftHeight, imgLeftDefault, txtLeftSize, txtLeftColor, txtCenterSize, txtCenterColor, txtRightSize, txtRightColor;
+    private String txtLeftStr, txtCenterStr, txtRightStr;
 
     public TopBar(Context context) {
         super(context);
@@ -36,14 +36,24 @@ public class TopBar extends LinearLayout {
         super(context, attrs);
         mContext = context;
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.TopBar);
-        imgLeftWidth = UnitConvert.dipToPixels(mContext, array.getInt(R.styleable.TopBar_img_left_width, 40));
-        imgLeftHeight = UnitConvert.dipToPixels(mContext, array.getInt(R.styleable.TopBar_img_left_height, 40));
-        imgLeftDefault = array.getResourceId(R.styleable.TopBar_img_left_default, -1);
-        txtLeftSize = array.getInt(R.styleable.TopBar_txt_left_size, 16);
-        txtLeftContent = array.getString(R.styleable.TopBar_txt_left);
-        txtLeftColor = array.getColor(R.styleable.TopBar_txt_left_color, Color.WHITE);
-        array.recycle();
 
+        imgLeftWidth = UnitConvert.dipToPixels(mContext, array.getInt(R.styleable.TopBar_img_left_width, 30));
+        imgLeftHeight = UnitConvert.dipToPixels(mContext, array.getInt(R.styleable.TopBar_img_left_height, 30));
+        imgLeftDefault = array.getResourceId(R.styleable.TopBar_img_left_default, R.mipmap.back);
+
+        txtLeftSize = array.getInt(R.styleable.TopBar_txt_left_size, 16);
+        txtLeftStr = array.getString(R.styleable.TopBar_txt_left);
+        txtLeftColor = array.getColor(R.styleable.TopBar_txt_left_color, Color.WHITE);
+
+        txtCenterSize = array.getInt(R.styleable.TopBar_txt_center_size, 16);
+        txtCenterStr = array.getString(R.styleable.TopBar_txt_center);
+        txtCenterColor = array.getColor(R.styleable.TopBar_txt_center_color, Color.WHITE);
+
+        txtRightSize = array.getInt(R.styleable.TopBar_txt_right_size, 16);
+        txtRightStr = array.getString(R.styleable.TopBar_txt_right);
+        txtRightColor = array.getColor(R.styleable.TopBar_txt_right_color, Color.WHITE);
+
+        array.recycle();
         init();
     }
 
@@ -63,9 +73,19 @@ public class TopBar extends LinearLayout {
             imgLeft.setImageResource(imgLeftDefault);
 
         txtLeft = (TextView) mTopBar.findViewById(R.id.txt_left);
-        txtLeft.setText(txtLeftContent);
+        txtLeft.setText(txtLeftStr);
         txtLeft.setTextSize(TypedValue.COMPLEX_UNIT_SP, txtLeftSize);
         txtLeft.setTextColor(txtLeftColor);
+
+        txtCenter = (TextView) mTopBar.findViewById(R.id.txt_center);
+        txtCenter.setText(txtCenterStr);
+        txtCenter.setTextSize(TypedValue.COMPLEX_UNIT_SP, txtCenterSize);
+        txtCenter.setTextColor(txtCenterColor);
+
+        txtRight = (TextView) mTopBar.findViewById(R.id.txt_right);
+        txtRight.setText(txtRightStr);
+        txtRight.setTextSize(TypedValue.COMPLEX_UNIT_SP, txtRightSize);
+        txtRight.setTextColor(txtRightColor);
     }
 
     public ImageView getImgLeft() {
@@ -74,5 +94,13 @@ public class TopBar extends LinearLayout {
 
     public TextView getTxtLeft() {
         return txtLeft;
+    }
+
+    public TextView getTxtCenter() {
+        return txtCenter;
+    }
+
+    public TextView getTxtRight() {
+        return txtRight;
     }
 }
