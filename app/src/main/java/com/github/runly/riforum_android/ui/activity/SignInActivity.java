@@ -14,7 +14,7 @@ public class SignInActivity extends TopBarActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_sign_in);
+        setContentView(R.layout.activity_sign_in);
 
         findViewById(R.id.to_sign).setOnClickListener(new View.OnClickListener() {
             @Override

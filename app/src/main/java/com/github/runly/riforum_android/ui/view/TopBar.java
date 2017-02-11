@@ -63,7 +63,7 @@ public class TopBar extends LinearLayout {
     }
 
     private void init() {
-        View mTopBar = View.inflate(mContext, R.layout.layout_top_bar, this);
+        View mTopBar = View.inflate(mContext, R.layout.view_top_bar, this);
         imgLeft = (CircularImageView) mTopBar.findViewById(R.id.img_left);
         ViewGroup.LayoutParams layoutParams = imgLeft.getLayoutParams();
         layoutParams.width = imgLeftWidth;

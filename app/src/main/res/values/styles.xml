@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -17,11 +16,16 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppThemeColorBase" parent="AppTheme">
+    <style name="AppThemeColorBase" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/colorLightGray</item>
+        <item name="colorPrimary">@color/lightGray</item>
         <item name="colorPrimaryDark">@color/colorBase</item>
         <item name="colorAccent">@color/colorBase</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="NoTranslucentTheme" parent="AppThemeColorBase">
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
     <style name="myEditText" parent="Theme.AppCompat.Light">

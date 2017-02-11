@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RiForum-Android.iml" filepath="$PROJECT_DIR$/RiForum-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RichEditText/RichEditText.iml" filepath="$PROJECT_DIR$/RichEditText/RichEditText.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RichEditText/richedittext.iml" filepath="$PROJECT_DIR$/RichEditText/richedittext.iml" />
     </modules>
   </component>
 </project>
