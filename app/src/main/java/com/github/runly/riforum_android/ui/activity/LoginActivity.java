@@ -18,7 +18,7 @@ public class LoginActivity extends TopBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        findViewById(R.id.to_sign).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.to_sign_in).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("topbar height", topBar.getHeight()+"");

@@ -14,16 +14,10 @@ import com.github.runly.riforum_android.utils.Constant;
  */
 
 public class App extends Application{
-    private  Context mContext;
-
-    public Context getContext() {
-        return mContext;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = getApplicationContext();
         DisplayMetrics displaymetrics = new DisplayMetrics();
         WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(displaymetrics);

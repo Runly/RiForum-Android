@@ -136,6 +136,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
             android:src="@mipmap/comment"
+            tools:ignore="contentDescription"
             />
 
         <TextView

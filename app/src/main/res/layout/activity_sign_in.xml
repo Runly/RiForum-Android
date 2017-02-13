@@ -14,8 +14,18 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:hint="@string/sign_in_hint"
-        android:theme="@@style/myEditText"
-        android:inputType="number"
+        android:theme="@style/myEditText"
+        />
+
+    <EditText
+        android:id="@+id/nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/sign_nickname"
+        android:theme="@style/myEditText"
         />
 
     <EditText
@@ -43,7 +53,7 @@
         />
 
     <TextView
-        android:id="@+id/to_sign"
+        android:id="@+id/to_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"

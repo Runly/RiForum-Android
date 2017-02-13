@@ -9,6 +9,7 @@
     <string name="click_to_login">点击头像登录</string>
     <string name="sign_in_hint">邮箱或手机号</string>
     <string name="sign_in_txt_left">注册账号</string>
+    <string name="sign_nickname">昵称</string>
     <string name="password">密码</string>
     <string name="sign_button">注册</string>
     <string name="sign_to_login">已有账号登录</string>
@@ -22,4 +23,8 @@
     <string name="release_title_hint">输入标题</string>
     <string name="release_content_hint">输入正文</string>
     <string name="title_test">美国演员阿列克·伯德温（Alec Baldwin）在电视节目 "周六晚间娱乐现场"中模仿总统特朗普.....</string>
+    <string name="sign_in_error_account">请输入正确格式的邮箱或手机号码</string>
+    <string name="sign_in_successfully">注册成功</string>
+    <string name="sign_in_nickname_empty">昵称不能为空</string>
+    <string name="sign_in_password_empty">密码长度必须大于6</string>
 </resources>
