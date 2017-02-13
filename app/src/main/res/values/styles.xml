@@ -18,7 +18,7 @@
 
     <style name="AppThemeColorBase" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/lightGray</item>
+        <item name="colorPrimary">@color/gray_dbdbdb</item>
         <item name="colorPrimaryDark">@color/colorBase</item>
         <item name="colorAccent">@color/colorBase</item>
         <item name="android:windowTranslucentStatus">true</item>

@@ -39,7 +39,7 @@ import java.util.concurrent.Executors;
  * Created by ranly on 17-2-8.
  */
 
-public class ReleaseActivity extends TopBarActivity {
+public class ReleaseActivity extends TopBarActivity implements View.OnClickListener {
     private RichEditText richEditText;
     private String cameraPath;
 
@@ -52,47 +52,8 @@ public class ReleaseActivity extends TopBarActivity {
 
     private void init() {
         richEditText = (RichEditText) findViewById(R.id.content_edit_text);
-
-        findViewById(R.id.add_photo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, null);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, Constant.ALBUM_REQUEST_CODE);
-            }
-        });
-
-        findViewById(R.id.open_camera).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 指定相机拍摄照片保存地址
-                String state = Environment.getExternalStorageState();
-                if (state.equals(Environment.MEDIA_MOUNTED)) {
-                    CharSequence presentDate =android.text.format.DateFormat.
-                            format("yyyy  MMddkk:mm:ss",  System.currentTimeMillis());
-
-                    cameraPath = Constant.SAVED_IMAGE_DIR_PATH +
-                            presentDate + ".jpg";
-                    Intent intent = new Intent();
-                    // 指定开启系统相机的Action
-                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                    String out_file_path = Constant.SAVED_IMAGE_DIR_PATH;
-                    File dir = new File(out_file_path);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
-                    }
-                    // 把文件地址转换成Uri格式
-                    Uri uri = Uri.fromFile(new File(cameraPath));
-                    // 设置系统相机拍摄照片完成后图片文件的存放地址
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                    startActivityForResult(intent, Constant.CAMERA_REQUEST_CODE);
-                } else {
-                    Toast.makeText(getApplicationContext(), "请确认已经插入SD卡",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        findViewById(R.id.add_photo).setOnClickListener(this);
+        findViewById(R.id.open_camera).setOnClickListener(this);
     }
 
     private void setRichTextContent(String richText) {
@@ -141,13 +102,9 @@ public class ReleaseActivity extends TopBarActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Constant.ALBUM_REQUEST_CODE) {
                 try {
-
                     Uri uri = data.getData();
                     final String absolutePath = getAbsolutePath(this, uri);
-
-                    Log.d("uri", "path=" + absolutePath);
                     richEditText.addImage(absolutePath);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -200,11 +157,52 @@ public class ReleaseActivity extends TopBarActivity {
         layoutParams.height = UnitConvert.dipToPixels(this, 24);
         txtRight.setLayoutParams(layoutParams);
         txtRight.setBackground(ContextCompat.getDrawable(this, R.drawable.release_text_border));
-        txtRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        txtRight.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.open_camera:
+                // 指定相机拍摄照片保存地址
+                String state = Environment.getExternalStorageState();
+                if (state.equals(Environment.MEDIA_MOUNTED)) {
+                    CharSequence presentDate =android.text.format.DateFormat.
+                            format("yyyyMMdd-kk:mm:ss",  System.currentTimeMillis());
+
+                    cameraPath = Constant.SAVED_IMAGE_DIR_PATH +
+                            presentDate + ".jpg";
+                    Intent intent = new Intent();
+                    // 指定开启系统相机的Action
+                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                    String out_file_path = Constant.SAVED_IMAGE_DIR_PATH;
+                    File dir = new File(out_file_path);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
+                    // 把文件地址转换成Uri格式
+                    Uri uri = Uri.fromFile(new File(cameraPath));
+                    // 设置系统相机拍摄照片完成后图片文件的存放地址
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                    startActivityForResult(intent, Constant.CAMERA_REQUEST_CODE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "请确认已经插入SD卡",
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+
+            case R.id.add_photo:
+                Intent intent = new Intent(Intent.ACTION_PICK, null);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, Constant.ALBUM_REQUEST_CODE);
+                break;
+
+            case R.id.txt_right:
                 Log.d("content", richEditText.getRichText());
-            }
-        });
+
+            default:
+                break;
+        }
     }
 }
