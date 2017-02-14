@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- layout_marginTop="140dp" 140dp = 64dp + 74dp, 74dp为topBar的高度-->
+    <!-- layout_marginTop="140dp" 122dp = 32dp + 74dp, 74dp为topBar的高度-->
     <EditText
         android:id="@+id/account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="106dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:hint="@string/sign_in_hint"
@@ -40,10 +40,10 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/sign_button"
+        android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
         android:text="@string/sign_button"

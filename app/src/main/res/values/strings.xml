@@ -23,8 +23,12 @@
     <string name="release_title_hint">输入标题</string>
     <string name="release_content_hint">输入正文</string>
     <string name="title_test">美国演员阿列克·伯德温（Alec Baldwin）在电视节目 "周六晚间娱乐现场"中模仿总统特朗普.....</string>
-    <string name="sign_in_error_account">请输入正确格式的邮箱或手机号码</string>
+    <string name="error_account">请输入正确格式的邮箱或手机号码</string>
     <string name="sign_in_successfully">注册成功</string>
     <string name="sign_in_nickname_empty">昵称不能为空</string>
-    <string name="sign_in_password_empty">密码长度必须大于6</string>
+    <string name="sign_in_password_error">密码长度必须大于6</string>
+    <string name="sign_in_failed">注册失败，服务器异常</string>
+    <string name="login_password_empty">密码不能为空</string>
+    <string name="login_successfully">登录成功</string>
+    <string name="login_failed">登录失败，服务器异常</string>
 </resources>

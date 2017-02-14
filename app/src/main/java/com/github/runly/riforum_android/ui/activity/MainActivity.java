@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -16,12 +17,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.model.User;
+import com.github.runly.riforum_android.ui.application.App;
 import com.github.runly.riforum_android.ui.fragment.FollowFrag;
 import com.github.runly.riforum_android.ui.fragment.ForumFrag;
 import com.github.runly.riforum_android.ui.fragment.NotifyFrag;
 import com.github.runly.riforum_android.ui.fragment.RecommendFrag;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.Constant;
+import com.github.runly.riforum_android.utils.GoToActivity;
 import com.github.runly.riforum_android.utils.UnitConvert;
 import com.pkmmte.view.CircularImageView;
 
@@ -29,48 +33,30 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+import static com.github.runly.riforum_android.R.id.fab;
+
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initViewPagerAndTabs();
+        init();
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ChoosePlateActivity.class);
-                startActivity(intent);
-            }
-        });
-
+    private void init() {
         TopBar topBar = (TopBar) findViewById(R.id.top_bar);
-        topBar.getImgLeft().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawerLayout.openDrawer(Gravity.LEFT);
-            }
-        });
-        topBar.getTxtLeft().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawerLayout.openDrawer(Gravity.LEFT);
-            }
-        });
+        topBar.getImgLeft().setOnClickListener(this);
+        topBar.getTxtLeft().setOnClickListener(this);
 
-        CircularImageView circularImageView = (CircularImageView) findViewById(R.id.user_avatar);
-        circularImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+        // 右下角的FloatingActionButton
+        findViewById(R.id.fab).setOnClickListener(this);
+
+        // topbar左边的头像
+        findViewById(R.id.user_avatar).setOnClickListener(this);
+
+        initViewPagerAndTabs();
     }
 
     private void initViewPagerAndTabs() {
@@ -112,7 +98,8 @@ public class MainActivity extends BaseActivity {
                 for (int i = 0; i < layout.getChildCount(); i++) {
                     View child = layout.getChildAt(i);
                     child.setPadding(0, 0, 0, 0);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
+                            LinearLayout.LayoutParams.MATCH_PARENT, 1);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                         params.setMarginStart(UnitConvert.dipToPixels(this, 18));
                         params.setMarginEnd(UnitConvert.dipToPixels(this, 18));
@@ -123,6 +110,31 @@ public class MainActivity extends BaseActivity {
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void openDrawer() {
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GravityCompat.START);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case fab:
+                GoToActivity.goTo(this, ReleaseActivity.class);
+                break;
+
+            case R.id.img_left:
+            case R.id.txt_left:
+                openDrawer();
+                break;
+
+            case R.id.user_avatar:
+                GoToActivity.goTo(this, LoginActivity.class);
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -157,12 +169,4 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-//    private int getStatusBarHeight() {
-//        int statusBarHeight1 = 0;
-//        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-//        if (resourceId > 0) {
-//            statusBarHeight1 = getResources().getDimensionPixelSize(resourceId);
-//        }
-//        return statusBarHeight1;
-//    }
 }

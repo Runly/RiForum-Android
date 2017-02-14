@@ -2,6 +2,8 @@ package com.github.runly.riforum_android.utils;
 
 import android.os.Environment;
 
+import java.io.File;
+
 /**
  * Created by ranly on 17-2-7.
  */
@@ -16,6 +18,5 @@ public class Constant {
     public final static int CAMERA_REQUEST_CODE = 3;
     // 拍照路径
     public final static String SAVED_IMAGE_DIR_PATH =
-            Environment.getExternalStorageDirectory().getPath()
-                    + "/DCIM/camera/";
+            Environment.getExternalStorageDirectory().getPath() + "/DCIM/camera/";
 }
