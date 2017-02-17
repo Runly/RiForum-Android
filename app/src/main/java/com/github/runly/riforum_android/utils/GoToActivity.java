@@ -13,6 +13,5 @@ public class GoToActivity {
     public static void   goTo(Activity activity, Class<? extends BaseActivity> activityClass) {
         Intent intent = new Intent(activity, activityClass);
         activity.startActivity(intent);
-
     }
 }

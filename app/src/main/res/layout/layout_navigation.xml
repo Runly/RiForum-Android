@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="290dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@android:color/white"
-    >
+    android:background="@android:color/white">
 
     <FrameLayout
         android:id="@+id/user_info_layout"
@@ -22,8 +22,8 @@
             tools:ignore="ContentDescription"
             />
 
-        <com.pkmmte.view.CircularImageView
-            android:id="@+id/user_avatar"
+        <com.github.runly.riforum_android.ui.view.CircularImageView
+            android:id="@+id/navigation_user_avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@mipmap/avatar_default"
@@ -32,17 +32,17 @@
             />
 
         <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/navigation_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="60dp"
             android:gravity="center"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginStart="16dp"
             android:text="@string/click_to_login"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="20sp"
             />
 
     </FrameLayout>

@@ -1,10 +1,8 @@
 package com.github.runly.riforum_android.ui.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,10 +10,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.application.App;
@@ -23,19 +23,28 @@ import com.github.runly.riforum_android.ui.fragment.FollowFrag;
 import com.github.runly.riforum_android.ui.fragment.ForumFrag;
 import com.github.runly.riforum_android.ui.fragment.NotifyFrag;
 import com.github.runly.riforum_android.ui.fragment.RecommendFrag;
+import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.Constant;
 import com.github.runly.riforum_android.utils.GoToActivity;
+import com.github.runly.riforum_android.utils.SdCardUtil;
 import com.github.runly.riforum_android.utils.UnitConvert;
-import com.pkmmte.view.CircularImageView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import static com.github.runly.riforum_android.R.id.fab;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
+    private DrawerLayout drawerLayout;
+    private CircularImageView userAvatar;
+    private TopBar topBar;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +55,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void init() {
-        TopBar topBar = (TopBar) findViewById(R.id.top_bar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        userAvatar = (CircularImageView) findViewById(R.id.navigation_user_avatar);
+
+        topBar = (TopBar) findViewById(R.id.top_bar);
         topBar.getImgLeft().setOnClickListener(this);
         topBar.getTxtLeft().setOnClickListener(this);
-
         // 右下角的FloatingActionButton
         findViewById(R.id.fab).setOnClickListener(this);
 
-        // topbar左边的头像
-        findViewById(R.id.user_avatar).setOnClickListener(this);
+        userAvatar.setOnClickListener(this);
 
         initViewPagerAndTabs();
     }
@@ -114,14 +124,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void openDrawer() {
-        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GravityCompat.START);
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    private void closeDrawer() {
+        drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case fab:
-                GoToActivity.goTo(this, ReleaseActivity.class);
+                GoToActivity.goTo(this, ChoosePlateActivity.class);
                 break;
 
             case R.id.img_left:
@@ -129,8 +143,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 openDrawer();
                 break;
 
-            case R.id.user_avatar:
-                GoToActivity.goTo(this, LoginActivity.class);
+            case R.id.navigation_user_avatar:
+                if (App.getInstance().islogin()) {
+
+                } else {
+                    GoToActivity.goTo(this, LoginActivity.class);
+                    closeDrawer();
+                }
                 break;
 
             default:
@@ -138,6 +157,50 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        user = App.getInstance().getUser();
+
+        // 异步读取存储在Sdcard上的User对象
+        if (user == null || !App.getInstance().islogin()) {
+            Observable.just(this)
+                    .map(SdCardUtil::loadUserFromSdCard)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(user1 -> {
+                        if (user1 != null) {
+                            App.getInstance().setUser(user1);
+                            topBar.getTxtLeft().setText(user1.name);
+                            TextView textView = (TextView) findViewById(R.id.navigation_user_name);
+                            textView.setText(user1.name);
+                            if (!TextUtils.isEmpty(user1.avatar)) {
+                                Glide.with(this)
+                                        .load(user1.avatar)
+                                        .into(topBar.getImgLeft());
+
+                                Glide.with(this)
+                                        .load(user1.avatar)
+                                        .into(userAvatar);
+                            }
+                        }
+                    });
+        } else {
+            topBar.getTxtLeft().setText(user.name);
+            TextView textView = (TextView) findViewById(R.id.navigation_user_name);
+            textView.setText(user.name);
+            if (!TextUtils.isEmpty(user.avatar)) {
+                Glide.with(this)
+                        .load(user.avatar)
+                        .into(topBar.getImgLeft());
+
+                Glide.with(this)
+                        .load(user.avatar)
+                        .into(userAvatar);
+            }
+        }
+    }
 
     private class PagerAdapter extends FragmentPagerAdapter {
 
@@ -168,5 +231,4 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             return fragmentTitleList.get(position);
         }
     }
-
 }

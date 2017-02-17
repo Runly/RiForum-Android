@@ -1,7 +1,5 @@
 package com.github.runly.riforum_android.ui.activity;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
@@ -9,10 +7,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.Constant;
 import com.github.runly.riforum_android.utils.UnitConvert;
-import com.pkmmte.view.CircularImageView;
+
 
 /**
  * Created by ranly on 17-2-9.

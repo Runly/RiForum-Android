@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/colorBase">
 
-    <com.pkmmte.view.CircularImageView
+    <com.github.runly.riforum_android.ui.view.CircularImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:id="@+id/img_left"
@@ -18,7 +18,8 @@
         tools:ignore="contentDescription"
         app:layout_constraintVertical_bias="0.42000002"
         android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
     
     <TextView
         android:id="@+id/txt_left"

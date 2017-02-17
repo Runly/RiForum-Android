@@ -3,6 +3,7 @@ package com.github.runly.riforum_android.ui.application;
 import android.app.Application;
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.github.runly.richedittext.utils.ContextUtils;
@@ -12,10 +13,7 @@ import com.github.runly.riforum_android.utils.Constant;
 import com.github.runly.riforum_android.utils.SdCardUtil;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -25,6 +23,7 @@ import rx.schedulers.Schedulers;
 public class App extends Application{
     private static App instance;
     private User user;
+    private boolean isLogin = false;
 
     public static App getInstance() {
         return instance;
@@ -35,13 +34,6 @@ public class App extends Application{
         super.onCreate();
 
         instance = this;
-
-        // 异步读取存储在Sdcard上的User对象
-        Observable.just(instance)
-                .map(SdCardUtil::loadUserFromSdCard)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setUser);
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
@@ -69,6 +61,14 @@ public class App extends Application{
     }
 
     public void setUser(User user) {
-        this.user = user;
+        if (user != null) {
+            this.user = user;
+            this.isLogin = true;
+            Log.e("is login", String.valueOf(this.isLogin));
+        }
+    }
+
+    public boolean islogin() {
+        return isLogin;
     }
 }

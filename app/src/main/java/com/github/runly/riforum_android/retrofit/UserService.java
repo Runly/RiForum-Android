@@ -18,16 +18,16 @@ public interface UserService {
     /**
      *
      * @param body
-     * @return Observable<User>
+     * @return
      */
-    @POST("login")
-    Observable<ResponseBase<User>> login(@Body Map<String, String> body);
+    @POST("user/login")
+    Observable<ResponseBase<User>> login(@Body Map<String, Object> body);
 
     /**
      *
      * @param body
-     * @return Observable<SignIn>
+     * @return
      */
-    @POST("sign_in")
-    Observable<ResponseBase<User>> signIn(@Body Map<String, String> body);
+    @POST("user/sign_in")
+    Observable<ResponseBase<User>> signIn(@Body Map<String, Object> body);
 }

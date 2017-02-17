@@ -45,7 +45,7 @@ public class LoginActivity extends TopBarActivity implements View.OnClickListene
         String account = accountEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         //判断是否为邮箱
         if (RegisterCheck.isEmail(account)) {
             map.put("email", account);
@@ -59,7 +59,7 @@ public class LoginActivity extends TopBarActivity implements View.OnClickListene
         if (!TextUtils.isEmpty(password) && password.length() >= 6) {
             map.put("password", password);
         } else {
-            ToastUtil.makeShortToast(this, getString(R.string.login_password_empty));
+            ToastUtil.makeShortToast(this, getString(R.string.password_error));
             return;
         }
 
@@ -73,9 +73,13 @@ public class LoginActivity extends TopBarActivity implements View.OnClickListene
                                 ToastUtil.makeShortToast(this, getString(R.string.login_successfully));
                                 App.getInstance().setUser(theResponse.data);
                                 SdCardUtil.saveUserToSdCard(this, theResponse.data);
+                                finish();
                             }
                         },
-                        throwable -> ToastUtil.makeShortToast(this, getString(R.string.login_failed))
+                        throwable -> {
+                            throwable.printStackTrace();
+                            ToastUtil.makeShortToast(this, getString(R.string.login_failed));
+                        }
                 );
 
     }

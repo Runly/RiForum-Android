@@ -12,6 +12,7 @@ import android.view.View;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.ui.adapter.ChooseRecyclerAdapter;
 import com.github.runly.riforum_android.ui.adapter.RecyclerAdapter;
+import com.github.runly.riforum_android.utils.GoToActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +34,9 @@ public class ChoosePlateActivity extends TopBarActivity {
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ChoosePlateActivity.this, ReleaseActivity.class);
-                startActivity(intent);
-            }
+        View.OnClickListener onClickListener = v -> {
+            GoToActivity.goTo(ChoosePlateActivity.this, ReleaseActivity.class);
+            finish();
         };
         ChooseRecyclerAdapter recyclerAdapter = new ChooseRecyclerAdapter(createItemList(), onClickListener);
         recyclerView.setAdapter(recyclerAdapter);

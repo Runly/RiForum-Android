@@ -12,11 +12,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RetrofitFactory {
-    public static RetrofitFactory instance;
+    private static RetrofitFactory instance;
     private static final int DEFAULT_TIMEOUT = 10;
-    private static final String baseUrl = "http://www.ranly.top:5000/";
+    private static final String baseUrl = "http://www.ranly.info:7732/";
     private Retrofit retrofit;
     private UserService userService;
+    private QiuniuTokenService qiuniuTokenService;
+    private EntryService entryService;
 
 
     public static RetrofitFactory getInstance() {
@@ -50,4 +52,17 @@ public class RetrofitFactory {
         return userService;
     }
 
+    public QiuniuTokenService getQiuniuTokenService() {
+        if (null == qiuniuTokenService) {
+            qiuniuTokenService = getRetrofit().create(QiuniuTokenService.class);
+        }
+        return qiuniuTokenService;
+    }
+
+    public EntryService getEntryService() {
+        if (null == entryService) {
+            entryService = getRetrofit().create(EntryService.class);
+        }
+        return entryService;
+    }
 }

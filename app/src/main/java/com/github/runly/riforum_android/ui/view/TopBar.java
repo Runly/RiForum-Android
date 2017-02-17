@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.utils.UnitConvert;
-import com.pkmmte.view.CircularImageView;
 
 /**
  * Created by ranly on 17-2-6.

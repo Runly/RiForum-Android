@@ -49,7 +49,7 @@ public class SignInActivity extends TopBarActivity implements View.OnClickListen
         String password = passwordEditText.getText().toString();
         String nickname = nicknameEditText.getText().toString();
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         // 邮箱, 手机号验证
         if (RegisterCheck.isEmail(account)) {
             map.put("email", account);
@@ -70,7 +70,7 @@ public class SignInActivity extends TopBarActivity implements View.OnClickListen
         if (!TextUtils.isEmpty(password) && password.length() >= 6) {
             map.put("password", password);
         } else {
-            ToastUtil.makeShortToast(this, getString(R.string.sign_in_password_error));
+            ToastUtil.makeShortToast(this, getString(R.string.password_error));
             return;
         }
 
