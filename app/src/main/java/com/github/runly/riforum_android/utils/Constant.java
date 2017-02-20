@@ -13,6 +13,8 @@ public class Constant {
     public static int SCREEN_HEIGHT;  // 屏幕高度
     public static int STATUS_HEIGHT;  // 状态栏高度
 
+    public static int TOPBAR_HEIGHT = 50;  // MainActivity的标题栏高度(dp)
+
     public final static int ALBUM_REQUEST_CODE = 1;
     public final static int CROP_REQUEST = 2;
     public final static int CAMERA_REQUEST_CODE = 3;

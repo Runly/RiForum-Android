@@ -17,10 +17,11 @@ public class ScrollingFABBehavior extends CoordinatorLayout.Behavior<FloatingAct
 
     public ScrollingFABBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(
-                new int[]{android.R.attr.actionBarSize});
-        topBarHeight = styledAttributes.getDimension(0, 0);
-        styledAttributes.recycle();
+//        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(
+//                new int[]{android.R.attr.actionBarSize});
+//        topBarHeight = styledAttributes.getDimension(0, 0);
+//        styledAttributes.recycle();
+        topBarHeight = UnitConvert.dipToPixels(context, Constant.TOPBAR_HEIGHT);
     }
 
     @Override
@@ -35,6 +36,7 @@ public class ScrollingFABBehavior extends CoordinatorLayout.Behavior<FloatingAct
             int fabBottomMargin = lp.bottomMargin;
             int distanceToScroll = fab.getHeight() + fabBottomMargin;
             float ratio = (dependency.getY() - Constant.STATUS_HEIGHT) / topBarHeight;
+//            float ratio = (dependency.getY()) / topBarHeight;
             fab.setTranslationY(-distanceToScroll * ratio);
         }
         return true;

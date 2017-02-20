@@ -12,7 +12,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -55,12 +57,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void init() {
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+        coordinatorLayout.setPadding(0, Constant.STATUS_HEIGHT, 0, 0);
+//        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) coordinatorLayout.getLayoutParams();
+//        params.setMargins(0, Constant.STATUS_HEIGHT, 0, 0);
+//        coordinatorLayout.setLayoutParams(params);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         userAvatar = (CircularImageView) findViewById(R.id.navigation_user_avatar);
 
         topBar = (TopBar) findViewById(R.id.top_bar);
+        topBar.getImgRight().setImageResource(R.mipmap.search);
         topBar.getImgLeft().setOnClickListener(this);
         topBar.getTxtLeft().setOnClickListener(this);
+        RelativeLayout constraintLayout = (RelativeLayout) topBar.findViewById(R.id.relativeLayout_layout);
+        ViewGroup.LayoutParams lp = constraintLayout.getLayoutParams();
+        lp.height = UnitConvert.dipToPixels(this, Constant.TOPBAR_HEIGHT);
+        constraintLayout.setLayoutParams(lp);
+
+
         // 右下角的FloatingActionButton
         findViewById(R.id.fab).setOnClickListener(this);
 
@@ -70,9 +84,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void initViewPagerAndTabs() {
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        coordinatorLayout.setPadding(0, Constant.STATUS_HEIGHT, 0, 0);
-
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(RecommendFrag.createInstance(20), getString(R.string.tab_1));

@@ -2,7 +2,6 @@ package com.github.runly.riforum_android.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,15 +14,18 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.model.Entry;
+import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.RecommendAdapter;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ranly on 17-2-7.
@@ -33,7 +35,8 @@ public class RecommendFrag extends Fragment {
 
     public final static String ITEMS_COUNT_KEY = "RecommendFrag$ItemsCount";
 
-    private Banner banner;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static RecommendFrag createInstance(int itemsCount) {
         RecommendFrag partThreeFragment = new RecommendFrag();
@@ -46,80 +49,63 @@ public class RecommendFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
+        swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
                 R.layout.fragment_rcommend, container, false);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBase);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 500);
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(this::fetchDta);
 
-        RecyclerView recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         View header = inflater.inflate(R.layout.recycler_recommend_header, recyclerView, false);
         setupRecyclerView(recyclerView, header);
+        fetchDta();
 
         return swipeRefreshLayout;
     }
 
+    private void fetchDta() {
+        swipeRefreshLayout.setRefreshing(true);
+
+        RetrofitFactory.getInstance().getEntryService().recommend()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    if ("1".equals(response.code)) {
+                        List<Entry> list = ((RecommendAdapter) recyclerView.getAdapter()).getItemList();
+                        list.clear();
+                        list.addAll(response.data);
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                    }
+                    swipeRefreshLayout.setRefreshing(false);
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    swipeRefreshLayout.setRefreshing(false);
+                });
+    }
+
     private void setupRecyclerView(RecyclerView recyclerView, View header) {
-        RecommendAdapter recommendAdapter = new RecommendAdapter(createItemList());
+        RecommendAdapter recommendAdapter = new RecommendAdapter(getActivity(), new ArrayList<>());
         List<String> imageList = new ArrayList<>();
         imageList.add("http://51tingchewei.net/wp-content/uploads/2016/06/android-app-banner-1.jpg");
         imageList.add("http://uae.dieutek.com/wp-content/uploads/2015/08/Website-Android-Development-Banner.jpg");
         imageList.add("http://techmafia.net/uploads/images/00/00/01/2015/06/30/59a3e8.jpg");
-        banner = (Banner) header.findViewById(R.id.banner);
+        Banner banner = (Banner) header.findViewById(R.id.banner);
         banner.setImageLoader(new GlideImageLoader())
-            .setIndicatorGravity(BannerConfig.RIGHT)
-            .setImages(imageList)
-            .start();
+                .setIndicatorGravity(BannerConfig.RIGHT)
+                .setImages(imageList)
+                .start();
         recommendAdapter.setHeaderView(header);
         recyclerView.setAdapter(recommendAdapter);
-    }
-
-    private List<String> createItemList() {
-        List<String> itemList = new ArrayList<>();
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            int itemsCount = bundle.getInt(ITEMS_COUNT_KEY);
-            for (int i = 0; i < itemsCount; i++) {
-                itemList.add("用户" + i);
-            }
-        }
-        return itemList;
     }
 
     class GlideImageLoader extends ImageLoader {
         @Override
 
         public void displayImage(Context context, Object path, ImageView imageView) {
-                Glide.with(getActivity())
-                        .load(path)
-                        .into(imageView);
+            Glide.with(getActivity())
+                    .load(path)
+                    .into(imageView);
         }
-    }
-
-    @Override
-    public void dump(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
-        super.dump(prefix, fd, writer, args);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        banner.startAutoPlay();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        banner.stopAutoPlay();
     }
 }

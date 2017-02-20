@@ -21,8 +21,8 @@ public class TopBarActivity extends BaseActivity {
     protected TopBar topBar;
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         addTopBar();
     }
 

@@ -1,67 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout_layout"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:orientation="vertical"
     android:background="@color/colorBase">
 
     <com.github.runly.riforum_android.ui.view.CircularImageView
+        android:id="@+id/img_left"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:id="@+id/img_left"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="contentDescription"
-        app:layout_constraintVertical_bias="0.42000002"
+        android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         />
     
     <TextView
         android:id="@+id/txt_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/img_left"
+        android:layout_marginStart="16dp"
         android:textSize="16sp"
         android:textColor="@android:color/white"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toRightOf="@+id/img_left"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
     <TextView
         android:id="@+id/txt_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp" />
+        />
 
     <TextView
         android:id="@+id/txt_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
         android:textColor="@android:color/white"
         android:textSize="16sp"
+        />
+
+    <ImageView
+        android:id="@+id/img_right"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:ignore="contentDescription" />
 
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

@@ -18,6 +18,10 @@ public class ImageSpan extends android.text.style.ImageSpan implements Span<Stri
         mFilePath = filePath;
     }
 
+    public ImageSpan(Context context, Bitmap bitmap) {
+        super(context, bitmap);
+    }
+
     public ImageSpan(Drawable drawable) {
         super(drawable);
     }

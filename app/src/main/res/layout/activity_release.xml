@@ -15,24 +15,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.github.runly.riforum_android.ui.view.TopBar
-                android:id="@+id/top_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </com.github.runly.riforum_android.ui.view.TopBar>
-
-            <!-- layout_marginTop="86dp" 140dp = 12dp + 74dp, 74dp为topBar的高度-->
+            <!-- layout_marginTop="74dp" 86dp = 74dp, 74dp为topBar的高度-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="74dp"
                 android:orientation="horizontal">
 
                 <TextView

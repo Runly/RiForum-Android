@@ -82,46 +82,6 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
         findViewById(R.id.open_camera).setOnClickListener(this);
     }
 
-    private void setRichTextContent(String richText) {
-        richEditText.setRichText(richText);
-        FakeImageSpan[] imageSpans = richEditText.getFakeImageSpans();
-        if (imageSpans == null || imageSpans.length == 0) {
-            return;
-        }
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        for (final FakeImageSpan imageSpan : imageSpans) {
-            final String src = imageSpan.getValue();
-            if (src.startsWith("http")) {
-                // web images
-                new AsyncTask<String, Void, Bitmap>() {
-                    @Override
-                    protected Bitmap doInBackground(String... params) {
-                        try {
-                            InputStream is = new URL(src).openStream();
-                            return BitmapFactory.decodeStream(is);
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Bitmap bitmap) {
-                        if (bitmap == null) {
-                            return;
-                        }
-                        richEditText.replaceDownloadedImage(imageSpan, bitmap, src);
-                    }
-                }.executeOnExecutor(executorService, src);
-            } else {
-                // local images
-                richEditText.replaceLocalImage(imageSpan, src);
-            }
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -361,10 +321,6 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.open_camera:
-//                setRichTextContent("哈哈\n" +
-//                        "哈哈哈\n" +
-//                        "哈哈哈\n" +
-//                        "<img src=\"http://ol1tuu1tl.bkt.clouddn.com/10000001_1487174563.66.jpg\" />");
                 openCamera();
                 break;
 

@@ -28,6 +28,6 @@ public interface EntryService {
      *
      * @return
      */
-    @GET("entry/release")
-    Observable<ResponseBase<List<Entry>>> relcommend();
+    @GET("entry/recommend")
+    Observable<ResponseBase<List<Entry>>> recommend();
 }

@@ -22,6 +22,7 @@ public class TopBar extends LinearLayout {
     private Context mContext;
     private CircularImageView imgLeft;
     private TextView txtLeft, txtCenter, txtRight;
+    private ImageView imgRight;
 
     private int imgLeftWidth, imgLeftHeight, imgLeftDefault, txtLeftSize, txtLeftColor, txtCenterSize, txtCenterColor, txtRightSize, txtRightColor;
     private String txtLeftStr, txtCenterStr, txtRightStr;
@@ -71,6 +72,8 @@ public class TopBar extends LinearLayout {
         if (imgLeftDefault != -1)
             imgLeft.setImageResource(imgLeftDefault);
 
+        imgRight = (ImageView) mTopBar.findViewById(R.id.img_right);
+
         txtLeft = (TextView) mTopBar.findViewById(R.id.txt_left);
         txtLeft.setText(txtLeftStr);
         txtLeft.setTextSize(TypedValue.COMPLEX_UNIT_SP, txtLeftSize);
@@ -101,5 +104,9 @@ public class TopBar extends LinearLayout {
 
     public TextView getTxtRight() {
         return txtRight;
+    }
+
+    public ImageView getImgRight() {
+        return imgRight;
     }
 }
