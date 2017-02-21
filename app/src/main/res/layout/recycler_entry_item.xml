@@ -23,22 +23,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/item_user_avatar"
         android:text="hahaa"
-        android:textColor="@android:color/black"
+        android:textColor="@color/gray_505050"
         android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/item_user_grade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/item_user_name"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="6dp"
-        android:layout_toEndOf="@id/item_user_avatar"
-        android:text="1级"
-        android:textColor="@color/gray_8a8a8a"
-        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/item_plate"
@@ -59,8 +48,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_user_avatar"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/background_dark" />
+        android:layout_marginTop="16dp"
+        android:textSize="15sp"
+        android:textColor="@color/gray_303030" />
 
     <LinearLayout
         android:id="@+id/image_linear"
@@ -68,7 +58,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_title"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <ImageView

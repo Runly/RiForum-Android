@@ -1,6 +1,7 @@
 package com.github.runly.riforum_android.retrofit;
 
 import com.github.runly.riforum_android.model.Entry;
+import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.model.ResponseBase;
 
 import java.util.List;
@@ -30,4 +31,11 @@ public interface EntryService {
      */
     @GET("entry/recommend")
     Observable<ResponseBase<List<Entry>>> recommend();
+
+    /**
+     *
+     * @return
+     */
+    @GET("entry/plate")
+    Observable<ResponseBase<List<Plate>>> plate();
 }

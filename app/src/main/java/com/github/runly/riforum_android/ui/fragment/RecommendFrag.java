@@ -87,9 +87,9 @@ public class RecommendFrag extends Fragment {
     private void setupRecyclerView(RecyclerView recyclerView, View header) {
         RecommendAdapter recommendAdapter = new RecommendAdapter(getActivity(), new ArrayList<>());
         List<String> imageList = new ArrayList<>();
-        imageList.add("http://51tingchewei.net/wp-content/uploads/2016/06/android-app-banner-1.jpg");
-        imageList.add("http://uae.dieutek.com/wp-content/uploads/2015/08/Website-Android-Development-Banner.jpg");
-        imageList.add("http://techmafia.net/uploads/images/00/00/01/2015/06/30/59a3e8.jpg");
+        imageList.add("http://bpic.588ku.com/back_pic/00/00/40/82/72212fe3b8246b538fb94702be469a51.jpg");
+        imageList.add("http://bpic.588ku.com/back_pic/04/28/17/53583d40b2444bc.jpg");
+        imageList.add("http://bpic.588ku.com/back_pic/04/39/18/23584d519801ada.jpg");
         Banner banner = (Banner) header.findViewById(R.id.banner);
         banner.setImageLoader(new GlideImageLoader())
                 .setIndicatorGravity(BannerConfig.RIGHT)

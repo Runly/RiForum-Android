@@ -50,4 +50,27 @@ public class TxtUtils {
         return years == 1 ? app.getString(R.string.time_ago_year) : String.format(app.getString(R.string.time_ago_years), years);
 //        return years + "年之前";
     }
+
+    public static String getPlateWithId(int id) {
+        String plateName = null;
+        switch(id){
+            case 1:
+                plateName = Constant.NEWS;
+                break;
+            case 2:
+                plateName = Constant.MEDIA;
+                break;
+            case 3:
+                plateName = Constant.TRAVEL_FOOD;
+                break;
+            case 4:
+                plateName = Constant.GAME;
+                break;
+            case 5:
+                plateName = Constant.DAILY_LIFE;
+        }
+
+
+        return plateName;
+    }
 }

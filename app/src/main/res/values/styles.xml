@@ -20,7 +20,7 @@
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/gray_dbdbdb</item>
         <item name="colorPrimaryDark">@color/colorBase</item>
-        <item name="colorAccent">@color/colorBase</item>
+        <item name="colorAccent">@color/yellow_ffd54f</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 

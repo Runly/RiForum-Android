@@ -32,6 +32,8 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
+        android:maxWidth="180dp"
+        android:maxLines="1"
         android:textSize="16sp"
         />
 

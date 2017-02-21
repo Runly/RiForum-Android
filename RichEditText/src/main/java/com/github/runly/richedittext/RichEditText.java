@@ -28,8 +28,8 @@ import java.util.List;
  */
 public class RichEditText extends EditText {
 
-    private static final int IMAGE_MAX_WIDTH = DisplayUtils.getWidthPixels();
-    private static final int IMAGE_MAX_HEIGHT = DisplayUtils.getWidthPixels();
+    private static final int IMAGE_MAX_WIDTH = DisplayUtils.getWidthPixels() - DisplayUtils.dp2px(32);
+    private static final int IMAGE_MAX_HEIGHT = DisplayUtils.getHeightPixels();
 
     private Context mContext;
 

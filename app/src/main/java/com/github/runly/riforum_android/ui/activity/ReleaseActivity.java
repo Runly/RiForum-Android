@@ -6,10 +6,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -25,9 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.runly.richedittext.RichEditText;
-import com.github.runly.richedittext.span.FakeImageSpan;
 import com.github.runly.richedittext.span.ImageSpan;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.qiniu.QiniuToken;
 import com.github.runly.riforum_android.qiniu.UploadManagerFactory;
@@ -41,16 +38,10 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadOptions;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -61,6 +52,7 @@ import rx.schedulers.Schedulers;
 
 public class ReleaseActivity extends TopBarActivity implements View.OnClickListener {
     private RichEditText richEditText;
+    private EditText titleTV;
     private String cameraPath;
     private List<String> pathList = new ArrayList<>();
     private List<String> urlList = new ArrayList<>();
@@ -68,7 +60,6 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
     private final int[] currentImageIndex = {0};
     private ProgressDialog dialog;
     private double progress = 0;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +68,12 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
     }
 
     private void init() {
+        Plate plate = (Plate) getIntent().getSerializableExtra("item_data");
+        if (null != plate)
+            ((TextView) findViewById(R.id.which_plate)).setText(plate.name);
+
         richEditText = (RichEditText) findViewById(R.id.content_edit_text);
+        titleTV = (EditText) findViewById(R.id.title_edit_text);
         findViewById(R.id.add_photo).setOnClickListener(this);
         findViewById(R.id.open_camera).setOnClickListener(this);
     }
@@ -269,20 +265,21 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
     private void pushToMyServer(String content) {
         Log.i("content", content);
 
-        String title = ((EditText) findViewById(R.id.title_edit_text)).getText().toString();
+        String title = titleTV.getText().toString();
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content)) {
             ToastUtil.makeShortToast(this, getString(R.string.release_empty));
             return;
         }
 
         User user = App.getInstance().getUser();
-        if (null != user) {
+        Plate plate = (Plate) getIntent().getSerializableExtra("item_data");
+        if (null != user && null != plate) {
             Map<String, Object> map = new HashMap<>();
             map.put("token", user.token);
             map.put("uid", user.id);
             map.put("title", title);
             map.put("content", content);
-            map.put("plate", 0);
+            map.put("plate", plate.id);
             map.put("sort", 0);
             String image = "";
             if (urlList != null && urlList.size() > 0) {
@@ -329,6 +326,11 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                 break;
 
             case R.id.txt_right:
+                String title = titleTV.getText().toString();
+                if (TextUtils.isEmpty(title) || TextUtils.isEmpty(richEditText.getRichText())) {
+                    ToastUtil.makeShortToast(this, getString(R.string.release_empty));
+                    return;
+                }
                 displayDialog();
                 release();
                 break;

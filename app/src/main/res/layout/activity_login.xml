@@ -14,8 +14,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:hint="@string/sign_in_hint"
+        android:textCursorDrawable="@drawable/edit_cursor"
         android:theme="@@style/myEditText"
-        android:inputType="number"
         />
 
     <EditText
@@ -27,9 +27,8 @@
         android:layout_marginEnd="32dp"
         android:hint="@string/password"
         android:theme="@style/myEditText"
+        android:textCursorDrawable="@drawable/edit_cursor"
         android:inputType="textPassword" />
-
-
 
     <Button
         android:id="@+id/login_button"
@@ -53,9 +52,5 @@
         android:text="@string/login_to_sign"
         android:layout_gravity="center_horizontal"
         />
-
-
-
-
 
 </LinearLayout>

@@ -30,6 +30,7 @@ import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.Constant;
 import com.github.runly.riforum_android.utils.GoToActivity;
 import com.github.runly.riforum_android.utils.SdCardUtil;
+import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
 import java.lang.reflect.Field;
@@ -146,7 +147,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case fab:
-                GoToActivity.goTo(this, ChoosePlateActivity.class);
+                if (App.getInstance().islogin()) {
+                    GoToActivity.goTo(this, ChoosePlateActivity.class);
+                } else {
+                    ToastUtil.makeShortToast(this, getString(R.string.not_login));
+                }
                 break;
 
             case R.id.img_left:

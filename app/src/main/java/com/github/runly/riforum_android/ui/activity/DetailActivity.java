@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.adapter.DetailAdapter;
 import com.github.runly.riforum_android.ui.adapter.RecyclerAdapter;
 import com.github.runly.riforum_android.ui.view.CircularImageView;
+import com.github.runly.riforum_android.ui.view.TopBar;
+import com.github.runly.riforum_android.utils.Constant;
 import com.github.runly.riforum_android.utils.TxtUtils;
 
 import java.io.IOException;
@@ -34,7 +37,7 @@ import java.util.concurrent.Executors;
  * Created by ranly on 17-2-20.
  */
 
-public class DetailActivity extends TopBarActivity {
+public class DetailActivity extends BaseActivity {
     private Entry entry;
     private User user;
 
@@ -48,6 +51,9 @@ public class DetailActivity extends TopBarActivity {
     }
 
     private void init() {
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+        coordinatorLayout.setPadding(0, Constant.STATUS_HEIGHT, 0, 0);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.detail_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         View header = getLayoutInflater().inflate(R.layout.recycler_detail_header, recyclerView, false);
@@ -57,6 +63,9 @@ public class DetailActivity extends TopBarActivity {
         if (entry != null) {
             user = entry.user;
         }
+
+        TopBar topBar = (TopBar) findViewById(R.id.detail_top_bar);
+        topBar.getImgLeft().setOnClickListener(v -> finish());
 
         CircularImageView userAvatar = (CircularImageView) header.findViewById(R.id.detail_user_avatar);
         RichEditText richEditText = (RichEditText) header.findViewById(R.id.detail_content);
@@ -69,12 +78,13 @@ public class DetailActivity extends TopBarActivity {
 
         richEditText.setKeyListener(null);
         if (null != entry) {
+            topBar.getTxtCenter().setText(entry.title);
             setRichTextContent(entry.content, richEditText);
             titleTV.setText(entry.title);
             timeTV.setText(TxtUtils.getReadableTime(String.valueOf(entry.time)));
             readNum.setText(String.valueOf(entry.read_num));
             commentNum.setText(String.valueOf(entry.comment_num));
-            plate.setText("测试数据");
+            plate.setText(TxtUtils.getPlateWithId(entry.plate));
 
             if (null != user) {
                 Glide.with(this)
@@ -140,6 +150,5 @@ public class DetailActivity extends TopBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        topBar.getTxtCenter().setText(entry.title);
     }
 }

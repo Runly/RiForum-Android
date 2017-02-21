@@ -99,8 +99,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     intent.putExtra("item_data", itemData);
                     mContext.startActivity(intent);
                 };
-
                 holder.viewWeakReference.get().setOnClickListener(onClickListener);
+
                 User user = itemData.user;
                 if (null != user) {
                     Glide.with(mContext)
@@ -108,40 +108,34 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             .into(holder.userAvatar);
 
                     holder.userName.setText(user.name);
-                    holder.userGrade.setText(user.grade + "级");
-                    holder.plate.setText("测试数据");
-                    holder.title.setText(itemData.title);
+                }
 
-                    for (int i = 0; i < itemData.image.size(); i++) {
-                        if (i > 2)
-                            break;
+                holder.plate.setText(TxtUtils.getPlateWithId(itemData.plate));
+                holder.title.setText(itemData.title);
 
-                        Glide.with(mContext)
-                                .load(itemData.image.get(i))
-                                .skipMemoryCache(false)
-                                .into((ImageView) holder.imageLinear.getChildAt(i));
+                for (int i = 0; i < itemData.image.size(); i++) {
+                    if (i > 2)
+                        break;
 
-                        if (itemData.image.size() == 1 && i == 0) {
-                            ((ImageView) holder.imageLinear.getChildAt(1)).setImageDrawable(null);
-                            ((ImageView) holder.imageLinear.getChildAt(2)).setImageDrawable(null);
-                            break;
-                        }
+                    Glide.with(mContext)
+                            .load(itemData.image.get(i))
+                            .skipMemoryCache(false)
+                            .into((ImageView) holder.imageLinear.getChildAt(i));
 
-                        if (itemData.image.size() == 2 && i == 1) {
-                            ((ImageView) holder.imageLinear.getChildAt(2)).setImageDrawable(null);
-                            break;
-                        }
-
-
-
-
-
+                    if (itemData.image.size() == 1 && i == 0) {
+                        ((ImageView) holder.imageLinear.getChildAt(1)).setImageDrawable(null);
+                        ((ImageView) holder.imageLinear.getChildAt(2)).setImageDrawable(null);
+                        break;
                     }
 
-                    holder.time.setText(TxtUtils.getReadableTime(String.valueOf(itemData.time)));
-                    holder.readNum.setText(String.valueOf(itemData.read_num));
-                    holder.commentNum.setText(String.valueOf(itemData.comment_num));
+                    if (itemData.image.size() == 2 && i == 1) {
+                        ((ImageView) holder.imageLinear.getChildAt(2)).setImageDrawable(null);
+                        break;
+                    }
                 }
+                holder.time.setText(TxtUtils.getReadableTime(String.valueOf(itemData.time)));
+                holder.readNum.setText(String.valueOf(itemData.read_num));
+                holder.commentNum.setText(String.valueOf(itemData.comment_num));
             }
 
 
@@ -172,7 +166,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         CircularImageView userAvatar;
         TextView userName;
         TextView plate;
-        TextView userGrade;
         TextView title;
         LinearLayout imageLinear;
         TextView time;
@@ -192,7 +185,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             userAvatar = (CircularImageView) itemView.findViewById(R.id.item_user_avatar);
             userName = (TextView) itemView.findViewById(R.id.item_user_name);
             plate = (TextView) itemView.findViewById(R.id.item_plate);
-            userGrade = (TextView) itemView.findViewById(R.id.item_user_grade);
             title = (TextView) itemView.findViewById(R.id.item_title);
             imageLinear = (LinearLayout) itemView.findViewById(R.id.image_linear);
             time = (TextView) itemView.findViewById(R.id.item_time);

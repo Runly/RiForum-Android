@@ -21,4 +21,11 @@ public class Constant {
     // 拍照路径
     public final static String SAVED_IMAGE_DIR_PATH =
             Environment.getExternalStorageDirectory().getPath() + "/DCIM/camera/";
+
+    // plates
+    public static final String NEWS = "实时新闻";
+    public static final String MEDIA = "影音娱乐";
+    public static final String TRAVEL_FOOD = "旅游美食";
+    public static final String GAME = "游戏电竞";
+    public static final String DAILY_LIFE = "生活日常";
 }
