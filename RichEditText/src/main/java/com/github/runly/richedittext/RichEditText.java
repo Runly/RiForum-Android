@@ -87,8 +87,15 @@ public class RichEditText extends EditText {
     }
 
     public void replaceDownloadedImage(FakeImageSpan span, Bitmap bitmap, String url) {
-        Bitmap scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(),
-                IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        Bitmap scaledBitmap;
+        if (width > IMAGE_MAX_WIDTH || height > IMAGE_MAX_HEIGHT) {
+            scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(),
+                    IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+        } else {
+            scaledBitmap = bitmap;
+        }
 
         SpannableString spannable = new SpannableString("<img />");
         ImageSpan imageSpan = new ImageSpan(mContext, scaledBitmap, null);

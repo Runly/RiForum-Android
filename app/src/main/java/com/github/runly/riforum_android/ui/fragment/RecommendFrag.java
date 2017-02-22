@@ -105,6 +105,7 @@ public class RecommendFrag extends Fragment {
         public void displayImage(Context context, Object path, ImageView imageView) {
             Glide.with(getActivity())
                     .load(path)
+                    .crossFade()
                     .into(imageView);
         }
     }

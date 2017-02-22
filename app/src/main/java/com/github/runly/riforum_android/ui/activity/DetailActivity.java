@@ -18,7 +18,6 @@ import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.adapter.DetailAdapter;
-import com.github.runly.riforum_android.ui.adapter.RecyclerAdapter;
 import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.Constant;
@@ -89,6 +88,7 @@ public class DetailActivity extends BaseActivity {
             if (null != user) {
                 Glide.with(this)
                         .load(user.avatar)
+                        .crossFade()
                         .into(userAvatar);
                 userTV.setText(user.name);
 

@@ -23,7 +23,7 @@ public class Constant {
             Environment.getExternalStorageDirectory().getPath() + "/DCIM/camera/";
 
     // plates
-    public static final String NEWS = "实时新闻";
+    public static final String NEWS = "新奇趣事";
     public static final String MEDIA = "影音娱乐";
     public static final String TRAVEL_FOOD = "旅游美食";
     public static final String GAME = "游戏电竞";

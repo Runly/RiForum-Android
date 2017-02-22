@@ -6,6 +6,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,6 +48,8 @@ import java.util.Map;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static android.R.attr.width;
+
 /**
  * Created by ranly on 17-2-8.
  */
@@ -60,6 +64,7 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
     private final int[] currentImageIndex = {0};
     private ProgressDialog dialog;
     private double progress = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,8 +212,8 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
         if (imageSpanList != null && imageSpanList.size() > 0) {
             imageNumber = imageSpanList.size();
             Map<String, Object> map = new HashMap<>();
-            String uid = String.valueOf(user.id);
-            map.put("uid", uid);
+            map.put("uid", user.id);
+            map.put("token", user.token);
 
             RetrofitFactory.getInstance().getQiuniuTokenService().qiniuToken(map)
                     .subscribeOn(Schedulers.io())
@@ -217,7 +222,8 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                         if (response.code.equals("1")) {
                             upLoadImage(imageSpanList.get(currentImageIndex[0]), response.data);
                         } else {
-
+                            ToastUtil.makeShortToast(this, response.message);
+                            cancelDialog();
                         }
                     });
         } else {
@@ -233,13 +239,31 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                 pathList.add(imageSpan.getFilePath());
                 urlList.add(qiniuToken.getUrl());
                 currentImageIndex[0]++;
+
                 if (currentImageIndex[0] < imageNumber) {
                     release();
                 } else {
                     currentImageIndex[0] = 0;
                     String content = richEditText.getRichText();
                     for (int i = 0; i < pathList.size(); i++) {
-                        content = content.replace(pathList.get(i), urlList.get(i));
+                        String path = pathList.get(i);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inJustDecodeBounds = false;
+                        BitmapFactory.decodeFile(path, options);
+                        int pWidth = options.outWidth; // 原始宽度
+                        int pHeight = options.outHeight; // 原始高度
+                        int width = Constant.SCREEN_WIDTH - UnitConvert.dipToPixels(this, 32);
+                        int height = (int) (((double) pHeight / (double) pWidth) * width);
+                        String url;
+                        // 如果原始高度大于预定的width，则在七牛的url后拼接剪切参数
+                        if (pWidth > width) {
+                            url = urlList.get(i) +
+                                    "?imageView2/1/w/" + width + "/h/" + height + "/format/webp";
+                        } else {
+                            url = urlList.get(i);
+                        }
+                        // RichTextView的content中的替换path为url，以便content的post到自己的服务器
+                        content = content.replace(path, url);
                     }
                     pushToMyServer(content);
                 }
