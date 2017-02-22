@@ -18,9 +18,12 @@ import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.DetailActivity;
 import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.utils.TxtUtils;
+import com.github.runly.riforum_android.utils.UnitConvert;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import static android.R.attr.format;
 
 /**
  * Created by ranly on 17-2-13.
@@ -105,6 +108,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 if (null != user) {
                     Glide.with(mContext)
                             .load(user.avatar)
+                            .crossFade()
                             .into(holder.userAvatar);
 
                     holder.userName.setText(user.name);
@@ -117,9 +121,14 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (i > 2)
                         break;
 
+                    int width = UnitConvert.dipToPixels(mContext, 122);
+                    int height = UnitConvert.dipToPixels(mContext, 80);
+
+                    String url = itemData.image.get(i) +
+                            "?imageView2/1/w/" + width + "/h/" + height + "/format/webp";
                     Glide.with(mContext)
-                            .load(itemData.image.get(i))
-                            .skipMemoryCache(false)
+                            .load(url)
+                            .crossFade()
                             .into((ImageView) holder.imageLinear.getChildAt(i));
 
                     if (itemData.image.size() == 1 && i == 0) {
