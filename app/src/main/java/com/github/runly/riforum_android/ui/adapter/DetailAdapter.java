@@ -123,7 +123,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
                         });
-                        onCommentedListener.onCommentes(itemData, position);
+                        onCommentedListener.onCommented(itemData, position);
                     });
                 }
 

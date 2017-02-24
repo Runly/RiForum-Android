@@ -62,7 +62,7 @@ public class ChooseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         WeakReference<View> viewWeakReference;
         TextView mItemTextView;
 
-        public ViewHolder(final View parent) {
+        ViewHolder(final View parent) {
             super(parent);
             mItemTextView = (TextView) parent.findViewById(R.id.itemTextView);
             viewWeakReference = new WeakReference<>(parent);

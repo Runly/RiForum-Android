@@ -81,7 +81,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return new ViewHolder(mFooterView);
         }
 
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_entry_item, parent, false);
+        final View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recycler_entry_item, parent, false);
 
         return new ViewHolder(view);
     }

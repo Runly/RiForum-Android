@@ -26,7 +26,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/detail_user_avatar"
-            android:text="hahaa"
             android:textColor="@color/gray_505050"
             android:textSize="14sp" />
 
@@ -38,7 +37,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="6dp"
             android:layout_toEndOf="@id/detail_user_avatar"
-            android:text="9秒前"
             android:textColor="@color/gray_8a8a8a"
             android:textSize="12sp" />
 
@@ -50,7 +48,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="16dp"
-            android:text="楼主" />
+            android:text="@string/floor_master" />
 
     </RelativeLayout>
 
@@ -83,7 +81,6 @@
         android:layout_below="@+id/detail_title"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_toEndOf="@+id/time_linear"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -99,7 +96,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="1024"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -127,7 +123,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="1024"
             android:textSize="12sp" />
 
     </LinearLayout>
@@ -146,8 +141,7 @@
         android:paddingEnd="4dp"
         android:paddingStart="4dp"
         android:paddingTop="2dp"
-        android:textSize="12sp"
-        android:text="实时新闻" />
+        android:textSize="12sp" />
 
         <com.github.runly.richedittext.RichEditText
             android:id="@+id/detail_content"
@@ -159,7 +153,6 @@
             android:layout_marginTop="20dp"
             android:background="@null"
             android:textSize="15sp"
-            android:text="@string/content_test"
             />
 
 </RelativeLayout>

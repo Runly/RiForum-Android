@@ -18,7 +18,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="14dp"
         android:textColor="@color/gray_8a8a8a"
-        android:text="全部评论" />
+        android:text="@string/all_comment" />
 
     <TextView
         android:layout_width="match_parent"

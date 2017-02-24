@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,6 @@ import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.DetailAdapter;
 import com.github.runly.riforum_android.ui.application.App;
 import com.github.runly.riforum_android.ui.view.CircularImageView;
-import com.github.runly.riforum_android.ui.view.CommentDialog;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
@@ -232,7 +230,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 .subscribe(response -> {
                     if ("1".equals(response.code)) {
                         commentList.add(response.data);
-                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         boolean isOpen=imm.isActive();//isOpen若返回true，则表示输入法打开
                         recyclerView.getAdapter().notifyItemChanged(commentList.size());
                         recyclerView.scrollToPosition(commentList.size());

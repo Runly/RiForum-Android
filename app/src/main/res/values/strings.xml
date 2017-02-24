@@ -59,6 +59,9 @@
     <string name="time_ago_year">1年前</string>
     <string name="time_ago_years">%1$d年前</string>
 
+    <string name="floor_master">楼主</string>
+
+    <string name="all_comment">全部评论</string>
     <string name="comment_hint">添加评论…</string>
     <string name="comment_empty">评论不能为空</string>
     <string name="comment_failed">评论失败，请重试</string>
