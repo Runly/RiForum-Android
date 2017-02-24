@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:gravity="center"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/reply_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:background="@null"
         android:text="@string/reply"
+        android:textSize="16sp"
         />
 
 </LinearLayout>

@@ -103,6 +103,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                             commentEdit.setLayoutParams(editParams);
                             commentEdit.setMinLines(3);
                             commentEdit.setGravity(Gravity.TOP);
+                            commentEdit.requestFocus();
                         }
                     } else {
                         if (relativeParams.height != LAYOUT_HIGH) {
@@ -113,10 +114,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                             commentEdit.setLayoutParams(editParams);
                             commentEdit.setMinLines(1);
                             commentEdit.setGravity(Gravity.CENTER_VERTICAL);
-
                             commentEdit.setText("");
                             commentEdit.setHint(getString(R.string.comment_hint));
                             commented = null;
+                            commentEdit.clearFocus();
                         }
                     }
                 });
