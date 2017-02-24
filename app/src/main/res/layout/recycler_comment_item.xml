@@ -22,7 +22,6 @@
         android:layout_toEndOf="@+id/comment_user_avatar"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Ritale"
         android:textColor="@android:color/black"
         />
     
@@ -32,8 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/comment_content"
         android:layout_marginStart="64dp"
-        android:text="9秒前"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textColor="@color/gray_8a8a8a"
         />
 
@@ -45,7 +43,6 @@
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/comment_content"
         android:layout_marginEnd="16dp"
-        android:text="100楼"
         android:textColor="@color/gray_8a8a8a"
         android:textSize="14sp"
         />
@@ -54,12 +51,12 @@
         android:id="@+id/comment_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_below="@+id/comment_user_avatar"
-        android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
+        android:layout_toEndOf="@+id/comment_user_avatar"
         android:textColor="@android:color/black"
         android:textSize="15sp"
         />

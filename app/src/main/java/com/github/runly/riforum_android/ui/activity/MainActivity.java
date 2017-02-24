@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         topBar.getTxtLeft().setOnClickListener(this);
         RelativeLayout constraintLayout = (RelativeLayout) topBar.findViewById(R.id.relativeLayout_layout);
         ViewGroup.LayoutParams lp = constraintLayout.getLayoutParams();
-        lp.height = UnitConvert.dipToPixels(this, Constant.TOPBAR_HEIGHT);
+        lp.height = UnitConvert.dipToPixels(this, Constant.MAIN_TOPBAR_HEIGHT);
         constraintLayout.setLayoutParams(lp);
 
 
@@ -194,10 +194,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                             if (!TextUtils.isEmpty(user1.avatar)) {
                                 Glide.with(this)
                                         .load(user1.avatar)
+                                        .crossFade()
                                         .into(topBar.getImgLeft());
 
                                 Glide.with(this)
                                         .load(user1.avatar)
+                                        .crossFade()
                                         .into(userAvatar);
                             }
                         }
@@ -209,10 +211,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             if (!TextUtils.isEmpty(user.avatar)) {
                 Glide.with(this)
                         .load(user.avatar)
+                        .crossFade()
                         .into(topBar.getImgLeft());
 
                 Glide.with(this)
                         .load(user.avatar)
+                        .crossFade()
                         .into(userAvatar);
             }
         }

@@ -19,7 +19,7 @@ public class User implements Serializable {
         public int experience;
         public String token;
         public String location;
-        public int time;
+        public long time;
         public String email;
         public String avatar;
 }

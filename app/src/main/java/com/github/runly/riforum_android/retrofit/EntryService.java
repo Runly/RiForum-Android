@@ -26,11 +26,11 @@ public interface EntryService {
     Observable<ResponseBase<Entry>> release(@Body Map<String, Object> body);
 
     /**
-     *
+     * @param body
      * @return
      */
-    @GET("entry/recommend")
-    Observable<ResponseBase<List<Entry>>> recommend();
+    @POST("entry/recommend")
+    Observable<ResponseBase<List<Entry>>> recommend(@Body Map<String, Object> body);
 
     /**
      *

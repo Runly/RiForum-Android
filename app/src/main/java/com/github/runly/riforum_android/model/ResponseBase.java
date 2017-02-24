@@ -10,6 +10,6 @@ public class ResponseBase<T> implements Serializable{
     private static final long serialVersionUID = 1L;
     public String message;
     public String code;
-    public int dateline;
+    public long dateline;
     public T data;
 }

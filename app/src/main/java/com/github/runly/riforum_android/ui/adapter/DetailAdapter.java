@@ -1,15 +1,31 @@
 package com.github.runly.riforum_android.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.interfaces.OnCommentedListener;
+import com.github.runly.riforum_android.model.Comment;
+import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.view.CircularImageView;
+import com.github.runly.riforum_android.ui.view.CommentDialog;
+import com.github.runly.riforum_android.utils.ToastUtil;
+import com.github.runly.riforum_android.utils.TxtUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -22,11 +38,11 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int TYPE_NORMAL = 2;  //Normal
 
     private Context mContext;
-
-
-    private List<String> mItemList;
+    private List<Comment> mItemList;
     private View mHeaderView = null;
     private View mFooterView = null;
+    private EditText commentEdit;
+    private OnCommentedListener onCommentedListener;
 
     public void setHeaderView(View headerView) {
         mHeaderView = headerView;
@@ -38,9 +54,11 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemInserted(getItemCount() - 1);
     }
 
-    public DetailAdapter(Context context, List<String> itemList) {
+    public DetailAdapter(Context context, List<Comment> itemList, EditText editText, OnCommentedListener listener) {
         this.mItemList = itemList;
         this.mContext = context;
+        this.commentEdit = editText;
+        this.onCommentedListener = listener;
     }
 
     @Override
@@ -77,13 +95,58 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if (getItemViewType(position) == TYPE_NORMAL) {
             DetailAdapter.ViewHolder holder = (DetailAdapter.ViewHolder) viewHolder;
-            String itemData;
+            Comment itemData;
+            Comment commented;
             if (mHeaderView == null) {
                 itemData = mItemList.get(position);
             } else {
                 itemData = mItemList.get(position - 1);
             }
-            holder.floor.setText(itemData);
+
+            if (null != itemData) {
+                User user = itemData.user;
+                if (null != user) {
+                    Glide.with(mContext)
+                            .load(user.avatar)
+                            .crossFade()
+                            .into(holder.userAvatar);
+
+                    holder.userName.setText(user.name);
+
+                    holder.weakReference.get().setOnClickListener(v -> {
+                        CommentDialog dialog = new CommentDialog(mContext);
+                        dialog.show();
+                        dialog.setReplayButtonOnClickListener(v1 -> {
+                            dialog.cancel();
+                            commentEdit.requestFocus();
+                            commentEdit.setHint("回复:@" + itemData.user.name);
+                            InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+                        });
+                        onCommentedListener.onCommentes(itemData, position);
+                    });
+                }
+
+                commented = itemData.commented;
+                if (commented != null && itemData.comment_id != -1) {
+                    User userCommented = commented.user;
+                    if (userCommented != null) {
+                        String linkText = "@" + userCommented.name;
+                        SpannableString spStr = new SpannableString(linkText);
+                        ClickableSpan clickSpan = new OnLineClickSpan(spStr.toString()); //设置超链接
+                        spStr.setSpan(clickSpan, 0, spStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        holder.content.setText("");
+                        holder.content.append("回复" + " ");
+                        holder.content.append(spStr);
+                        holder.content.append(": " + itemData.content);
+                        holder.content.setMovementMethod(LinkMovementMethod.getInstance());
+                    }
+                } else {
+                    holder.content.setText(itemData.content);
+                }
+                holder.time.setText(TxtUtils.getReadableTime(String.valueOf(itemData.time)));
+            }
+            holder.floor.setText(position + "楼");
         }
     }
 
@@ -104,6 +167,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     //在这里面加载ListView中的每个item的布局
     private class ViewHolder extends RecyclerView.ViewHolder {
+        WeakReference<View> weakReference;
         CircularImageView userAvatar;
         TextView userName;
         TextView time;
@@ -121,6 +185,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return;
             }
 
+            weakReference = new WeakReference<>(itemView);
             userAvatar = (CircularImageView) itemView.findViewById(R.id.comment_user_avatar);
             userName = (TextView) itemView.findViewById(R.id.comment_user_name);
             floor = (TextView) itemView.findViewById(R.id.comment_floor);
@@ -128,4 +193,30 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             time = (TextView) itemView.findViewById(R.id.comment_time);
         }
     }
+
+    private class OnLineClickSpan extends ClickableSpan {
+        String text;
+
+        OnLineClickSpan(String text) {
+            super();
+            this.text = text;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setColor(ContextCompat.getColor(mContext, R.color.colorBase));
+            ds.setUnderlineText(false); //去掉下划线
+        }
+
+        @Override
+        public void onClick(View widget) {
+            processHyperLinkClick(text); //点击超链接时调用
+        }
+    }
+
+    private void processHyperLinkClick(String text) {
+        ToastUtil.makeShortToast(mContext, text);
+    }
+
+
 }

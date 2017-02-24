@@ -332,6 +332,8 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                             throwable -> {
                                 throwable.printStackTrace();
                                 ToastUtil.makeShortToast(ReleaseActivity.this, getString(R.string.release_failed));
+                                pathList.clear();
+                                urlList.clear();
                                 cancelDialog();
                             }
                     );

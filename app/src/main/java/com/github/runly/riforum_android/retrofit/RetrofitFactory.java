@@ -19,6 +19,7 @@ public class RetrofitFactory {
     private UserService userService;
     private QiuniuTokenService qiuniuTokenService;
     private EntryService entryService;
+    private CommentService commentService;
 
 
     public static RetrofitFactory getInstance() {
@@ -64,5 +65,12 @@ public class RetrofitFactory {
             entryService = getRetrofit().create(EntryService.class);
         }
         return entryService;
+    }
+
+    public CommentService getCommentService() {
+        if (null == commentService) {
+            commentService = getRetrofit().create(CommentService.class);
+        }
+        return commentService;
     }
 }

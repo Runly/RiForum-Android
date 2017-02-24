@@ -4,6 +4,7 @@
     android:id="@+id/relativeLayout_layout"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
+    android:gravity="center_vertical"
     android:background="@color/colorBase">
 
     <com.github.runly.riforum_android.ui.view.CircularImageView

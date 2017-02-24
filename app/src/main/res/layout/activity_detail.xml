@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBase"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
+        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -14,9 +16,9 @@
             android:id="@+id/detail_top_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:img_left_width="24"
             app:img_left_height="24"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            app:img_left_width="24"
+            />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -25,8 +27,64 @@
         android:id="@+id/detail_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="48dp"
         android:background="@color/gray_f1f1f1"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|end"
+        android:background="@android:color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/gray_f1f1f1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/comment_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:background="@drawable/choose_text_border"
+                android:hint="@string/comment_hint"
+                android:paddingEnd="4dp"
+                android:paddingStart="4dp"
+                android:textCursorDrawable="@drawable/edit_cursor"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/send_comment"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="16dp"
+                android:background="@mipmap/send"
+                tools:ignore="contentDescription" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_f1f1f1" />
+
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
 

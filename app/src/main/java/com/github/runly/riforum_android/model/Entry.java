@@ -19,7 +19,7 @@ public class Entry implements Serializable {
     public String title;
     public int id;
     public String content;
-    public int time;
+    public long time;
     public List<String> image;
     public User user;
 }

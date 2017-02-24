@@ -14,7 +14,7 @@ public class TxtUtils {
             return app.getString(R.string.time_ago_just_now);
         }
         Long timeMillis = Long.parseLong(dateline);
-        int seconds = (int) (System.currentTimeMillis() / 1000 - timeMillis);
+        int seconds = (int) (System.currentTimeMillis() / 1000 - timeMillis/1000);
         if (seconds <= 0) {
             return String.format(app.getString(R.string.time_ago_just_now));
         }

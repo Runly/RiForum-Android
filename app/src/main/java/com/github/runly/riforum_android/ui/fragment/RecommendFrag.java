@@ -22,7 +22,9 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -66,8 +68,9 @@ public class RecommendFrag extends Fragment {
 
     private void fetchDta() {
         swipeRefreshLayout.setRefreshing(true);
-
-        RetrofitFactory.getInstance().getEntryService().recommend()
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", System.currentTimeMillis());
+        RetrofitFactory.getInstance().getEntryService().recommend(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {

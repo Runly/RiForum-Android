@@ -1,7 +1,6 @@
 package com.github.runly.riforum_android.utils;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +20,7 @@ public class ScrollingFABBehavior extends CoordinatorLayout.Behavior<FloatingAct
 //                new int[]{android.R.attr.actionBarSize});
 //        topBarHeight = styledAttributes.getDimension(0, 0);
 //        styledAttributes.recycle();
-        topBarHeight = UnitConvert.dipToPixels(context, Constant.TOPBAR_HEIGHT);
+        topBarHeight = UnitConvert.dipToPixels(context, Constant.MAIN_TOPBAR_HEIGHT);
     }
 
     @Override
