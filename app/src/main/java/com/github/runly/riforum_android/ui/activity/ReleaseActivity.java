@@ -6,7 +6,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,8 +30,8 @@ import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.qiniu.QiniuToken;
 import com.github.runly.riforum_android.qiniu.UploadManagerFactory;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
-import com.github.runly.riforum_android.ui.application.App;
-import com.github.runly.riforum_android.utils.Constant;
+import com.github.runly.riforum_android.application.App;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.UnitConvert;
 import com.google.gson.Gson;
@@ -47,8 +46,6 @@ import java.util.Map;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static android.R.attr.width;
 
 /**
  * Created by ranly on 17-2-8.
@@ -87,7 +84,7 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Constant.ALBUM_REQUEST_CODE) {
+            if (requestCode == Constants.ALBUM_REQUEST_CODE) {
                 try {
                     Uri uri = data.getData();
                     final String absolutePath = getAbsolutePath(this, uri);
@@ -97,7 +94,7 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                 }
             }
 
-            if (requestCode == Constant.CAMERA_REQUEST_CODE) {
+            if (requestCode == Constants.CAMERA_REQUEST_CODE) {
                 richEditText.addImage(cameraPath);
             }
 
@@ -154,12 +151,12 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
             CharSequence presentDate = android.text.format.DateFormat.
                     format("yyyyMMdd-kk:mm:ss", System.currentTimeMillis());
 
-            cameraPath = Constant.SAVED_IMAGE_DIR_PATH +
+            cameraPath = Constants.SAVED_IMAGE_DIR_PATH +
                     presentDate + ".jpg";
             Intent intent = new Intent();
             // 指定开启系统相机的Action
             intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-            String out_file_path = Constant.SAVED_IMAGE_DIR_PATH;
+            String out_file_path = Constants.SAVED_IMAGE_DIR_PATH;
             File dir = new File(out_file_path);
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -168,7 +165,7 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
             Uri uri = Uri.fromFile(new File(cameraPath));
             // 设置系统相机拍摄照片完成后图片文件的存放地址
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            startActivityForResult(intent, Constant.CAMERA_REQUEST_CODE);
+            startActivityForResult(intent, Constants.CAMERA_REQUEST_CODE);
         } else {
             Toast.makeText(getApplicationContext(), "请确认已经插入SD卡",
                     Toast.LENGTH_LONG).show();
@@ -179,7 +176,7 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, Constant.ALBUM_REQUEST_CODE);
+        startActivityForResult(intent, Constants.ALBUM_REQUEST_CODE);
     }
 
     private void displayDialog() {
@@ -252,7 +249,7 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                         BitmapFactory.decodeFile(path, options);
                         int pWidth = options.outWidth; // 原始宽度
                         int pHeight = options.outHeight; // 原始高度
-                        int width = Constant.SCREEN_WIDTH - UnitConvert.dipToPixels(this, 32);
+                        int width = Constants.SCREEN_WIDTH - UnitConvert.dipToPixels(this, 32);
                         int height = (int) (((double) pHeight / (double) pWidth) * width);
                         String url;
                         // 如果原始高度大于预定的width，则在七牛的url后拼接剪切参数

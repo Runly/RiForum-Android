@@ -1,6 +1,6 @@
 package com.github.runly.riforum_android.ui.activity;
 
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
@@ -13,30 +13,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.model.User;
-import com.github.runly.riforum_android.ui.application.App;
-import com.github.runly.riforum_android.ui.fragment.FollowFrag;
+import com.github.runly.riforum_android.application.App;
+import com.github.runly.riforum_android.ui.fragment.DiscoverFrag;
 import com.github.runly.riforum_android.ui.fragment.ForumFrag;
-import com.github.runly.riforum_android.ui.fragment.NotifyFrag;
 import com.github.runly.riforum_android.ui.fragment.RecommendFrag;
-import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.ui.view.TopBar;
-import com.github.runly.riforum_android.utils.Constant;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.utils.GoToActivity;
 import com.github.runly.riforum_android.utils.SdCardUtil;
 import com.github.runly.riforum_android.utils.ToastUtil;
+import com.github.runly.riforum_android.utils.TxtUtils;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -45,9 +43,8 @@ import static com.github.runly.riforum_android.R.id.fab;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
     private DrawerLayout drawerLayout;
-    private CircularImageView userAvatar;
+    private CircleImageView userAvatar;
     private TopBar topBar;
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +56,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private void init() {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        coordinatorLayout.setPadding(0, Constant.STATUS_HEIGHT, 0, 0);
+        coordinatorLayout.setPadding(0, Constants.STATUS_HEIGHT, 0, 0);
 //        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) coordinatorLayout.getLayoutParams();
-//        params.setMargins(0, Constant.STATUS_HEIGHT, 0, 0);
+//        params.setMargins(0, Constants.STATUS_HEIGHT, 0, 0);
 //        coordinatorLayout.setLayoutParams(params);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        userAvatar = (CircularImageView) findViewById(R.id.navigation_user_avatar);
+        userAvatar = (CircleImageView) findViewById(R.id.navigation_user_avatar);
+//        ImageView imageView = (ImageView) findViewById(R.id.navigation_image);
+//        Glide.with(this)
+//                .load(R.mipmap.navigation_bg)
+//                .crossFade()
+//                .into(imageView);
 
         topBar = (TopBar) findViewById(R.id.top_bar);
-        topBar.getImgRight().setImageResource(R.mipmap.search);
         topBar.getImgLeft().setOnClickListener(this);
         topBar.getTxtLeft().setOnClickListener(this);
         RelativeLayout constraintLayout = (RelativeLayout) topBar.findViewById(R.id.relativeLayout_layout);
         ViewGroup.LayoutParams lp = constraintLayout.getLayoutParams();
-        lp.height = UnitConvert.dipToPixels(this, Constant.MAIN_TOPBAR_HEIGHT);
+        lp.height = UnitConvert.dipToPixels(this, Constants.MAIN_TOPBAR_HEIGHT);
         constraintLayout.setLayoutParams(lp);
 
 
@@ -87,52 +88,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private void initViewPagerAndTabs() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addFragment(RecommendFrag.createInstance(20), getString(R.string.tab_1));
+        pagerAdapter.addFragment(RecommendFrag.createInstance(), getString(R.string.tab_1));
         pagerAdapter.addFragment(ForumFrag.createInstance(20), getString(R.string.tab_2));
-        pagerAdapter.addFragment(FollowFrag.createInstance(20), getString(R.string.tab_3));
-        pagerAdapter.addFragment(NotifyFrag.createInstance(20), getString(R.string.tab_4));
+        pagerAdapter.addFragment(DiscoverFrag.createInstance(20), getString(R.string.tab_3));
+//        pagerAdapter.addFragment(NotifyFrag.createInstance(20), getString(R.string.tab_4));
         viewPager.setAdapter(pagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
-        setUpIndicatorWidth(tabLayout);
-    }
-
-    /**
-     * 通过反射修改TabLayout Indicator的宽度（仅在Android 4.2及以上生效）
-     */
-    private void setUpIndicatorWidth(TabLayout tabLayout) {
-        Class<?> tabLayoutClass = tabLayout.getClass();
-        Field tabStrip = null;
-        try {
-            tabStrip = tabLayoutClass.getDeclaredField("mTabStrip");
-            tabStrip.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-
-        LinearLayout layout = null;
-        try {
-            if (tabStrip != null) {
-                layout = (LinearLayout) tabStrip.get(tabLayout);
-            }
-            if (layout != null) {
-                for (int i = 0; i < layout.getChildCount(); i++) {
-                    View child = layout.getChildAt(i);
-                    child.setPadding(0, 0, 0, 0);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
-                            LinearLayout.LayoutParams.MATCH_PARENT, 1);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        params.setMarginStart(UnitConvert.dipToPixels(this, 18));
-                        params.setMarginEnd(UnitConvert.dipToPixels(this, 18));
-                    }
-                    child.setLayoutParams(params);
-                    child.invalidate();
-                }
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        TxtUtils.setUpIndicatorWidth(this, tabLayout);
     }
 
     private void openDrawer() {
@@ -161,7 +125,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
             case R.id.navigation_user_avatar:
                 if (App.getInstance().islogin()) {
-
+                    Intent intent = new Intent(this, UserDetailActivity.class);
+                    intent.putExtra("user_data", App.getInstance().getUser());
+                    startActivity(intent);
                 } else {
                     GoToActivity.goTo(this, LoginActivity.class);
                     closeDrawer();
@@ -177,7 +143,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     protected void onResume() {
         super.onResume();
 
-        user = App.getInstance().getUser();
+        User user = App.getInstance().getUser();
 
         // 异步读取存储在Sdcard上的User对象
         if (user == null || !App.getInstance().islogin()) {

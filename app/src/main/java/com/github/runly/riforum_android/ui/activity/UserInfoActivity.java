@@ -1,17 +1,13 @@
 package com.github.runly.riforum_android.ui.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 
 /**
- * Created by ranly on 17-2-8.
+ * Created by ranly on 17-3-1.
  */
 
-public class BaseActivity extends AppCompatActivity {
-
+public class UserInfoActivity extends BaseActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
-import com.github.runly.riforum_android.ui.application.App;
+import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.utils.GoToActivity;
 import com.github.runly.riforum_android.utils.RegisterCheck;
 import com.github.runly.riforum_android.utils.SdCardUtil;

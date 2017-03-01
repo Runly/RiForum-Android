@@ -1,4 +1,4 @@
-package com.github.runly.riforum_android.ui.application;
+package com.github.runly.riforum_android.application;
 
 import android.app.Application;
 import android.content.Context;
@@ -9,12 +9,6 @@ import android.view.WindowManager;
 import com.github.runly.richedittext.utils.ContextUtils;
 import com.github.runly.richedittext.utils.DisplayUtils;
 import com.github.runly.riforum_android.model.User;
-import com.github.runly.riforum_android.utils.Constant;
-import com.github.runly.riforum_android.utils.SdCardUtil;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ranly on 17-2-7.
@@ -42,9 +36,9 @@ public class App extends Application{
         ContextUtils.setContext(this);
         DisplayUtils.init(this);
 
-        Constant.SCREEN_WIDTH = displaymetrics.widthPixels;
-        Constant.SCREEN_HEIGHT = displaymetrics.heightPixels;
-        Constant.STATUS_HEIGHT = getStatusBarHeight();
+        Constants.SCREEN_WIDTH = displaymetrics.widthPixels;
+        Constants.SCREEN_HEIGHT = displaymetrics.heightPixels;
+        Constants.STATUS_HEIGHT = getStatusBarHeight();
     }
 
     private int getStatusBarHeight() {

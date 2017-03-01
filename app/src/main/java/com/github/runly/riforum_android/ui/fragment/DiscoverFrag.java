@@ -21,11 +21,11 @@ import java.util.List;
  * Created by ranly on 17-2-7.
  */
 
-public class NotifyFrag extends Fragment {
-    public final static String ITEMS_COUNT_KEY = "NotifyFrag$ItemsCount";
+public class DiscoverFrag extends Fragment {
+    public final static String ITEMS_COUNT_KEY = "DiscoverFrag$ItemsCount";
 
-    public static NotifyFrag createInstance(int itemsCount) {
-        NotifyFrag partThreeFragment = new NotifyFrag();
+    public static DiscoverFrag createInstance(int itemsCount) {
+        DiscoverFrag partThreeFragment = new DiscoverFrag();
         Bundle bundle = new Bundle();
         bundle.putInt(ITEMS_COUNT_KEY, itemsCount);
         partThreeFragment.setArguments(bundle);
@@ -36,7 +36,7 @@ public class NotifyFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
-                R.layout.fragment_notify, container, false);
+                R.layout.fragment_follow, container, false);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorBase);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

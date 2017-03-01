@@ -10,7 +10,6 @@ import com.qiniu.android.storage.UploadManager;
 public class UploadManagerFactory {
     private static UploadManager uploadManager;
 
-
     public static UploadManager getUploadManager() {
         if (null == uploadManager) {
             Configuration config = new Configuration.Builder()

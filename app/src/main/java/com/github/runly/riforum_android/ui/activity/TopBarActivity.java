@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.ui.view.TopBar;
-import com.github.runly.riforum_android.utils.Constant;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
 
@@ -28,7 +28,7 @@ public class TopBarActivity extends BaseActivity {
 
     protected void addTopBar() {
         topBar = new TopBar(this, null);
-        topBar.setPadding(0, Constant.STATUS_HEIGHT, 0, 0);
+        topBar.setPadding(0, Constants.STATUS_HEIGHT, 0, 0);
         topBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBase));
         topBar.getTxtLeft().setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         CircularImageView cImg = (CircularImageView) topBar.getImgLeft();

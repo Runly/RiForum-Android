@@ -1,7 +1,16 @@
 package com.github.runly.riforum_android.utils;
 
+import android.content.Context;
+import android.os.Build;
+import android.support.design.widget.TabLayout;
+import android.view.View;
+import android.widget.LinearLayout;
+
 import com.github.runly.riforum_android.R;
-import com.github.runly.riforum_android.ui.application.App;
+import com.github.runly.riforum_android.application.App;
+import com.github.runly.riforum_android.application.Constants;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by ranly on 17-2-17.
@@ -55,22 +64,61 @@ public class TxtUtils {
         String plateName = null;
         switch(id){
             case 1:
-                plateName = Constant.NEWS;
+                plateName = Constants.NEWS;
                 break;
             case 2:
-                plateName = Constant.MEDIA;
+                plateName = Constants.MEDIA;
                 break;
             case 3:
-                plateName = Constant.TRAVEL_FOOD;
+                plateName = Constants.TRAVEL_FOOD;
                 break;
             case 4:
-                plateName = Constant.GAME;
+                plateName = Constants.GAME;
                 break;
             case 5:
-                plateName = Constant.DAILY_LIFE;
+                plateName = Constants.DAILY_LIFE;
         }
 
 
         return plateName;
     }
+
+
+    /**
+     * 通过反射修改TabLayout Indicator的宽度（仅在Android 4.2及以上生效）
+     */
+    public static void setUpIndicatorWidth(Context context, TabLayout tabLayout) {
+        Class<?> tabLayoutClass = tabLayout.getClass();
+        Field tabStrip = null;
+        try {
+            tabStrip = tabLayoutClass.getDeclaredField("mTabStrip");
+            tabStrip.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        LinearLayout layout = null;
+        try {
+            if (tabStrip != null) {
+                layout = (LinearLayout) tabStrip.get(tabLayout);
+            }
+            if (layout != null) {
+                for (int i = 0; i < layout.getChildCount(); i++) {
+                    View child = layout.getChildAt(i);
+                    child.setPadding(0, 0, 0, 0);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
+                            LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        params.setMarginStart(UnitConvert.dipToPixels(context, 35));
+                        params.setMarginEnd(UnitConvert.dipToPixels(context, 35));
+                    }
+                    child.setLayoutParams(params);
+                    child.invalidate();
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

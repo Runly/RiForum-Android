@@ -1,6 +1,8 @@
 package com.github.runly.riforum_android.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -20,6 +22,7 @@ import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.interfaces.OnCommentedListener;
 import com.github.runly.riforum_android.model.Comment;
 import com.github.runly.riforum_android.model.User;
+import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
 import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.ui.view.CommentDialog;
 import com.github.runly.riforum_android.utils.ToastUtil;
@@ -42,6 +45,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private View mHeaderView = null;
     private View mFooterView = null;
     private EditText commentEdit;
+    private CommentDialog commentDialog;
     private OnCommentedListener onCommentedListener;
 
     public void setHeaderView(View headerView) {
@@ -59,6 +63,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mContext = context;
         this.commentEdit = editText;
         this.onCommentedListener = listener;
+        this.commentDialog = new CommentDialog(mContext);
     }
 
     @Override
@@ -113,11 +118,24 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     holder.userName.setText(user.name);
 
+                    if (mContext instanceof UserDetailActivity) {
+                        holder.userAvatar.setOnClickListener(null);
+                        holder.userName.setOnClickListener(null);
+                    } else {
+                        View.OnClickListener listener = v -> {
+                            Intent intent = new Intent(mContext, UserDetailActivity.class);
+                            intent.putExtra("user_data", user);
+                            mContext.startActivity(intent);
+                        };
+                        holder.userAvatar.setOnClickListener(listener);
+                        holder.userName.setOnClickListener(listener);
+                    }
+
+
                     holder.weakReference.get().setOnClickListener(v -> {
-                        CommentDialog dialog = new CommentDialog(mContext);
-                        dialog.show();
-                        dialog.setReplayButtonOnClickListener(v1 -> {
-                            dialog.cancel();
+                        commentDialog.show();
+                        commentDialog.setReplayButtonOnClickListener(v1 -> {
+                            commentDialog.cancel();
                             commentEdit.requestFocus();
                             commentEdit.setHint("回复:@" + itemData.user.name);
                             InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);

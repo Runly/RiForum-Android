@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.github.runly.riforum_android.R;
@@ -16,6 +17,8 @@ import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static android.R.attr.dependency;
 
 /**
  * Created by ranly on 17-2-9.

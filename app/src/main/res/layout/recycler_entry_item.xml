@@ -7,7 +7,7 @@
     android:paddingBottom="8dp"
     android:paddingStart="8dp"
     android:paddingEnd="8dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="8dp"
     android:background="@android:color/white">
 
     <com.github.runly.riforum_android.ui.view.CircularImageView

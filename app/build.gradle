@@ -61,4 +61,5 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.qiniu:qiniu-android-sdk:7.3.3'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }

@@ -11,11 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.github.runly.richedittext.span.ImageSpan;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.DetailActivity;
+import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
 import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.utils.TxtUtils;
 import com.github.runly.riforum_android.utils.UnitConvert;
@@ -23,13 +23,11 @@ import com.github.runly.riforum_android.utils.UnitConvert;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import static android.R.attr.format;
-
 /**
  * Created by ranly on 17-2-13.
  */
 
-public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;  //Header
     private static final int TYPE_FOOTER = 1;  //Footer
     private static final int TYPE_NORMAL = 2;  //Normal
@@ -51,7 +49,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyItemInserted(getItemCount() - 1);
     }
 
-    public RecommendAdapter(Context context, List<Entry> itemList) {
+    public EntriesAdapter(Context context, List<Entry> itemList) {
         this.mItemList = itemList;
         this.mContext = context;
     }
@@ -113,6 +111,20 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             .into(holder.userAvatar);
 
                     holder.userName.setText(user.name);
+
+                    if (mContext instanceof UserDetailActivity) {
+                        holder.userAvatar.setOnClickListener(null);
+                        holder.userName.setOnClickListener(null);
+                    } else {
+                        View.OnClickListener listener = v -> {
+                            Intent intent = new Intent(mContext, UserDetailActivity.class);
+                            intent.putExtra("user_data", user);
+                            mContext.startActivity(intent);
+                        };
+                        holder.userAvatar.setOnClickListener(listener);
+                        holder.userName.setOnClickListener(listener);
+                    }
+
                 }
 
                 holder.plate.setText(TxtUtils.getPlateWithId(itemData.plate));

@@ -1,6 +1,7 @@
 package com.github.runly.riforum_android.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -33,7 +34,7 @@ import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.DetailAdapter;
-import com.github.runly.riforum_android.ui.application.App;
+import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.ToastUtil;
@@ -57,7 +58,7 @@ import rx.schedulers.Schedulers;
  * Created by ranly on 17-2-20.
  */
 
-public class DetailActivity extends BaseActivity implements View.OnClickListener{
+public class DetailActivity extends BaseActivity implements View.OnClickListener {
 
     private final static int LAYOUT_HIGHER =
             UnitConvert.dipToPixels(App.getInstance(), 32) * 2 + UnitConvert.dipToPixels(App.getInstance(), 16);
@@ -145,11 +146,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         TextView plate = (TextView) header.findViewById(R.id.detail_plate);
 
         entry = (Entry) getIntent().getSerializableExtra("item_data");
-        User user = null;
-        if (entry != null) {
-            user = entry.user;
-        }
+
         if (null != entry) {
+            User user = entry.user;
             topBar.getTxtCenter().setText(entry.title);
             setRichTextContent(entry.content, richEditText);
             titleTV.setText(entry.title);
@@ -165,6 +164,13 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                         .into(userAvatar);
                 userTV.setText(user.name);
 
+                View.OnClickListener clickListener = v -> {
+                    Intent intent = new Intent(this, UserDetailActivity.class);
+                    intent.putExtra("user_data", user);
+                    startActivity(intent);
+                };
+                userAvatar.setOnClickListener(clickListener);
+                userTV.setOnClickListener(clickListener);
             }
         }
 
@@ -185,7 +191,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void fetchData() {
-        Map<String, Object> map = new  HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("page", 0);
         map.put("entry_id", entry.id);
         RetrofitFactory.getInstance().getCommentService().comment_list(map)
@@ -232,7 +238,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     if ("1".equals(response.code)) {
                         commentList.add(response.data);
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        boolean isOpen=imm.isActive();//isOpen若返回true，则表示输入法打开
+                        boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
                         recyclerView.getAdapter().notifyItemChanged(commentList.size());
                         recyclerView.scrollToPosition(commentList.size());
                         if (isOpen) {

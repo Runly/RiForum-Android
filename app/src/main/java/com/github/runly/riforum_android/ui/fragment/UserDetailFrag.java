@@ -17,8 +17,6 @@ import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
@@ -30,16 +28,16 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by ranly on 17-2-7.
+ * Created by ranly on 17-2-28.
  */
 
-public class RecommendFrag extends Fragment {
+public class UserDetailFrag extends Fragment {
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public static RecommendFrag createInstance() {
-        return new RecommendFrag();
+    public static UserDetailFrag createInstance() {
+        return new UserDetailFrag();
     }
 
     @Nullable
@@ -52,9 +50,7 @@ public class RecommendFrag extends Fragment {
 
         recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        View header = inflater.inflate(R.layout.recycler_recommend_header, recyclerView, false);
-        setupRecyclerView(recyclerView, header);
+        setupRecyclerView(recyclerView);
         fetchDta();
 
         return swipeRefreshLayout;
@@ -81,29 +77,8 @@ public class RecommendFrag extends Fragment {
                 });
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView, View header) {
+    private void setupRecyclerView(RecyclerView recyclerView) {
         EntriesAdapter entriesAdapter = new EntriesAdapter(getActivity(), new ArrayList<>());
-        List<String> imageList = new ArrayList<>();
-        imageList.add("http://bpic.588ku.com/back_pic/00/00/40/82/72212fe3b8246b538fb94702be469a51.jpg");
-        imageList.add("http://bpic.588ku.com/back_pic/04/28/17/53583d40b2444bc.jpg");
-        imageList.add("http://bpic.588ku.com/back_pic/04/39/18/23584d519801ada.jpg");
-        Banner banner = (Banner) header.findViewById(R.id.banner);
-        banner.setImageLoader(new GlideImageLoader())
-                .setIndicatorGravity(BannerConfig.RIGHT)
-                .setImages(imageList)
-                .start();
-        entriesAdapter.setHeaderView(header);
         recyclerView.setAdapter(entriesAdapter);
-    }
-
-    class GlideImageLoader extends ImageLoader {
-        @Override
-
-        public void displayImage(Context context, Object path, ImageView imageView) {
-            Glide.with(getActivity())
-                    .load(path)
-                    .crossFade()
-                    .into(imageView);
-        }
     }
 }

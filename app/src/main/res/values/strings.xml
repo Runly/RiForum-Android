@@ -4,8 +4,7 @@
 
     <string name="tab_1">推荐</string>
     <string name="tab_2">论坛</string>
-    <string name="tab_3">关注</string>
-    <string name="tab_4">通知</string>
+    <string name="tab_3">发现</string>
 
     <string name="not_login">未登录</string>
     <string name="click_to_login">点击头像登录</string>
@@ -67,4 +66,8 @@
     <string name="comment_failed">评论失败，请重试</string>
     
     <string name="reply">回复评论</string>
+
+    <string name="user_info">个人资料</string>
+
+    <string name="release_num">帖子&#160;&#160;&#160;</string>
 </resources>
