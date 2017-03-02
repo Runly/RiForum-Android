@@ -151,7 +151,14 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     if (userCommented != null) {
                         String linkText = "@" + userCommented.name;
                         SpannableString spStr = new SpannableString(linkText);
-                        ClickableSpan clickSpan = new OnLineClickSpan(spStr.toString()); //设置超链接
+                        ClickableSpan clickSpan = new OnLineClickSpan(spStr.toString()) {
+                            @Override
+                            public void onClick(View widget) {
+                                Intent intent = new Intent(mContext, UserDetailActivity.class);
+                                intent.putExtra("user_data", userCommented);
+                                mContext.startActivity(intent);
+                            }
+                        }; //设置超链接
                         spStr.setSpan(clickSpan, 0, spStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                         holder.content.setText("");
                         holder.content.append("回复" + " ");
@@ -212,7 +219,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private class OnLineClickSpan extends ClickableSpan {
+    private abstract class OnLineClickSpan extends ClickableSpan {
         String text;
 
         OnLineClickSpan(String text) {
@@ -225,16 +232,5 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ds.setColor(ContextCompat.getColor(mContext, R.color.colorBase));
             ds.setUnderlineText(false); //去掉下划线
         }
-
-        @Override
-        public void onClick(View widget) {
-            processHyperLinkClick(text); //点击超链接时调用
-        }
     }
-
-    private void processHyperLinkClick(String text) {
-        ToastUtil.makeShortToast(mContext, text);
-    }
-
-
 }

@@ -18,14 +18,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- layout_marginTop="74dp" 86dp = 74dp, 74dp为topBar的高度-->
+            <!-- layout_marginTop="76dp" 76 = 56 + 20 , 56dp为topBar的高度, 20dp为状态栏高度-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="74dp"
                 android:orientation="horizontal">
 
                 <TextView

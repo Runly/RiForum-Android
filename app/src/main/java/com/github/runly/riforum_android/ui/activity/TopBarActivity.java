@@ -1,6 +1,7 @@
 package com.github.runly.riforum_android.ui.activity;
 
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,15 +37,20 @@ public class TopBarActivity extends BaseActivity {
         lp.height = UnitConvert.dipToPixels(this, 24);
         lp.width = UnitConvert.dipToPixels(this, 24);
         cImg.setLayoutParams(lp);
-        topBar.getImgLeft().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        topBar.getImgLeft().setOnClickListener(v -> finish());
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addContentView(topBar, layoutParams);
+    }
+
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        ViewGroup view = (ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content);
+        View rootView = view.getChildAt(0);
+        rootView.setTranslationY(topBar.getHeight());
     }
 }
