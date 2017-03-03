@@ -13,7 +13,7 @@ import java.io.IOException;
  * @since: 16/4/20 下午2:28
  */
 public class BitmapUtils {
-    public static Bitmap decodeScaleImage(String path, int maxWidth, int maxHeight) {
+    public static Bitmap decodeScaleImage(String path, int maxWidth) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
         Bitmap bitmap = BitmapFactory.decodeFile(path, options);
@@ -23,9 +23,10 @@ public class BitmapUtils {
         }
 
         // 如果原图片尺寸大于预设的最大尺寸，则进行压缩
-        if (options.outWidth > maxWidth || options.outHeight > maxHeight) {
+        if (options.outWidth > maxWidth) {
+            int height = (int) ((float) options.outHeight / (float) options.outWidth * maxWidth);
             Bitmap decodeBitmap = createScaledBitmap(bitmap, options.outWidth, options.outHeight
-                    , maxWidth, maxHeight);
+                    , maxWidth, height);
             int degree = readPictureDegree(path);
             if (decodeBitmap != null && degree != 0) {
                 bitmap = rotateBitmap(degree, decodeBitmap);

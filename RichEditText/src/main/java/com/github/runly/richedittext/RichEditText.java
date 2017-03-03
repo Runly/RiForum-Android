@@ -70,7 +70,7 @@ public class RichEditText extends EditText {
 
     public void addImage(String filePath) {
         SpannableString spannable = new SpannableString("\n<img src=\"" + filePath + "\"/>");
-        Bitmap bitmap = BitmapUtils.decodeScaleImage(filePath, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+        Bitmap bitmap = BitmapUtils.decodeScaleImage(filePath, IMAGE_MAX_WIDTH);
         if (bitmap == null) {
             return;
         }
@@ -89,10 +89,11 @@ public class RichEditText extends EditText {
     public void replaceDownloadedImage(FakeImageSpan span, Bitmap bitmap, String url) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
+        int maxHeight = (int) ((float) height / (float) width *  IMAGE_MAX_WIDTH);
         Bitmap scaledBitmap;
-        if (width > IMAGE_MAX_WIDTH || height > IMAGE_MAX_HEIGHT) {
+        if (width > IMAGE_MAX_WIDTH) {
             scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(),
-                    IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+                    IMAGE_MAX_WIDTH, maxHeight);
         } else {
             scaledBitmap = bitmap;
         }
@@ -105,7 +106,7 @@ public class RichEditText extends EditText {
     }
 
     public void replaceLocalImage(FakeImageSpan span, String filePath) {
-        Bitmap bitmap = BitmapUtils.decodeScaleImage(filePath, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+        Bitmap bitmap = BitmapUtils.decodeScaleImage(filePath, IMAGE_MAX_WIDTH);
         if (bitmap == null) {
             return;
         }
