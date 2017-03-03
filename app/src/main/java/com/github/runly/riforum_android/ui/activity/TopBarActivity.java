@@ -1,5 +1,7 @@
 package com.github.runly.riforum_android.ui.activity;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
@@ -22,9 +24,26 @@ public class TopBarActivity extends BaseActivity {
     protected TopBar topBar;
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         addTopBar();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        ViewGroup view = (ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content);
+        View rootView = view.getChildAt(0);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) rootView.getLayoutParams();
+        params.setMargins(0, topBar.getHeight(), 0, 0);
+        rootView.setLayoutParams(params);
+        rootView.invalidate();
     }
 
     protected void addTopBar() {
@@ -44,13 +63,4 @@ public class TopBarActivity extends BaseActivity {
         addContentView(topBar, layoutParams);
     }
 
-
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        ViewGroup view = (ViewGroup) getWindow().getDecorView().findViewById(android.R.id.content);
-        View rootView = view.getChildAt(0);
-        rootView.setTranslationY(topBar.getHeight());
-    }
 }

@@ -6,17 +6,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
-import com.github.runly.riforum_android.utils.GoToActivity;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
 import java.util.ArrayList;
@@ -35,8 +35,8 @@ import rx.schedulers.Schedulers;
 public class UserDetailActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private TextView numText;
-    private TextView name;
-    private ImageView gender;
+    private TextView nameText;
+    private ImageView genderImg;
     private User user;
 
     @Override
@@ -51,29 +51,29 @@ public class UserDetailActivity extends BaseActivity {
     private void init() {
         ImageView imageView = (ImageView) findViewById(R.id.toolbar_back);
         imageView.setOnClickListener(v -> finish());
-
-        TextView userInfoText = (TextView) findViewById(R.id.user_info);
-        userInfoText.setOnClickListener(v -> GoToActivity.goTo(this, UserInfoActivity.class));
-
         numText = (TextView) findViewById(R.id.num);
 
         if (null != user) {
+            TextView userInfoText = (TextView) findViewById(R.id.user_info);
+            userInfoText.setOnClickListener(v -> {
+                Intent intent = new Intent(this, UserInfoActivity.class);
+                intent.putExtra("user_data", user);
+                startActivityForResult(intent, Constants.START_USER_INFO);
+            });
+
             CircleImageView avatar = (CircleImageView) findViewById(R.id.user_detail_avatar);
-            Glide.with(this)
-                    .load(user.avatar)
-                    .crossFade()
-                    .into(avatar);
-
-            name = (TextView) findViewById(R.id.user_detail_name);
-            name.setText(user.name);
-
-            gender = (ImageView) findViewById(R.id.gender);
-            if (0 == user.gender) {
-                gender.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.male));
-            } else {
-                gender.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.female));
+            if (!TextUtils.isEmpty(user.avatar)) {
+                Glide.with(this)
+                        .load(user.avatar)
+                        .crossFade()
+                        .into(avatar);
             }
 
+            nameText = (TextView) findViewById(R.id.user_detail_name);
+            nameText.setText(user.name);
+
+            genderImg = (ImageView) findViewById(R.id.gender);
+            setGenderImgSrc(user.gender);
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -83,6 +83,15 @@ public class UserDetailActivity extends BaseActivity {
         fetchDta();
     }
 
+    private void setGenderImgSrc(int gender) {
+        if (0 == gender) {
+            genderImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.male));
+        } else if (1 == gender){
+            genderImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.female));
+        } else {
+            genderImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.no_gender));
+        }
+    }
 
     private void fetchDta() {
         Map<String, Object> map = new HashMap<>();
@@ -114,9 +123,24 @@ public class UserDetailActivity extends BaseActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+
+            if (requestCode == Constants.START_USER_INFO) {
+                user = (User) data.getSerializableExtra(Constants.INTENT_USER_DATA);
+                if (user != null) {
+                    nameText.setText(user.name);
+                    setGenderImgSrc(user.gender);
+                }
+            }
+
+        }
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         // TODO Auto-generated method stub
         super.onWindowFocusChanged(hasFocus);
-        gender.setTranslationX(name.getWidth()/2 + UnitConvert.dipToPixels(this, 16));
+        genderImg.setTranslationX(nameText.getWidth()/2 + UnitConvert.dipToPixels(this, 16));
     }
 }

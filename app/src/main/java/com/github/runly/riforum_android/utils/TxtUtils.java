@@ -83,7 +83,6 @@ public class TxtUtils {
         return plateName;
     }
 
-
     /**
      * 通过反射修改TabLayout Indicator的宽度（仅在Android 4.2及以上生效）
      */
@@ -119,6 +118,18 @@ public class TxtUtils {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String whatGender(int gender) {
+        String genderStr;
+        if (gender == 0)
+            genderStr = "男";
+        else if (gender == 1)
+            genderStr = "女";
+        else
+            genderStr = "-";
+
+        return genderStr;
     }
 
 }

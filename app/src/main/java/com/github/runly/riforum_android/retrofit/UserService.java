@@ -30,4 +30,12 @@ public interface UserService {
      */
     @POST("user/sign_in")
     Observable<ResponseBase<User>> signIn(@Body Map<String, Object> body);
+
+    /**
+     *
+     * @param body
+     * @return
+     */
+    @POST("user/modify_info")
+    Observable<ResponseBase<User>> modify_info(@Body Map<String, Object> body);
 }

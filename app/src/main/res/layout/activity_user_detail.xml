@@ -99,7 +99,7 @@
         android:layout_height="72dp"
         android:layout_gravity="center|top"
         android:layout_marginTop="75dp"
-        android:src="@mipmap/avatar_test"
+        android:src="@mipmap/avatar_default"
         app:civ_border_color="@color/gray_bfbfbf"
         app:civ_border_width="1dp"
         app:layout_behavior=".utils.UserAvatarBehavior" />
