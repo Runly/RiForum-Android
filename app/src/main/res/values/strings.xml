@@ -73,10 +73,20 @@
 
     <string name="user_info_modify_empty">昵称</string>
     <string name="choose_gender">选择性别</string>
+    <string name="gender">性别</string>
     <string name="male">男</string>
     <string name="female">女</string>
+    <string name="user_nike">昵称</string>
+    <string name="user_id">用户ID</string>
+    <string name="account">账号</string>
+    <string name="sign_in_time">注册时间</string>
     <string name="modify_avatar">修改头像</string>
     <string name="choose_picture">从相册选择</string>
     <string name="avatar_modified">修改头像成功</string>
     <string name="avatar_modify_failed">修改头像失败，请重试</string>
+
+    <string name="user_center">个人</string>
+    <string name="setting">设置</string>
+    <string name="about">关于</string>
+    <string name="night_mode">夜间模式</string>
 </resources>

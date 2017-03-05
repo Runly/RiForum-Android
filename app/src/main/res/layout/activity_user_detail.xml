@@ -39,7 +39,6 @@
                     android:layout_gravity="center|top"
                     android:layout_marginTop="155dp"
                     android:gravity="center"
-                    android:text="Ritale"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
@@ -144,7 +143,7 @@
         android:paddingEnd="4dp"
         android:paddingStart="4dp"
         android:paddingTop="2dp"
-        android:text="个人资料"
+        android:text="@string/user_info"
         android:textColor="@android:color/white" />
 
 </android.support.design.widget.CoordinatorLayout>

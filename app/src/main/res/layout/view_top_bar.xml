@@ -24,7 +24,6 @@
         android:layout_marginStart="16dp"
         android:textSize="16sp"
         android:textColor="@android:color/white"
-        style="@style/Widget.AppCompat.ActionButton"
         />
 
     <TextView

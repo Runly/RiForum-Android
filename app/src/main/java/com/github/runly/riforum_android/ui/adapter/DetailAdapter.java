@@ -18,12 +18,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.interfaces.OnCommentedListener;
 import com.github.runly.riforum_android.model.Comment;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
 import com.github.runly.riforum_android.ui.view.CommentDialog;
 import com.github.runly.riforum_android.utils.TxtUtils;
+import com.github.runly.riforum_android.utils.UnitConvert;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -110,8 +112,11 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (null != itemData) {
                 User user = itemData.user;
                 if (null != user) {
+                    String avatarUrl = user.avatar + "?imageView2/1/w/" +
+                            UnitConvert.dipToPixels(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                            UnitConvert.dipToPixels(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
                     Glide.with(mContext)
-                            .load(user.avatar)
+                            .load(avatarUrl)
                             .crossFade()
                             .into(holder.userAvatar);
 

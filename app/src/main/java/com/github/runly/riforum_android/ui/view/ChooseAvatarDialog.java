@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.Constants;
+import com.github.runly.riforum_android.utils.UnitConvert;
 
 /**
  * Created by ranly on 17-3-3.
@@ -43,8 +44,11 @@ public class ChooseAvatarDialog extends Dialog {
 
         ImageView avatar = (ImageView) findViewById(R.id.dialog_avatar);
         if (!TextUtils.isEmpty(avatarUrl)){
+            String avatar_url = avatarUrl + "?imageView2/1/w/" +
+                    UnitConvert.dipToPixels(mContext, Constants.DIALOG_AVATAR_SIZE) + "/h/" +
+                    UnitConvert.dipToPixels(mContext, Constants.DIALOG_AVATAR_SIZE) + "/format/webp";
             Glide.with(mContext)
-                    .load(avatarUrl)
+                    .load(avatar_url)
                     .crossFade()
                     .into(avatar);
         }

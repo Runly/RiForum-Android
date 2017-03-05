@@ -159,8 +159,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             plate.setText(TxtUtils.getPlateWithId(entry.plate));
 
             if (null != user) {
+                String avatarUrl = user.avatar + "?imageView2/1/w/" +
+                        UnitConvert.dipToPixels(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                        UnitConvert.dipToPixels(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
                 Glide.with(this)
-                        .load(user.avatar)
+                        .load(avatarUrl)
                         .crossFade()
                         .into(userAvatar);
                 userTV.setText(user.name);

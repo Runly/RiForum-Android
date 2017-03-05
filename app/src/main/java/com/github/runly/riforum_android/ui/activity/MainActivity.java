@@ -145,6 +145,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    private void setAvatars() {
+        String avatarUrl = user.avatar + "?imageView2/1/w/" +
+                UnitConvert.dipToPixels(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                UnitConvert.dipToPixels(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
+        Glide.with(this)
+                .load(avatarUrl)
+                .crossFade()
+                .into(topBar.getImgLeft());
+
+        avatarUrl = user.avatar + "?imageView2/1/w/" +
+                UnitConvert.dipToPixels(this, Constants.NAVIGATION_AVATAR_SIZE) + "/h/" +
+                UnitConvert.dipToPixels(this, Constants.NAVIGATION_AVATAR_SIZE) + "/format/webp";
+        Glide.with(this)
+                .load(avatarUrl)
+                .crossFade()
+                .into(navigationAvatar);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -181,15 +199,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 topBar.getTxtLeft().setText(user.name);
                                 navigationName.setText(user.name);
                                 if (!TextUtils.isEmpty(user.avatar)) {
-                                    Glide.with(this)
-                                            .load(user.avatar)
-                                            .crossFade()
-                                            .into(topBar.getImgLeft());
-
-                                    Glide.with(this)
-                                            .load(user.avatar)
-                                            .crossFade()
-                                            .into(navigationAvatar);
+                                    setAvatars();
                                 }
                             }
                         }
@@ -200,15 +210,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             topBar.getTxtLeft().setText(user.name);
             navigationName.setText(user.name);
             if (!TextUtils.isEmpty(user.avatar)) {
-                Glide.with(this)
-                        .load(user.avatar)
-                        .crossFade()
-                        .into(topBar.getImgLeft());
-
-                Glide.with(this)
-                        .load(user.avatar)
-                        .crossFade()
-                        .into(navigationAvatar);
+                setAvatars();
             }
         }
     }

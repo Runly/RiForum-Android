@@ -23,6 +23,7 @@
             />
 
         <ImageView
+            android:id="@+id/decoration"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="bottom|end"
@@ -57,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="100dp"
-                android:text="昵称"
+                android:text="@string/user_nike"
                 android:layout_marginStart="32dp"
                 />
 
@@ -68,8 +69,7 @@
                 android:background="@null"
                 android:enabled="false"
                 android:theme="@style/myEditText"
-                android:focusable="false"
-                />
+                android:focusable="false" />
 
         </LinearLayout>
 
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="100dp"
-                android:text="性别"
+                android:text="@string/gender"
                 android:layout_marginStart="32dp"
                 />
 
@@ -144,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="100dp"
-                android:text="用户ID"
+                android:text="@string/user_id"
                 android:layout_marginStart="32dp"
                 />
 
@@ -185,7 +185,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="100dp"
-                android:text="账号"
+                android:text="@string/account"
                 android:layout_marginStart="32dp"
                 />
 
@@ -226,7 +226,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="100dp"
-                android:text="注册时间"
+                android:text="@string/sign_in_time"
                 android:layout_marginStart="32dp"
                 />
 

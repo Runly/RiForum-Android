@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.DetailActivity;
@@ -106,8 +107,11 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 User user = itemData.user;
                 if (null != user) {
+                    String avatarUrl = user.avatar + "?imageView2/1/w/" +
+                            UnitConvert.dipToPixels(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                            UnitConvert.dipToPixels(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
                     Glide.with(mContext)
-                            .load(user.avatar)
+                            .load(avatarUrl)
                             .crossFade()
                             .into(holder.userAvatar);
 
@@ -135,7 +139,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     if (i > 2)
                         break;
 
-                    int width = UnitConvert.dipToPixels(mContext, 122);
+                    int width = (Constants.SCREEN_WIDTH - UnitConvert.dipToPixels(mContext, 24)) / 3;
                     int height = UnitConvert.dipToPixels(mContext, 80);
 
                     String url = itemData.image.get(i) +

@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
@@ -28,6 +30,7 @@ import com.github.runly.riforum_android.ui.view.ChooseAvatarDialog;
 import com.github.runly.riforum_android.ui.view.GenderDialog;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
+import com.github.runly.riforum_android.utils.UnitConvert;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadOptions;
 
@@ -68,13 +71,24 @@ public class UserInfoActivity extends TopBarActivity {
         genderEdit.setKeyListener(null);
 
         if (user != null) {
-
-            userAvatar.setOnClickListener(v -> {
-                ChooseAvatarDialog avatarDialog = new ChooseAvatarDialog(this, user.avatar);
-                View.OnClickListener onClickListener = view -> addPhoto(avatarDialog);
-                avatarDialog.show();
-                avatarDialog.setButtonListener(onClickListener);
-            });
+            User loggedUser = App.getInstance().getUser();
+            if (loggedUser != null && loggedUser.id == user.id) {
+                userAvatar.setOnClickListener(v -> {
+                    ChooseAvatarDialog avatarDialog = new ChooseAvatarDialog(this, user.avatar);
+                    View.OnClickListener onClickListener = view -> addPhoto(avatarDialog);
+                    avatarDialog.show();
+                    avatarDialog.setButtonListener(onClickListener);
+                });
+            } else {
+                userAvatar.setOnClickListener(v -> {
+                    ChooseAvatarDialog avatarDialog = new ChooseAvatarDialog(this, user.avatar);
+                    View.OnClickListener onClickListener = view -> addPhoto(avatarDialog);
+                    avatarDialog.show();
+                    LinearLayout linearLayout = (LinearLayout) avatarDialog.findViewById(R.id.action_linear);
+                    linearLayout.setVisibility(View.GONE);
+                    avatarDialog.setButtonListener(onClickListener);
+                });
+            }
 
             OnChooseGenderListener listener = genderInt -> {
                 gender = genderInt;
@@ -86,8 +100,11 @@ public class UserInfoActivity extends TopBarActivity {
 
 
             if (!TextUtils.isEmpty(user.avatar)) {
+                String avatarUrl = user.avatar + "?imageView2/1/w/" +
+                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
                 Glide.with(this)
-                        .load(user.avatar)
+                        .load(avatarUrl)
                         .crossFade()
                         .into(userAvatar);
             }
@@ -168,8 +185,7 @@ public class UserInfoActivity extends TopBarActivity {
 
     private void upLoadAvatar(QiniuToken qiniuToken, Uri uri) {
         UpCompletionHandler handler = (key, info, response) -> {
-            String avatarUrl = qiniuToken.getUrl() +
-                    "?imageView2/1/w/" + Constants.AVATAR_MAX_SIZE + "/h/" + Constants.AVATAR_MAX_SIZE + "/format/webp";
+            String avatarUrl = qiniuToken.getUrl();
             Map<String, Object> map = new HashMap<>();
             map.put("uid", user.id);
             map.put("avatar", avatarUrl);
@@ -181,8 +197,11 @@ public class UserInfoActivity extends TopBarActivity {
                             user = res.data;
                             App.getInstance().setUser(user);
                             if (!TextUtils.isEmpty(user.avatar)) {
+                                String avatar_url = user.avatar + "?imageView2/1/w/" +
+                                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
                                 Glide.with(this)
-                                        .load(user.avatar)
+                                        .load(avatar_url)
                                         .crossFade()
                                         .into(userAvatar);
                                 cancelDialog();

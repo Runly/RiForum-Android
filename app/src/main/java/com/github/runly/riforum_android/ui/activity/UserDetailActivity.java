@@ -64,8 +64,11 @@ public class UserDetailActivity extends BaseActivity {
 
             avatar = (CircleImageView) findViewById(R.id.user_detail_avatar);
             if (!TextUtils.isEmpty(user.avatar)) {
+                String avatarUrl = user.avatar + "?imageView2/1/w/" +
+                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
                 Glide.with(this)
-                        .load(user.avatar)
+                        .load(avatarUrl)
                         .crossFade()
                         .into(avatar);
             }
@@ -133,8 +136,11 @@ public class UserDetailActivity extends BaseActivity {
                     nameText.setText(user.name);
                     setGenderImgSrc(user.gender);
                     if (!TextUtils.isEmpty(user.avatar)) {
+                        String avatarUrl = user.avatar + "?imageView2/1/w/" +
+                                UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                                UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
                         Glide.with(this)
-                                .load(user.avatar)
+                                .load(avatarUrl)
                                 .crossFade()
                                 .into(avatar);
                     }

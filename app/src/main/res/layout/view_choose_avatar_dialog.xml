@@ -11,29 +11,37 @@
         android:layout_height="250dp"
         android:layout_margin="8dp"
         android:layout_gravity="center_horizontal"
-        android:src="@mipmap/avatar_test"
+        android:src="@mipmap/avatar_default"
         tools:ignore="contentDescription"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/action_linear"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="center_horizontal"
-        android:textSize="12sp"
-        android:textColor="@color/gray_8a8a8a"
-        android:text="@string/modify_avatar"
-        />
+        android:orientation="vertical">
 
-    <include layout="@layout/view_dividing_line"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="12sp"
+            android:textColor="@color/gray_8a8a8a"
+            android:text="@string/modify_avatar"
+            />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/choose_picture"
-        />
+        <include layout="@layout/view_dividing_line"/>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/choose_picture"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -44,4 +44,10 @@ public class Constants {
     public static final int NO_GENDER = -1;
 
     public static final int AVATAR_MAX_SIZE = 750; // px
+    public static final int NORMAL_AVATAR_SIZE = 40; // dp
+    public static final int NAVIGATION_AVATAR_SIZE = 72; // dp
+    public static final int USER_INFO_AVATAR_SIZE = 72; // dp
+    public static final int DIALOG_AVATAR_SIZE = 250; // dp
+
+
 }
