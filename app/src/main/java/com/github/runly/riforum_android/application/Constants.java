@@ -13,6 +13,10 @@ public class Constants {
     public static int SCREEN_HEIGHT;  // 屏幕高度
     public static int STATUS_HEIGHT;  // 状态栏高度
 
+    public static final String USER_ACCOUNT = "user_account";
+    public static final String USER_PASSWORD = "user_password";
+
+
     public final static int MAIN_TOPBAR_HEIGHT = 50;  // MainActivity的标题栏高度(dp)
 
     public final static int ALBUM_REQUEST_CODE = 1;
@@ -33,8 +37,11 @@ public class Constants {
     public static final String DAILY_LIFE = "生活日常";
 
     public static final String INTENT_USER_DATA = "user_data";
+    public static final String INTENT_ITEM_DATA = "item_data";
 
     public static final int MALE = 0;
     public static final int FEMALE = 1;
     public static final int NO_GENDER = -1;
+
+    public static final int AVATAR_MAX_SIZE = 750; // px
 }

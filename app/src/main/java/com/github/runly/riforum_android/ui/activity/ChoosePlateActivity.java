@@ -61,8 +61,8 @@ public class ChoosePlateActivity extends TopBarActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         topBar.getTxtCenter().setText(getString(R.string.choose_plate_txt_left));
     }
 }

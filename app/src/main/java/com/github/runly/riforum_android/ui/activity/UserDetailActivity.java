@@ -38,6 +38,7 @@ public class UserDetailActivity extends BaseActivity {
     private TextView nameText;
     private ImageView genderImg;
     private User user;
+    private CircleImageView avatar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class UserDetailActivity extends BaseActivity {
                 startActivityForResult(intent, Constants.START_USER_INFO);
             });
 
-            CircleImageView avatar = (CircleImageView) findViewById(R.id.user_detail_avatar);
+            avatar = (CircleImageView) findViewById(R.id.user_detail_avatar);
             if (!TextUtils.isEmpty(user.avatar)) {
                 Glide.with(this)
                         .load(user.avatar)
@@ -131,6 +132,12 @@ public class UserDetailActivity extends BaseActivity {
                 if (user != null) {
                     nameText.setText(user.name);
                     setGenderImgSrc(user.gender);
+                    if (!TextUtils.isEmpty(user.avatar)) {
+                        Glide.with(this)
+                                .load(user.avatar)
+                                .crossFade()
+                                .into(avatar);
+                    }
                 }
             }
 

@@ -2,7 +2,6 @@ package com.github.runly.riforum_android.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -23,13 +22,13 @@ import com.github.runly.riforum_android.interfaces.OnCommentedListener;
 import com.github.runly.riforum_android.model.Comment;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
-import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.ui.view.CommentDialog;
-import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by ranly on 17-2-20.
@@ -193,7 +192,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     //在这里面加载ListView中的每个item的布局
     private class ViewHolder extends RecyclerView.ViewHolder {
         WeakReference<View> weakReference;
-        CircularImageView userAvatar;
+        CircleImageView userAvatar;
         TextView userName;
         TextView time;
         TextView floor;
@@ -211,7 +210,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
 
             weakReference = new WeakReference<>(itemView);
-            userAvatar = (CircularImageView) itemView.findViewById(R.id.comment_user_avatar);
+            userAvatar = (CircleImageView) itemView.findViewById(R.id.comment_user_avatar);
             userName = (TextView) itemView.findViewById(R.id.comment_user_name);
             floor = (TextView) itemView.findViewById(R.id.comment_floor);
             content = (TextView) itemView.findViewById(R.id.comment_content);

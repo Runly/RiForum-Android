@@ -14,13 +14,15 @@ import android.widget.TextView;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by ranly on 17-2-6.
  */
 
 public class TopBar extends LinearLayout {
     private Context mContext;
-    private CircularImageView imgLeft;
+    private CircleImageView imgLeft;
     private TextView txtLeft, txtCenter, txtRight;
     private ImageView imgRight;
 
@@ -64,7 +66,7 @@ public class TopBar extends LinearLayout {
 
     private void init() {
         View mTopBar = View.inflate(mContext, R.layout.view_top_bar, this);
-        imgLeft = (CircularImageView) mTopBar.findViewById(R.id.img_left);
+        imgLeft = (CircleImageView) mTopBar.findViewById(R.id.img_left);
         ViewGroup.LayoutParams layoutParams = imgLeft.getLayoutParams();
         layoutParams.width = imgLeftWidth;
         layoutParams.height = imgLeftHeight;

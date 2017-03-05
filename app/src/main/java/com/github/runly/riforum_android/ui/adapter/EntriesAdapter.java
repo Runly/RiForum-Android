@@ -16,12 +16,13 @@ import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.DetailActivity;
 import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
-import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.utils.TxtUtils;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by ranly on 17-2-13.
@@ -185,7 +186,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     //在这里面加载ListView中的每个item的布局
     private class ViewHolder extends RecyclerView.ViewHolder {
         WeakReference<View> viewWeakReference;
-        CircularImageView userAvatar;
+        CircleImageView userAvatar;
         TextView userName;
         TextView plate;
         TextView title;
@@ -204,7 +205,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 return;
             }
             viewWeakReference = new WeakReference<>(itemView);
-            userAvatar = (CircularImageView) itemView.findViewById(R.id.item_user_avatar);
+            userAvatar = (CircleImageView) itemView.findViewById(R.id.item_user_avatar);
             userName = (TextView) itemView.findViewById(R.id.item_user_name);
             plate = (TextView) itemView.findViewById(R.id.item_plate);
             title = (TextView) itemView.findViewById(R.id.item_title);

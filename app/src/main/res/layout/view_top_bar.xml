@@ -7,13 +7,12 @@
     android:gravity="center_vertical"
     android:background="@color/colorBase">
 
-    <com.github.runly.riforum_android.ui.view.CircularImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_left"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
-        style="@style/Widget.AppCompat.ActionButton"
         />
     
     <TextView

@@ -128,8 +128,8 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
         // 配置topBar
         topBar.getTxtCenter().setText(getString(R.string.release_txt_center));

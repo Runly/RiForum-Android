@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <com.github.runly.riforum_android.ui.view.CircularImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/detail_user_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"

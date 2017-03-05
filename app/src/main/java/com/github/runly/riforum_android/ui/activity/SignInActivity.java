@@ -36,8 +36,8 @@ public class SignInActivity extends TopBarActivity implements View.OnClickListen
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         topBar.getTxtLeft().setText(getString(R.string.sign_in_txt_left));
     }
 
@@ -82,6 +82,7 @@ public class SignInActivity extends TopBarActivity implements View.OnClickListen
                                 ToastUtil.makeShortToast(this, theResponse.message);
                             } else {
                                 ToastUtil.makeShortToast(this, getString(R.string.sign_in_successfully));
+                                finish();
                             }
                         },
                         throwable -> ToastUtil.makeShortToast(this, getString(R.string.sign_in_failed))

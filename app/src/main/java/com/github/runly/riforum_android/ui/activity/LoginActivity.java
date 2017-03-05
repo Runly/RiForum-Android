@@ -7,15 +7,19 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.utils.GoToActivity;
 import com.github.runly.riforum_android.utils.RegisterCheck;
 import com.github.runly.riforum_android.utils.SdCardUtil;
+import com.github.runly.riforum_android.utils.SharedPreferencesUtil;
 import com.github.runly.riforum_android.utils.ToastUtil;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -72,7 +76,8 @@ public class LoginActivity extends TopBarActivity implements View.OnClickListene
                             } else {
                                 ToastUtil.makeShortToast(this, getString(R.string.login_successfully));
                                 App.getInstance().setUser(theResponse.data);
-                                SdCardUtil.saveUserToSdCard(this, theResponse.data);
+                                SharedPreferencesUtil.saveValue(Constants.USER_ACCOUNT, account);
+                                SharedPreferencesUtil.saveValue(Constants.USER_PASSWORD, password);
                                 finish();
                             }
                         },
@@ -101,8 +106,8 @@ public class LoginActivity extends TopBarActivity implements View.OnClickListene
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         topBar.getTxtLeft().setText(getString(R.string.login_txt_left));
     }
 }

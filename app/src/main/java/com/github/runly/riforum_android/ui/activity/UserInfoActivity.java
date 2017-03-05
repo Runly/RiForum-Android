@@ -1,5 +1,7 @@
 package com.github.runly.riforum_android.ui.activity;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +10,8 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -17,10 +21,15 @@ import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.interfaces.OnChooseGenderListener;
 import com.github.runly.riforum_android.model.User;
+import com.github.runly.riforum_android.qiniu.QiniuToken;
+import com.github.runly.riforum_android.qiniu.UploadManagerFactory;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
+import com.github.runly.riforum_android.ui.view.ChooseAvatarDialog;
 import com.github.runly.riforum_android.ui.view.GenderDialog;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,8 +48,9 @@ public class UserInfoActivity extends TopBarActivity {
     private CircleImageView userAvatar;
     private EditText nameEdit;
     private EditText genderEdit;
-    private GenderDialog dialog;
+    private GenderDialog genderDialog;
     private int gender;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,20 +62,27 @@ public class UserInfoActivity extends TopBarActivity {
 
     private void init() {
         userAvatar = (CircleImageView) findViewById(R.id.user_info_avatar);
-        userAvatar.setOnClickListener(v -> addPhoto());
 
         nameEdit = (EditText) findViewById(R.id.user_info_name_edit);
         genderEdit = (EditText) findViewById(R.id.user_info_gender_edit);
         genderEdit.setKeyListener(null);
 
         if (user != null) {
+
+            userAvatar.setOnClickListener(v -> {
+                ChooseAvatarDialog avatarDialog = new ChooseAvatarDialog(this, user.avatar);
+                View.OnClickListener onClickListener = view -> addPhoto(avatarDialog);
+                avatarDialog.show();
+                avatarDialog.setButtonListener(onClickListener);
+            });
+
             OnChooseGenderListener listener = genderInt -> {
                 gender = genderInt;
                 genderEdit.setText(TxtUtils.whatGender(genderInt));
             };
-            dialog = new GenderDialog(this, listener, user.gender);
+            genderDialog = new GenderDialog(this, listener, user.gender);
 
-            genderEdit.setOnClickListener(v -> dialog.show());
+            genderEdit.setOnClickListener(v -> genderDialog.show());
 
 
             if (!TextUtils.isEmpty(user.avatar)) {
@@ -88,14 +105,12 @@ public class UserInfoActivity extends TopBarActivity {
                 account.setText(user.email);
             EditText time = (EditText) findViewById(R.id.user_info_time_edit);
             time.setText(DateFormat.format("yyyy-MM-dd", user.time));
-
         }
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == Constants.ALBUM_REQUEST_CODE) {
                 try {
@@ -107,16 +122,101 @@ public class UserInfoActivity extends TopBarActivity {
             }
 
             if (requestCode == Constants.CROP_REQUEST) {
-
+                Uri uri = data.getData();
+                Map<String, Object> map = new HashMap<>();
+                map.put("uid", user.id);
+                map.put("token", user.token);
+                displayDialog();
+                RetrofitFactory.getInstance().getQiuniuTokenService().qiniuToken(map)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if ("1".equals(response.code)) {
+                                QiniuToken qiniuToken = response.data;
+                                upLoadAvatar(qiniuToken, uri);
+                            }else {
+                                cancelDialog();
+                                ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            cancelDialog();
+                            ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
+                        });
             }
         }
     }
 
-    private void addPhoto() {
+    private void displayDialog() {
+        dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setMax(100);
+        dialog.setProgress(0);
+        dialog.show();
+    }
+
+    private void setDialogProgress(int pro) {
+        dialog.setProgress(pro);
+    }
+
+    private void cancelDialog() {
+        if (null != dialog) {
+            dialog.cancel();
+        }
+    }
+
+
+    private void upLoadAvatar(QiniuToken qiniuToken, Uri uri) {
+        UpCompletionHandler handler = (key, info, response) -> {
+            String avatarUrl = qiniuToken.getUrl() +
+                    "?imageView2/1/w/" + Constants.AVATAR_MAX_SIZE + "/h/" + Constants.AVATAR_MAX_SIZE + "/format/webp";
+            Map<String, Object> map = new HashMap<>();
+            map.put("uid", user.id);
+            map.put("avatar", avatarUrl);
+            RetrofitFactory.getInstance().getUserService().modify_avatar(map)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(res -> {
+                        if ("1".equals(res.code)) {
+                            user = res.data;
+                            App.getInstance().setUser(user);
+                            if (!TextUtils.isEmpty(user.avatar)) {
+                                Glide.with(this)
+                                        .load(user.avatar)
+                                        .crossFade()
+                                        .into(userAvatar);
+                                cancelDialog();
+                                ToastUtil.makeShortToast(this, getString(R.string.avatar_modified));
+                            } else {
+                                cancelDialog();
+                                ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
+                            }
+
+                        }
+                    }, throwable -> {
+                        throwable.printStackTrace();
+                        cancelDialog();
+                        ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
+                    });
+
+        };
+
+        UploadOptions options = new UploadOptions(null, null, false,
+                (key, percent) -> {
+                    Log.i("progress", percent + "");
+                    setDialogProgress((int) (percent*100));
+                }, null);
+
+
+        UploadManagerFactory.getUploadManager().put(uri.getPath(), qiniuToken.key, qiniuToken.token, handler, options);
+    }
+
+    private void addPhoto(Dialog dialog) {
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, Constants.ALBUM_REQUEST_CODE);
+        dialog.cancel();
     }
 
     private void toCutPicture(Uri uri) {
@@ -126,13 +226,15 @@ public class UserInfoActivity extends TopBarActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
         topBar.getTxtLeft().setText("个人资料");
 
         if (user.id == App.getInstance().getUser().id) {
+
             topBar.getTxtRight().setText("修改");
+
             topBar.getTxtRight().setOnClickListener(v -> {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (!isEdit) {
@@ -142,6 +244,7 @@ public class UserInfoActivity extends TopBarActivity {
                     genderEdit.setEnabled(true);
                     imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
                     isEdit = true;
+
                 } else {
                     nameEdit.setEnabled(false);
                     genderEdit.setEnabled(false);
@@ -166,10 +269,6 @@ public class UserInfoActivity extends TopBarActivity {
                                         user = response.data;
                                         App.getInstance().setUser(user);
                                         ToastUtil.makeShortToast(this, "修改成功");
-                                        Intent intent = new Intent();
-                                        intent.putExtra(Constants.INTENT_USER_DATA, user);
-                                        setResult(RESULT_OK, intent);
-                                        finish();
                                     }
                                 }, Throwable::printStackTrace);
 
@@ -178,5 +277,13 @@ public class UserInfoActivity extends TopBarActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void finish() {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.INTENT_USER_DATA, user);
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 }

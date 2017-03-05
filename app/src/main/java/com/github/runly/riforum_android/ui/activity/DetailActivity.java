@@ -28,14 +28,14 @@ import com.bumptech.glide.Glide;
 import com.github.runly.richedittext.RichEditText;
 import com.github.runly.richedittext.span.FakeImageSpan;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.App;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.interfaces.OnCommentedListener;
 import com.github.runly.riforum_android.model.Comment;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.DetailAdapter;
-import com.github.runly.riforum_android.application.App;
-import com.github.runly.riforum_android.ui.view.CircularImageView;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
@@ -51,6 +51,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -134,7 +135,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         topBar.getImgLeft().setOnClickListener(v -> finish());
         topBar.setOnClickListener(v -> recyclerView.scrollToPosition(0));
 
-        CircularImageView userAvatar = (CircularImageView) header.findViewById(R.id.detail_user_avatar);
+        CircleImageView userAvatar = (CircleImageView) header.findViewById(R.id.detail_user_avatar);
         RichEditText richEditText = (RichEditText) header.findViewById(R.id.detail_content);
         richEditText.setKeyListener(null);
         richEditText.setFocusable(false); // 设置为false是为了图片加载出来后布局不往上移
@@ -145,7 +146,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         TextView commentNum = (TextView) header.findViewById(R.id.comment_number);
         TextView plate = (TextView) header.findViewById(R.id.detail_plate);
 
-        entry = (Entry) getIntent().getSerializableExtra("item_data");
+        entry = (Entry) getIntent().getSerializableExtra(Constants.INTENT_ITEM_DATA);
 
         if (null != entry) {
             User user = entry.user;
@@ -166,7 +167,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
                 View.OnClickListener clickListener = v -> {
                     Intent intent = new Intent(this, UserDetailActivity.class);
-                    intent.putExtra("user_data", user);
+                    intent.putExtra(Constants.INTENT_USER_DATA, user);
                     startActivity(intent);
                 };
                 userAvatar.setOnClickListener(clickListener);
@@ -289,11 +290,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 richEditText.replaceLocalImage(imageSpan, src);
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
