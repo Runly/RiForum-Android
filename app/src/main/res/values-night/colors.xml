@@ -26,4 +26,6 @@
 
     <color name="item_dividing">#383838</color>
 
+    <color name="ripple">@color/color_303030</color>
+
 </resources>

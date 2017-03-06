@@ -193,7 +193,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
         adapter.setHeaderView(header);
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new MyDecoration(this));
+        recyclerView.addItemDecoration(new MyDecoration(this, 1));
     }
 
     private void fetchData() {

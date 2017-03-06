@@ -26,4 +26,6 @@
 
     <color name="item_dividing">#efefef</color>
 
+    <color name="ripple">@color/color_fafafa</color>
+
 </resources>

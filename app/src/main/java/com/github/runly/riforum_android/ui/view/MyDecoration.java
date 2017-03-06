@@ -19,13 +19,14 @@ public class MyDecoration extends RecyclerView.ItemDecoration {
 
     private Context mContext;
     private Drawable mDivider;
+    private int height;
 
 
 
-
-    public MyDecoration(Context context) {
+    public MyDecoration(Context context, int height) {
         this.mContext = context;
         this.mDivider = ContextCompat.getDrawable(context, R.drawable.recycler_divider);
+        this.height = UnitConvert.dipToPixels(context, height);
     }
 
 
@@ -50,7 +51,7 @@ public class MyDecoration extends RecyclerView.ItemDecoration {
             //获得child的布局信息
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin;
-            final int bottom = top + UnitConvert.dipToPixels(mContext, 8);
+            final int bottom = top + height;
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
@@ -60,7 +61,7 @@ public class MyDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         //画横线，就是往下偏移一个分割线的高度
-        outRect.set(0, 0, 0, UnitConvert.dipToPixels(mContext, 8));
+        outRect.set(0, 0, 0, height);
 
     }
 }

@@ -22,7 +22,7 @@
     </style>
 
     <style name="TranslucentTheme" parent="AppTheme">
-        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="myEditText" parent="Theme.AppCompat.Light">

@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.placeholder_layout);
         linearLayout.setPadding(0, Constants.STATUS_HEIGHT, 0, 0);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setNavigationListener();
         navigationAvatar = (CircleImageView) findViewById(R.id.navigation_user_avatar);
         navigationName = (TextView) findViewById(R.id.navigation_user_name);
         switchButton = (SwitchButton) findViewById(R.id.switch_button);
@@ -158,6 +159,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } else {
             switchButton.setChecked(true);
         }
+    }
+
+    private void setNavigationListener() {
+        LinearLayout linearPerson = (LinearLayout) findViewById(R.id.navigation_user_info);
+        linearPerson.setOnClickListener(v -> {
+            if (user != null) {
+                Intent intent = new Intent(this, UserDetailActivity.class);
+                intent.putExtra(Constants.INTENT_USER_DATA, user);
+                startActivity(intent);
+            } else {
+                GoToActivity.goTo(this, SignInActivity.class);
+            }
+        });
+
+        LinearLayout linearSetting = (LinearLayout) findViewById(R.id.navigation_setting);
+        linearSetting.setOnClickListener(v -> {});
+
+        LinearLayout linearAbout = (LinearLayout) findViewById(R.id.navigation_about);
+        linearAbout.setOnClickListener(v -> {});
+
     }
 
     private void setAvatars() {

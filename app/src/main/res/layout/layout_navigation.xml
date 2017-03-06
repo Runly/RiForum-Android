@@ -59,7 +59,9 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/ripple_bg"
+        >
 
 
         <ImageView
@@ -93,7 +95,8 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/ripple_bg">
 
 
         <ImageView
@@ -126,7 +129,8 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/ripple_bg">
 
 
         <ImageView

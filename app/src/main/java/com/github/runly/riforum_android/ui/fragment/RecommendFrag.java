@@ -95,7 +95,7 @@ public class RecommendFrag extends Fragment {
                 .start();
         entriesAdapter.setHeaderView(header);
         recyclerView.setAdapter(entriesAdapter);
-        recyclerView.addItemDecoration(new MyDecoration(getActivity()));
+        recyclerView.addItemDecoration(new MyDecoration(getActivity(), 8));
     }
 
     class GlideImageLoader extends ImageLoader {
