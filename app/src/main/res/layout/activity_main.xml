@@ -1,67 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBase"
-    tools:context="com.github.runly.riforum_android.ui.activity.MainActivity" >
+    tools:context="com.github.runly.riforum_android.ui.activity.MainActivity">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
+        <!--占位-->
+        <LinearLayout
+            android:id="@+id/placeholder_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.github.runly.riforum_android.ui.view.TopBar
-                android:id="@+id/top_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:txt_left="@string/not_login"
-                app:img_left_default="@mipmap/avatar_default"
-                app:img_left_width="40"
-                app:img_left_height="40"
-                app:layout_scrollFlags="scroll|enterAlways" />
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/colorBase"
-                app:tabTextColor="@color/gray_dbdbdb"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabTextAppearance="@android:style/TextAppearance.Holo.Widget.TextView"
-                app:tabIndicatorColor="@android:color/white"
-                app:tabIndicatorHeight="3dp"/>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_height="20dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
             />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@mipmap/release"
-            app:layout_behavior=".utils.ScrollingFABBehavior" />
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </android.support.design.widget.CoordinatorLayout>
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:elevation="0dp">
 
-    <include layout="@layout/layout_navigation"/>
+                <com.github.runly.riforum_android.ui.view.TopBar
+                    android:id="@+id/top_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:img_left_default="@mipmap/avatar_default"
+                    app:img_left_height="40"
+                    app:img_left_width="40"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:txt_left="@string/not_login" />
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/colorPrimary"
+                    app:tabTextColor="@color/gray_dbdbdb"
+                    app:tabSelectedTextColor="@android:color/white"
+                    app:tabTextAppearance="@android:style/TextAppearance.Holo.Widget.TextView"
+                    app:tabIndicatorColor="@android:color/white"
+                    app:tabIndicatorHeight="3dp" />
+
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                app:layout_behavior=".utils.ScrollingFABBehavior"
+                app:srcCompat="@mipmap/release" />
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </LinearLayout>
+
+
+
+    <include layout="@layout/layout_navigation" />
 
 </android.support.v4.widget.DrawerLayout>
 

@@ -30,7 +30,6 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:text="取消"
-            android:textColor="@android:color/white"
             style="@style/Widget.AppCompat.ActionButton"
             />
 
@@ -41,7 +40,6 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:text="确定"
-            android:textColor="@android:color/white"
             style="@style/Widget.AppCompat.ActionButton"
             />
 

@@ -10,7 +10,7 @@
         android:layout_centerVertical="true"
         android:layout_width="4dp"
         android:layout_height="20dp"
-        android:background="@color/colorBase"
+        android:background="@color/colorPrimary"
         />
 
     <TextView
@@ -18,13 +18,12 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="14dp"
-        android:textColor="@color/gray_8a8a8a"
         android:text="@string/all_comment" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/gray_f1f1f1" />
+        />
 
 </RelativeLayout>

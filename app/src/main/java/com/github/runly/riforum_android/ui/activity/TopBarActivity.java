@@ -49,7 +49,7 @@ public class TopBarActivity extends BaseActivity {
     protected void addTopBar() {
         topBar = new TopBar(this, null);
         topBar.setPadding(0, Constants.STATUS_HEIGHT, 0, 0);
-        topBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBase));
+        topBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         topBar.getTxtLeft().setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         CircleImageView cImg = (CircleImageView) topBar.getImgLeft();
         ViewGroup.LayoutParams lp = cImg.getLayoutParams();

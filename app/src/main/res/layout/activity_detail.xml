@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="48dp"
-        android:background="@color/gray_f1f1f1"
+        android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
@@ -36,14 +36,13 @@
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_gravity="bottom|end"
-        android:background="@android:color/white">
+        android:layout_gravity="bottom|end">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_alignParentTop="true"
-            android:background="@color/gray_f1f1f1" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/gray_f1f1f1" />
+            />
 
     </RelativeLayout>
 

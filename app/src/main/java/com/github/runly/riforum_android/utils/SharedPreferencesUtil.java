@@ -3,6 +3,7 @@ package com.github.runly.riforum_android.utils;
 import android.content.SharedPreferences;
 
 import com.github.runly.riforum_android.application.App;
+import com.github.runly.riforum_android.application.Constants;
 
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class SharedPreferencesUtil {
     private static SharedPreferences sp;
 
     private SharedPreferencesUtil() {
-        sp = App.getInstance().getSharedPreferences("riforum_sp", MODE_PRIVATE);
+        sp = App.getInstance().getSharedPreferences(Constants.SHARED_PREFERENCES, MODE_PRIVATE);
     }
 
     private static SharedPreferences getSp() {

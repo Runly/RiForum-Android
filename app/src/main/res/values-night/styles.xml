@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -16,16 +16,13 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!--<style name="AppThemeColorBase" parent="Theme.AppCompat.Light.NoActionBar">-->
-        <!--<item name="windowNoTitle">true</item>-->
-        <!--<item name="colorPrimary">@color/gray_dbdbdb</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimary</item>-->
-        <!--<item name="colorAccent">@color/yellow_ffd54f</item>-->
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
-    <!--</style>-->
+    <style name="AppThemeColorBase" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
 
     <style name="TranslucentTheme" parent="AppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
     <style name="myEditText" parent="Theme.AppCompat.Light">
@@ -34,7 +31,7 @@
     </style>
 
     <style name="collapsedTitleText" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/normal_edit</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">16sp</item>
     </style>
 

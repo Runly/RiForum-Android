@@ -39,18 +39,11 @@ public class ForumFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
                 R.layout.fragment_forum, container, false);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorBase);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                },500);
-            }
-        });
+//        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(() ->
+                new Handler().postDelayed(() ->
+                        swipeRefreshLayout.setRefreshing(false),500)
+        );
         RecyclerView recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
         setupRecyclerView(recyclerView);
         return swipeRefreshLayout;

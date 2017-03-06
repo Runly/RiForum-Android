@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorBase">#8192D6</color>
-    <color name="colorBaseLighter">#B7C1EB</color>
+    <color name="colorPrimary">#8192D6</color>
+    <color name="colorPrimaryDark">#8192D6</color>
+    <color name="colorAccent">#FFD54F</color>
     <color name="gray_dbdbdb">#dbdbdb</color>
-    <color name="gray_e6e6e6">#e6e6e6</color>
-    <color name="gray_707070">#707070</color>
-    <color name="gray_505050">#505050</color>
-    <color name="gray_303030">#303030</color>
-    <color name="gray_8a8a8a">#8a8a8a</color>
     <color name="gray_bfbfbf">#bfbfbf</color>
-    <color name="gray_f1f1f1">#f1f1f1</color>
-    <color name="blue_1296db">#1296db</color>
-    <color name="yellow_ffd54f">#FFD54F</color>
+
+    <!--白天模式背景色-->
+    <color name="color_fafafa">#FAFAFA</color>
+    <!--夜间模式背景色-->
+    <color name="color_303030">#303030</color>
+    <!--夜间模式字体颜色-->
+    <color name="color_c1c1c1">#C1C1C1</color>
+
+    <color name="color_base">@color/colorPrimary</color>
+
+    <color name="navigation_bg">@color/color_fafafa</color>
+
+    <color name="normal_name">@android:color/black</color>
+    <color name="normal_content">@android:color/black</color>
+    <color name="normal_text">@android:color/white</color>
+    <color name="normal_edit">#aaa</color>
+
+    <color name="normal_bg">@android:color/white</color>
+
+    <color name="item_dividing">#efefef</color>
+
 </resources>

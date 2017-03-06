@@ -4,6 +4,8 @@ import android.os.Environment;
 
 import java.io.File;
 
+import rx.functions.FuncN;
+
 /**
  * Created by ranly on 17-2-7.
  */
@@ -49,5 +51,10 @@ public class Constants {
     public static final int USER_INFO_AVATAR_SIZE = 72; // dp
     public static final int DIALOG_AVATAR_SIZE = 250; // dp
 
+    public static final String SHARED_PREFERENCES = "riforum_sp";
+    public static final String WHICH_MODE = "which_mode";
+
+    public static final int NIGHT_MODE = 1; //夜间模式
+    public static final int DAY_MODE = 0; //白天模式
 
 }

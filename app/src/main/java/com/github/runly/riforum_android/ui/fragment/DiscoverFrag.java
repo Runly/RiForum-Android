@@ -36,19 +36,12 @@ public class DiscoverFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
-                R.layout.fragment_follow, container, false);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorBase);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                },500);
-            }
-        });
+                R.layout.fragment_discover, container, false);
+//        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(() ->
+                new Handler().postDelayed(() ->
+                        swipeRefreshLayout.setRefreshing(false),500)
+        );
         RecyclerView recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
         setupRecyclerView(recyclerView);
         return swipeRefreshLayout;

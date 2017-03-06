@@ -24,8 +24,8 @@ public class ScrollingFABBehavior extends CoordinatorLayout.Behavior<FloatingAct
 //        topBarHeight = styledAttributes.getDimension(0, 0);
 //        styledAttributes.recycle();
         topBarHeight = UnitConvert.dipToPixels(context, Constants.MAIN_TOPBAR_HEIGHT);
-        sizeHide = -(topBarHeight - Constants.STATUS_HEIGHT);
-        sizeShow = Constants.STATUS_HEIGHT;
+        sizeHide = -topBarHeight;
+        sizeShow = 0;
     }
 
     @Override

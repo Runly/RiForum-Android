@@ -50,8 +50,7 @@
         android:layout_marginEnd="48dp"
         android:text="@string/sign_button"
         android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:background="@color/colorBase"
+        android:background="@color/colorPrimary"
         />
 
     <TextView
@@ -59,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:textColor="@color/colorBase"
+        android:textColor="@color/colorPrimary"
         android:text="@string/sign_to_login"
         android:layout_gravity="center_horizontal"
         />

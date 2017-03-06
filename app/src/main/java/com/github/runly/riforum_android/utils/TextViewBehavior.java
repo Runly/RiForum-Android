@@ -46,7 +46,7 @@ public class TextViewBehavior extends CoordinatorLayout.Behavior<TextView>  {
             child.setTextColor(Color.WHITE);
             child.setBackground(ContextCompat.getDrawable(mContext, R.drawable.color_white_text_border));
         } else {
-            child.setTextColor(ContextCompat.getColor(mContext, R.color.colorBase));
+            child.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             child.setBackground(ContextCompat.getDrawable(mContext, R.drawable.color_base_text_border));
         }
 

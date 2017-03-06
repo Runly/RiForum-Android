@@ -36,6 +36,7 @@ import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.DetailAdapter;
+import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
@@ -84,7 +85,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private void init() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBase));
+            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
         commentEdit = (EditText) findViewById(R.id.comment_edit_text);
@@ -192,6 +193,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
         adapter.setHeaderView(header);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new MyDecoration(this));
     }
 
     private void fetchData() {

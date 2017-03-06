@@ -2,7 +2,6 @@ package com.github.runly.riforum_android.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,9 +9,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ import com.github.runly.riforum_android.utils.SharedPreferencesUtil;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
 import com.github.runly.riforum_android.utils.UnitConvert;
+import com.kyleduo.switchbutton.SwitchButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,29 +52,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView navigationName;
     private TopBar topBar;
     private User user;
+    private SwitchButton switchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
     }
 
     private void init() {
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        coordinatorLayout.setPadding(0, Constants.STATUS_HEIGHT, 0, 0);
-//        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) coordinatorLayout.getLayoutParams();
-//        params.setMargins(0, Constants.STATUS_HEIGHT, 0, 0);
-//        coordinatorLayout.setLayoutParams(params);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.placeholder_layout);
+        linearLayout.setPadding(0, Constants.STATUS_HEIGHT, 0, 0);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationAvatar = (CircleImageView) findViewById(R.id.navigation_user_avatar);
         navigationName = (TextView) findViewById(R.id.navigation_user_name);
-//        ImageView imageView = (ImageView) findViewById(R.id.navigation_image);
-//        Glide.with(this)
-//                .load(R.mipmap.navigation_bg)
-//                .crossFade()
-//                .into(imageView);
+        switchButton = (SwitchButton) findViewById(R.id.switch_button);
+        switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                recreate();
+                SharedPreferencesUtil.saveValue(Constants.WHICH_MODE, Constants.NIGHT_MODE);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                recreate();
+                SharedPreferencesUtil.saveValue(Constants.WHICH_MODE, Constants.DAY_MODE);
+            }
+        });
 
         topBar = (TopBar) findViewById(R.id.top_bar);
         topBar.getImgLeft().setOnClickListener(this);
@@ -145,6 +151,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    private void setSwitchButton() {
+        int mode = SharedPreferencesUtil.getInt(Constants.WHICH_MODE);
+        if (mode == Constants.DAY_MODE) {
+            switchButton.setChecked(false);
+        } else {
+            switchButton.setChecked(true);
+        }
+    }
+
     private void setAvatars() {
         String avatarUrl = user.avatar + "?imageView2/1/w/" +
                 UnitConvert.dipToPixels(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
@@ -166,7 +181,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-
         user = App.getInstance().getUser();
 
         if (user == null || !App.getInstance().islogin()) {
@@ -215,6 +229,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        setSwitchButton();
+    }
 
     private class PagerAdapter extends FragmentPagerAdapter {
 

@@ -27,7 +27,6 @@
             android:layout_marginBottom="8dp"
             android:layout_gravity="center_horizontal"
             android:textSize="12sp"
-            android:textColor="@color/gray_8a8a8a"
             android:text="@string/modify_avatar"
             />
 

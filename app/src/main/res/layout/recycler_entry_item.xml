@@ -7,8 +7,7 @@
     android:paddingBottom="8dp"
     android:paddingStart="8dp"
     android:paddingEnd="8dp"
-    android:layout_marginBottom="8dp"
-    android:background="@android:color/white">
+    android:layout_marginBottom="8dp" >
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_user_avatar"
@@ -23,8 +22,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/item_user_avatar"
-        android:textColor="@color/gray_505050"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textColor="@color/normal_name"/>
 
     <TextView
         android:id="@+id/item_plate"
@@ -46,7 +45,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="16dp"
         android:textSize="15sp"
-        android:textColor="@color/gray_303030" />
+        android:textColor="@color/normal_content"/>
 
     <LinearLayout
         android:id="@+id/image_linear"

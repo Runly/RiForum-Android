@@ -17,6 +17,7 @@ import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
+import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
@@ -47,7 +48,7 @@ public class RecommendFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
                 R.layout.fragment_rcommend, container, false);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorBase);
+//        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this::fetchDta);
 
         recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
@@ -94,6 +95,7 @@ public class RecommendFrag extends Fragment {
                 .start();
         entriesAdapter.setHeaderView(header);
         recyclerView.setAdapter(entriesAdapter);
+        recyclerView.addItemDecoration(new MyDecoration(getActivity()));
     }
 
     class GlideImageLoader extends ImageLoader {

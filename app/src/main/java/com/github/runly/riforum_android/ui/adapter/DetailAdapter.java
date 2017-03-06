@@ -233,7 +233,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         @Override
         public void updateDrawState(TextPaint ds) {
-            ds.setColor(ContextCompat.getColor(mContext, R.color.colorBase));
+            ds.setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             ds.setUnderlineText(false); //去掉下划线
         }
     }

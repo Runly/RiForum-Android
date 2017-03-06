@@ -4,8 +4,8 @@
     android:orientation="vertical"
     android:layout_width="304dp"
     android:layout_height="match_parent"
+    android:background="@color/navigation_bg"
     android:layout_gravity="start"
-    android:background="@color/gray_f1f1f1"
     android:clickable="true">
 
     <FrameLayout
@@ -17,7 +17,6 @@
             android:id="@+id/navigation_image"
             android:layout_width="match_parent"
             android:layout_height="171dp"
-            android:adjustViewBounds="true"
             android:scaleType="fitXY"
             android:src="@mipmap/navigation_bg"
             tools:ignore="ContentDescription"
@@ -43,8 +42,8 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="@string/click_to_login"
-            android:textColor="@android:color/black"
             android:textSize="20sp"
+            android:textColor="@android:color/black"
             />
 
     </FrameLayout>
@@ -75,8 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:text="@string/user_center"
-            android:textColor="@android:color/black"
             android:textSize="15sp"
+            android:textColor="@color/normal_name"
             />
 
 
@@ -109,8 +108,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:text="@string/setting"
-            android:textColor="@android:color/black"
             android:textSize="15sp"
+            android:textColor="@color/normal_name"
             />
 
 
@@ -142,8 +141,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:text="@string/about"
-            android:textColor="@android:color/black"
             android:textSize="15sp"
+            android:textColor="@color/normal_name"
             />
 
     </LinearLayout>
@@ -175,8 +174,8 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="54dp"
             android:text="@string/night_mode"
-            android:textColor="@android:color/black"
             android:textSize="15sp"
+            android:textColor="@color/normal_name"
             />
 
         <com.kyleduo.switchbutton.SwitchButton

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
     android:orientation="vertical">
 
     <include layout="@layout/layout_entry_detail" />
@@ -11,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:layout_marginTop="16dp"
-        android:background="@color/gray_f1f1f1" />
+        />
 
     <include layout="@layout/view_comment_bar" />
 

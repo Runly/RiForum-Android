@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#303030</color>
+    <color name="colorPrimaryDark">#303030</color>
+    <color name="colorAccent">#B29434</color>
+    <color name="gray_dbdbdb">#dbdbdb</color>
+    <color name="gray_bfbfbf">#bfbfbf</color>
+
+    <!--白天模式背景色-->
+    <color name="color_fafafa">#FAFAFA</color>
+    <!--夜间模式背景色-->
+    <color name="color_303030">#303030</color>
+    <!--夜间模式字体颜色-->
+    <color name="color_c1c1c1">#C1C1C1</color>
+
+    <color name="color_base">@color/color_c1c1c1</color>
+
+    <color name="navigation_bg">@color/colorPrimary</color>
+
+    <color name="normal_name">@color/color_c1c1c1</color>
+    <color name="normal_content">@color/color_c1c1c1</color>
+    <color name="normal_text">@color/color_c1c1c1</color>
+    <color name="normal_edit">#aaa</color>
+
+    <color name="normal_bg">@color/colorPrimary</color>
+
+    <color name="item_dividing">#383838</color>
+
+</resources>
