@@ -27,7 +27,7 @@
 
     <style name="myEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@android:color/darker_gray</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/comment_bar_dictionary</item>
     </style>
 
     <style name="collapsedTitleText" parent="@android:style/TextAppearance">

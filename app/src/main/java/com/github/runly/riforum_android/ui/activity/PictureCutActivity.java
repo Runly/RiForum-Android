@@ -34,20 +34,19 @@ public class PictureCutActivity extends BaseActivity {
                 .withOutputSize(Constants.AVATAR_MAX_SIZE, Constants.AVATAR_MAX_SIZE)
                 .initialize(this);
 
+        Button cancelButton = (Button) findViewById(R.id.cancel);
+        cancelButton.setOnClickListener(v -> finish());
+
         Button sureButton = (Button) findViewById(R.id.sure);
-        sureButton.setOnClickListener(v -> {
-            new Thread() {
-                public void run() {
-                    Bitmap croppedBitmap = cropView.getOutput();
-
-                    Uri destination = Uri.fromFile(new File(Constants.SAVED_AVATAR_DIR_PATH));
-                    CropUtil.saveOutput(PictureCutActivity.this, destination, croppedBitmap, 100);
-                    setResult(RESULT_OK, (new Intent()).setData(destination));
-                    finish();
-                }
-            }.start();
-
-        });
+        sureButton.setOnClickListener(v -> new Thread() {
+            public void run() {
+                Bitmap croppedBitmap = cropView.getOutput();
+                Uri destination = Uri.fromFile(new File(Constants.SAVED_AVATAR_DIR_PATH));
+                CropUtil.saveOutput(PictureCutActivity.this, destination, croppedBitmap, 100);
+                setResult(RESULT_OK, (new Intent()).setData(destination));
+                finish();
+            }
+        }.start());
 
     }
 }

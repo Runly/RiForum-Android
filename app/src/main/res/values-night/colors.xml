@@ -30,4 +30,8 @@
 
     <color name="comment_bar_dictionary">@color/color_c1c1c1</color>
 
+    <color name="login_button_bg">#383838</color>
+
+    <color name="hint">#808080</color>
+
 </resources>

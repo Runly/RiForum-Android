@@ -91,6 +91,7 @@
     <string name="night_mode">夜间模式</string>
 
     <string name="sure">确定</string>
+    <string name="cancel">取消</string>
 
     <string name="no_camera_permission">没有相机权限</string>
     <string name="permission_camera_rationale">为应用开启相机和读写文件权限</string>

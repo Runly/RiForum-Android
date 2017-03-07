@@ -14,7 +14,9 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:hint="@string/sign_in_hint"
+        android:textColorHint="@color/hint"
         android:textCursorDrawable="@drawable/edit_cursor"
+        android:textColor="@color/normal_content"
         android:theme="@style/myEditText"
         />
 
@@ -26,8 +28,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:hint="@string/password"
+        android:textColorHint="@color/hint"
         android:theme="@style/myEditText"
         android:textCursorDrawable="@drawable/edit_cursor"
+        android:textColor="@color/normal_content"
         android:inputType="textPassword" />
 
     <Button
@@ -39,7 +43,8 @@
         android:layout_marginEnd="48dp"
         android:text="@string/login_button"
         android:textSize="18sp"
-        android:background="@color/colorPrimary"
+        android:textColor="@color/normal_text"
+        android:background="@color/login_button_bg"
         />
 
     <TextView
@@ -47,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/comment_bar_dictionary"
         android:text="@string/login_to_sign"
         android:layout_gravity="center_horizontal"
         />

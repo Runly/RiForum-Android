@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:text="取消"
-            style="@style/Widget.AppCompat.ActionButton"
+            android:text="@string/cancel"
+            android:textColor="@color/normal_text"
             />
 
         <Button
@@ -39,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:text="确定"
-            style="@style/Widget.AppCompat.ActionButton"
+            android:text="@string/sure"
+            android:textColor="@color/normal_text"
             />
 
 
