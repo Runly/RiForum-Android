@@ -6,11 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -37,7 +34,6 @@ import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.DetailAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
-import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
 import com.github.runly.riforum_android.utils.UnitConvert;
@@ -60,7 +56,7 @@ import rx.schedulers.Schedulers;
  * Created by ranly on 17-2-20.
  */
 
-public class DetailActivity extends BaseActivity implements View.OnClickListener {
+public class DetailActivity extends TopBarActivity implements View.OnClickListener {
 
     private final static int LAYOUT_HIGHER =
             UnitConvert.dipToPixels(App.getInstance(), 32) * 2 + UnitConvert.dipToPixels(App.getInstance(), 16);
@@ -83,10 +79,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void init() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
+//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+//            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+//            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+//        }
 
         commentEdit = (EditText) findViewById(R.id.comment_edit_text);
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
@@ -132,10 +128,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         View header = getLayoutInflater().inflate(R.layout.recycler_detail_header, recyclerView, false);
         setupRecyclerView(recyclerView, header);
 
-        TopBar topBar = (TopBar) findViewById(R.id.detail_top_bar);
-        topBar.getImgLeft().setOnClickListener(v -> finish());
-        topBar.setOnClickListener(v -> recyclerView.scrollToPosition(0));
-
         CircleImageView userAvatar = (CircleImageView) header.findViewById(R.id.detail_user_avatar);
         RichEditText richEditText = (RichEditText) header.findViewById(R.id.detail_content);
         richEditText.setKeyListener(null);
@@ -151,7 +143,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
         if (null != entry) {
             User user = entry.user;
-            topBar.getTxtCenter().setText(entry.title);
             setRichTextContent(entry.content, richEditText);
             titleTV.setText(entry.title);
             timeTV.setText(TxtUtils.getReadableTime(String.valueOf(entry.time)));
@@ -307,8 +298,17 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        topBar.getImgLeft().setOnClickListener(v -> finish());
+        topBar.setOnClickListener(v -> recyclerView.scrollToPosition(0));
+        if (entry != null ) {
+            topBar.getTxtCenter().setText(entry.title);
+        }
+    }
 
-    public interface OnSoftKeyWordShowListener {
+    interface OnSoftKeyWordShowListener {
         void hasShow(boolean isShow);
     }
 

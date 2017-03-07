@@ -2,12 +2,15 @@ package com.github.runly.richedittext;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
 import com.github.runly.richedittext.effects.Effects;
 import com.github.runly.richedittext.span.EmojiSpan;
@@ -18,6 +21,7 @@ import com.github.runly.richedittext.utils.BitmapUtils;
 import com.github.runly.richedittext.utils.DisplayUtils;
 import com.github.runly.richedittext.utils.RichTextUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +30,7 @@ import java.util.List;
  * @version 4.1.0
  * @since: 15/12/24 下午3:56
  */
-public class RichEditText extends EditText {
+public class RichEditText extends AppCompatEditText{
 
     private static final int IMAGE_MAX_WIDTH = DisplayUtils.getWidthPixels() - DisplayUtils.dp2px(32);
     private static final int IMAGE_MAX_HEIGHT = DisplayUtils.getHeightPixels();
@@ -70,13 +74,111 @@ public class RichEditText extends EditText {
 
     public void addImage(String filePath) {
         SpannableString spannable = new SpannableString("\n<img src=\"" + filePath + "\"/>");
-        Bitmap bitmap = BitmapUtils.decodeScaleImage(filePath, IMAGE_MAX_WIDTH);
+//        Bitmap bitmap = BitmapUtils.decodeScaleImage(filePath, IMAGE_MAX_WIDTH);
+        Bitmap bitmap = getScaledBitmap(filePath);
         if (bitmap == null) {
             return;
         }
         ImageSpan span = new ImageSpan(mContext, bitmap, filePath);
         spannable.setSpan(span, 1, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         getText().insert(getSelectionStart(), spannable);
+    }
+
+    private Bitmap rotateBitmapByDegree(Bitmap bm, int degree) {
+        Bitmap returnBm = null;
+        // 根据旋转角度，生成旋转矩阵
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        try {
+            // 将原始图片按照旋转矩阵进行旋转，并得到新的图片
+            returnBm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(),
+                    bm.getHeight(), matrix, true);
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        }
+        if (returnBm == null) {
+            returnBm = bm;
+        }
+        if (bm != returnBm) {
+            bm.recycle();
+        }
+        return returnBm;
+    }
+
+    private int readPictureDegree(String path) {
+        int degree = 0;
+        try {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return degree;
+    }
+
+    private Bitmap getScaledBitmap(String filePath) {
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+        // 获取旋转角度
+        int degree = readPictureDegree(filePath);
+        if (degree != 0) {
+            // 判断图片是否旋转， 是则旋转回来
+            bitmap = rotateBitmapByDegree(bitmap, degree);
+        }
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int maxHeight = (int) ((float) height / (float) width *  IMAGE_MAX_WIDTH);
+        Bitmap scaledBitmap;
+        if (DisplayUtils.getHeightPixels() == 1800 && DisplayUtils.getWidthPixels() == 1080) {
+            // 适配魅族 1080 × 1800
+            if (width < IMAGE_MAX_WIDTH && height > IMAGE_MAX_HEIGHT) {
+                int w = IMAGE_MAX_WIDTH - 500;
+                maxHeight = (int) ((float) height / (float) width *  w);
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(),
+                        bitmap.getHeight(), w, maxHeight);
+            } else if (width > IMAGE_MAX_WIDTH) {
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(),
+                        IMAGE_MAX_WIDTH, maxHeight);
+            } else {
+                scaledBitmap = bitmap;
+            }
+
+        } else if (DisplayUtils.getWidthPixels() >= 1080) {
+            // 适配大屏手机
+            if (width > IMAGE_MAX_WIDTH) {
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(),
+                        bitmap.getHeight(), IMAGE_MAX_WIDTH, maxHeight);
+            } else {
+                scaledBitmap = bitmap;
+            }
+
+        } else {
+            // 适配小屏手机
+            if (width < IMAGE_MAX_WIDTH && height > IMAGE_MAX_HEIGHT) {
+                int w = IMAGE_MAX_WIDTH - DisplayUtils.dp2px(100);
+                maxHeight = (int) ((float) height / (float) width *  w);
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(),
+                        bitmap.getHeight(), w, maxHeight);
+            } else if (width > IMAGE_MAX_WIDTH) {
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(),
+                        IMAGE_MAX_WIDTH, maxHeight);
+            } else {
+                scaledBitmap = bitmap;
+            }
+        }
+
+        return scaledBitmap;
     }
 
     public void addEmoji(Emoji emoji) {
@@ -91,12 +193,44 @@ public class RichEditText extends EditText {
         int height = bitmap.getHeight();
         int maxHeight = (int) ((float) height / (float) width *  IMAGE_MAX_WIDTH);
         Bitmap scaledBitmap;
-        if (width > IMAGE_MAX_WIDTH) {
-            scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(),
-                    IMAGE_MAX_WIDTH, maxHeight);
+        if (DisplayUtils.getHeightPixels() == 1800 && DisplayUtils.getWidthPixels() == 1080) {
+            // 适配魅族 1080 × 1800
+            if (width < IMAGE_MAX_WIDTH && height > IMAGE_MAX_HEIGHT) {
+                int w = IMAGE_MAX_WIDTH - 500;
+                maxHeight = (int) ((float) height / (float) width *  w);
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(),
+                        bitmap.getHeight(), w, maxHeight);
+            } else if (width > IMAGE_MAX_WIDTH) {
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(),
+                        IMAGE_MAX_WIDTH, maxHeight);
+            } else {
+                scaledBitmap = bitmap;
+            }
+
+        } else if (DisplayUtils.getWidthPixels() >= 1080) {
+            // 适配大屏手机
+            if (width > IMAGE_MAX_WIDTH) {
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(),
+                        IMAGE_MAX_WIDTH, maxHeight);
+            } else {
+                scaledBitmap = bitmap;
+            }
+
         } else {
-            scaledBitmap = bitmap;
+            // 适配小屏手机
+            if (width < IMAGE_MAX_WIDTH && height > IMAGE_MAX_HEIGHT) {
+                int w = IMAGE_MAX_WIDTH - DisplayUtils.dp2px(100);
+                maxHeight = (int) ((float) height / (float) width *  w);
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(),
+                        bitmap.getHeight(), w, maxHeight);
+            } else if (width > IMAGE_MAX_WIDTH) {
+                scaledBitmap = BitmapUtils.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(),
+                        IMAGE_MAX_WIDTH, maxHeight);
+            } else {
+                scaledBitmap = bitmap;
+            }
         }
+
 
         SpannableString spannable = new SpannableString("<img />");
         ImageSpan imageSpan = new ImageSpan(mContext, scaledBitmap, null);

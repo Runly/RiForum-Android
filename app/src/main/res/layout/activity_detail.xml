@@ -1,42 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinator_layout"
+    android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
-
-    <android.support.design.widget.AppBarLayout
-        app:elevation="0dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.github.runly.riforum_android.ui.view.TopBar
-            android:id="@+id/detail_top_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:img_left_height="24"
-            app:img_left_width="24"
-            />
-
-    </android.support.design.widget.AppBarLayout>
-
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/detail_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="48dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:overScrollMode="never"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
+        />
 
     <RelativeLayout
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom|end">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
 
         <TextView
             android:layout_width="match_parent"
@@ -87,7 +70,7 @@
     </RelativeLayout>
 
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
 
 
 

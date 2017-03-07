@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,6 +40,8 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadOptions;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -247,8 +250,22 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = false;
                         BitmapFactory.decodeFile(path, options);
-                        int pWidth = options.outWidth; // 原始宽度
-                        int pHeight = options.outHeight; // 原始高度
+                        int pWidth, pHeight;
+                        switch (readPictureDegree(path)) {
+                            case 0:
+                            case 180:
+                                pWidth = options.outWidth; // 原始宽度
+                                pHeight = options.outHeight; // 原始高度
+                                break;
+                            case 90:
+                            case 270:
+                                pWidth = options.outHeight; // 原始宽度
+                                pHeight = options.outWidth; // 原始高度
+                                break;
+                            default:
+                                pWidth = options.outWidth; // 原始宽度
+                                pHeight = options.outHeight; // 原始高度
+                        }
                         int width = Constants.SCREEN_WIDTH - UnitConvert.dipToPixels(this, 32);
                         int height = (int) (((double) pHeight / (double) pWidth) * width);
                         String url;
@@ -281,6 +298,28 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                 .put(imageSpan.getFilePath(), qiniuToken.key, qiniuToken.token, handler, options);
 
 
+    }
+
+    private int readPictureDegree(String path) {
+        int degree = 0;
+        try {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return degree;
     }
 
     private void pushToMyServer(String content) {

@@ -22,10 +22,12 @@
     <color name="normal_text">@color/color_c1c1c1</color>
     <color name="normal_edit">#aaa</color>
 
-    <color name="normal_bg">@color/colorPrimary</color>
+    <color name="normal_bg">#383838</color>
 
     <color name="item_dividing">#383838</color>
 
     <color name="ripple">@color/color_303030</color>
+
+    <color name="comment_bar_dictionary">@color/color_c1c1c1</color>
 
 </resources>

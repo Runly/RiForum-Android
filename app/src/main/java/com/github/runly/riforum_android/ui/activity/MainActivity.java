@@ -56,6 +56,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
@@ -158,6 +159,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             switchButton.setChecked(false);
         } else {
             switchButton.setChecked(true);
+        }
+    }
+
+    private void setMode() {
+        int mode = SharedPreferencesUtil.getInt(Constants.WHICH_MODE);
+        if (mode == Constants.DAY_MODE) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
     }
 

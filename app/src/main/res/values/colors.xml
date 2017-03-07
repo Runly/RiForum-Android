@@ -28,4 +28,6 @@
 
     <color name="ripple">@color/color_fafafa</color>
 
+    <color name="comment_bar_dictionary">@color/colorPrimary</color>
+
 </resources>

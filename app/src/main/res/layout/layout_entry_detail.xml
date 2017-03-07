@@ -26,7 +26,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/detail_user_avatar"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textColor="@color/normal_name"/>
 
         <TextView
             android:id="@+id/detail_time"
@@ -53,10 +54,11 @@
     <TextView
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="1dp"
         android:layout_below="@+id/detail_user_info"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="16dp"
+        android:background="@color/item_dividing"
         />
 
     <TextView
@@ -69,7 +71,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:textSize="19sp"
-        android:textColor="@android:color/background_dark" />
+        android:textColor="@color/normal_content" />
 
     <LinearLayout
         android:id="@+id/read_linear"
@@ -150,6 +152,7 @@
             android:layout_marginTop="20dp"
             android:background="@null"
             android:textSize="15sp"
+            android:textColor="@color/normal_content"
             />
 
 </RelativeLayout>

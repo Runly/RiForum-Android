@@ -10,7 +10,7 @@
         android:layout_centerVertical="true"
         android:layout_width="4dp"
         android:layout_height="20dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/comment_bar_dictionary"
         />
 
     <TextView
@@ -22,7 +22,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         />
 

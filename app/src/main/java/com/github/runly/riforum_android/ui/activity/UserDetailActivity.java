@@ -17,6 +17,7 @@ import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
+import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
 import java.util.ArrayList;
@@ -56,13 +57,10 @@ public class UserDetailActivity extends BaseActivity {
 
         if (null != user) {
             TextView userInfoText = (TextView) findViewById(R.id.user_info);
-            userInfoText.setOnClickListener(v -> {
-                Intent intent = new Intent(this, UserInfoActivity.class);
-                intent.putExtra("user_data", user);
-                startActivityForResult(intent, Constants.START_USER_INFO);
-            });
+            userInfoText.setOnClickListener(v -> goToUserInfoAct());
 
             avatar = (CircleImageView) findViewById(R.id.user_detail_avatar);
+            avatar.setOnClickListener(v -> goToUserInfoAct());
             if (!TextUtils.isEmpty(user.avatar)) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +
                         UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
@@ -85,6 +83,12 @@ public class UserDetailActivity extends BaseActivity {
 
         setupRecyclerView(recyclerView);
         fetchDta();
+    }
+
+    private void goToUserInfoAct() {
+        Intent intent = new Intent(this, UserInfoActivity.class);
+        intent.putExtra("user_data", user);
+        startActivityForResult(intent, Constants.START_USER_INFO);
     }
 
     private void setGenderImgSrc(int gender) {
@@ -116,14 +120,13 @@ public class UserDetailActivity extends BaseActivity {
                         recyclerView.getAdapter().notifyDataSetChanged();
                         numText.append(String.valueOf(list.size()));
                     }
-                }, throwable -> {
-                    throwable.printStackTrace();
-                });
+                }, Throwable::printStackTrace);
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
         EntriesAdapter entriesAdapter = new EntriesAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(entriesAdapter);
+        recyclerView.addItemDecoration(new MyDecoration(this, 8));
     }
 
     @Override

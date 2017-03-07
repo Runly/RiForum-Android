@@ -265,6 +265,7 @@ public class UserInfoActivity extends TopBarActivity {
                     isEdit = true;
 
                 } else {
+                    topBar.getTxtRight().setText("修改");
                     nameEdit.setEnabled(false);
                     genderEdit.setEnabled(false);
                     isEdit = false;

@@ -17,12 +17,12 @@ import com.github.runly.riforum_android.interfaces.OnChooseGenderListener;
 
 public class GenderDialog extends Dialog {
     private OnChooseGenderListener listener;
-    private int currentGedner;
+    private int currentGender;
 
     public GenderDialog(Context context, OnChooseGenderListener listener, int currentGender) {
         super(context);
         this.listener = listener;
-        this.currentGedner = currentGender;
+        this.currentGender = currentGender;
     }
 
     public GenderDialog(Context context, int themeResId) {
@@ -46,13 +46,12 @@ public class GenderDialog extends Dialog {
             }
         }
 
-        findViewById(R.id.cancel).setOnClickListener(v->cancel());
         findViewById(R.id.sure).setOnClickListener(v->cancel());
 
         CheckBox cbxMale = (CheckBox) findViewById(R.id.cbx_male);
         CheckBox cbxFemale = (CheckBox) findViewById(R.id.cbx_female);
 
-        if (currentGedner == 0)
+        if (currentGender == 0)
             cbxMale.setChecked(true);
         else
             cbxFemale.setChecked(true);
