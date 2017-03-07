@@ -1,5 +1,6 @@
 package com.github.runly.riforum_android.ui.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -12,8 +13,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,18 +24,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.runly.richedittext.RichEditText;
 import com.github.runly.richedittext.span.ImageSpan;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.App;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.qiniu.QiniuToken;
 import com.github.runly.riforum_android.qiniu.UploadManagerFactory;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
-import com.github.runly.riforum_android.application.App;
-import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.UnitConvert;
 import com.google.gson.Gson;
@@ -41,12 +43,17 @@ import com.qiniu.android.storage.UploadOptions;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -54,6 +61,7 @@ import rx.schedulers.Schedulers;
  * Created by ranly on 17-2-8.
  */
 
+@RuntimePermissions
 public class ReleaseActivity extends TopBarActivity implements View.OnClickListener {
     private RichEditText richEditText;
     private EditText titleTV;
@@ -147,7 +155,8 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
         txtRight.setOnClickListener(this);
     }
 
-    private void openCamera() {
+    @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void openCamera() {
         // 指定相机拍摄照片保存地址
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
@@ -169,18 +178,55 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
             // 设置系统相机拍摄照片完成后图片文件的存放地址
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             startActivityForResult(intent, Constants.CAMERA_REQUEST_CODE);
-        } else {
-            Toast.makeText(getApplicationContext(), "请确认已经插入SD卡",
-                    Toast.LENGTH_LONG).show();
         }
     }
 
-    private void addPhoto() {
+    @OnShowRationale({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void showRationaleForCamera(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.permission_camera_rationale)
+                .setPositiveButton(R.string.button_allow, (dialog, button) -> request.proceed())
+                .setNegativeButton(R.string.button_deny, (dialog, button) -> request.cancel())
+                .show();
+    }
+
+    @OnPermissionDenied({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void showDeniedForCamera() {
+        ToastUtil.makeShortToast(this, getString(R.string.no_camera_permission));
+    }
+
+    @OnNeverAskAgain({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void showNeverAskForCamera() {
+
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void addPhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, Constants.ALBUM_REQUEST_CODE);
     }
+
+    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showRationaleForWriteExternalStorage(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.permission_camera_rationale)
+                .setPositiveButton(R.string.button_allow, (dialog, button) -> request.proceed())
+                .setNegativeButton(R.string.button_deny, (dialog, button) -> request.cancel())
+                .show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showDeniedForWriteExternalStorage() {
+        ToastUtil.makeShortToast(this, getString(R.string.no_camera_permission));
+    }
+
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showNeverAskForWriteExternalStorage() {
+        ToastUtil.makeShortToast(this, getString(R.string.never_ask_again));
+    }
+
 
     private void displayDialog() {
         dialog = new ProgressDialog(this);
@@ -380,11 +426,13 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.open_camera:
-                openCamera();
+                ReleaseActivityPermissionsDispatcher.openCameraWithCheck(this);
+//                openCamera();
                 break;
 
             case R.id.add_photo:
-                addPhoto();
+                ReleaseActivityPermissionsDispatcher.addPhotoWithCheck(this);
+//                addPhoto();
                 break;
 
             case R.id.txt_right:
@@ -401,6 +449,5 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                 break;
         }
     }
-
 
 }

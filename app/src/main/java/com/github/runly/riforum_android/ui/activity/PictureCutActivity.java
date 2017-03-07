@@ -26,7 +26,7 @@ public class PictureCutActivity extends BaseActivity {
         init();
     }
 
-    private void init(){
+    void init(){
         Uri sourceUri = getIntent().getData();
 
         CropView cropView = (CropView) findViewById(R.id.cropView);
@@ -50,5 +50,4 @@ public class PictureCutActivity extends BaseActivity {
         });
 
     }
-
 }

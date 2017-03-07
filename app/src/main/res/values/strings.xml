@@ -91,4 +91,11 @@
     <string name="night_mode">夜间模式</string>
 
     <string name="sure">确定</string>
+
+    <string name="no_camera_permission">没有相机权限</string>
+    <string name="permission_camera_rationale">为应用开启相机和读写文件权限</string>
+    <string name="permission_WRITE_EXTERNAL_STORAGE">为应用开启读写文件权限</string>
+    <string name="button_allow">开启</string>
+    <string name="button_deny">拒绝</string>
+    <string name="never_ask_again">不再询问</string>
 </resources>

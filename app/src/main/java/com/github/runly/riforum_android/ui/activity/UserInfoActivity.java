@@ -1,5 +1,6 @@
 package com.github.runly.riforum_android.ui.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,13 +9,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +39,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -45,6 +52,7 @@ import rx.schedulers.Schedulers;
  * Created by ranly on 17-3-1.
  */
 
+@RuntimePermissions
 public class UserInfoActivity extends TopBarActivity {
     private User user;
     private boolean isEdit = false;
@@ -75,7 +83,7 @@ public class UserInfoActivity extends TopBarActivity {
             if (loggedUser != null && loggedUser.id == user.id) {
                 userAvatar.setOnClickListener(v -> {
                     ChooseAvatarDialog avatarDialog = new ChooseAvatarDialog(this, user.avatar);
-                    View.OnClickListener onClickListener = view -> addPhoto(avatarDialog);
+                    View.OnClickListener onClickListener = view -> UserInfoActivityPermissionsDispatcher.addPhotoWithCheck(this, avatarDialog);
                     avatarDialog.show();
                     avatarDialog.setButtonListener(onClickListener);
                 });
@@ -101,12 +109,13 @@ public class UserInfoActivity extends TopBarActivity {
 
             if (!TextUtils.isEmpty(user.avatar)) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
-                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
+                    UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                    UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
+
                 Glide.with(this)
-                        .load(avatarUrl)
-                        .crossFade()
-                        .into(userAvatar);
+                    .load(avatarUrl)
+                    .crossFade()
+                    .into(userAvatar);
             }
 
             nameEdit.setText(user.name);
@@ -116,10 +125,12 @@ public class UserInfoActivity extends TopBarActivity {
             EditText id = (EditText) findViewById(R.id.user_info_id_edit);
             id.setText(String.valueOf(user.id));
             EditText account = (EditText) findViewById(R.id.user_info_account_edit);
+
             if (!TextUtils.isEmpty(user.phone))
                 account.setText(user.phone);
             else
                 account.setText(user.email);
+
             EditText time = (EditText) findViewById(R.id.user_info_time_edit);
             time.setText(DateFormat.format("yyyy-MM-dd", user.time));
         }
@@ -145,21 +156,21 @@ public class UserInfoActivity extends TopBarActivity {
                 map.put("token", user.token);
                 displayDialog();
                 RetrofitFactory.getInstance().getQiuniuTokenService().qiniuToken(map)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
-                            if ("1".equals(response.code)) {
-                                QiniuToken qiniuToken = response.data;
-                                upLoadAvatar(qiniuToken, uri);
-                            }else {
-                                cancelDialog();
-                                ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
-                            }
-                        }, throwable -> {
-                            throwable.printStackTrace();
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(response -> {
+                        if ("1".equals(response.code)) {
+                            QiniuToken qiniuToken = response.data;
+                            upLoadAvatar(qiniuToken, uri);
+                        } else {
                             cancelDialog();
                             ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
-                        });
+                        }
+                    }, throwable -> {
+                        throwable.printStackTrace();
+                        cancelDialog();
+                        ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
+                    });
             }
         }
     }
@@ -189,53 +200,75 @@ public class UserInfoActivity extends TopBarActivity {
             Map<String, Object> map = new HashMap<>();
             map.put("uid", user.id);
             map.put("avatar", avatarUrl);
-            RetrofitFactory.getInstance().getUserService().modify_avatar(map)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(res -> {
-                        if ("1".equals(res.code)) {
-                            user = res.data;
-                            App.getInstance().setUser(user);
-                            if (!TextUtils.isEmpty(user.avatar)) {
-                                String avatar_url = user.avatar + "?imageView2/1/w/" +
-                                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
-                                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
-                                Glide.with(this)
-                                        .load(avatar_url)
-                                        .crossFade()
-                                        .into(userAvatar);
-                                cancelDialog();
-                                ToastUtil.makeShortToast(this, getString(R.string.avatar_modified));
-                            } else {
-                                cancelDialog();
-                                ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
-                            }
 
+            RetrofitFactory
+                .getInstance()
+                .getUserService()
+                .modify_avatar(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+                    if ("1".equals(res.code)) {
+                        user = res.data;
+                        App.getInstance().setUser(user);
+                        if (!TextUtils.isEmpty(user.avatar)) {
+                            String avatar_url = user.avatar + "?imageView2/1/w/" +
+                                UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                                UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
+                            Glide
+                                .with(this)
+                                .load(avatar_url)
+                                .crossFade()
+                                .into(userAvatar);
+                            cancelDialog();
+                            ToastUtil.makeShortToast(this, getString(R.string.avatar_modified));
+                        } else {
+                            cancelDialog();
+                            ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
                         }
-                    }, throwable -> {
-                        throwable.printStackTrace();
-                        cancelDialog();
-                        ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
-                    });
-
+                    }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    cancelDialog();
+                    ToastUtil.makeShortToast(this, getString(R.string.avatar_modify_failed));
+                });
         };
 
         UploadOptions options = new UploadOptions(null, null, false,
-                (key, percent) -> {
-                    Log.i("progress", percent + "");
-                    setDialogProgress((int) (percent*100));
-                }, null);
-
+            (key, percent) -> {
+                Log.i("progress", percent + "");
+                setDialogProgress((int) (percent * 100));
+            }, null);
 
         UploadManagerFactory.getUploadManager().put(uri.getPath(), qiniuToken.key, qiniuToken.token, handler, options);
     }
 
-    private void addPhoto(Dialog dialog) {
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void addPhoto(Dialog dialog) {
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, Constants.ALBUM_REQUEST_CODE);
         dialog.cancel();
+    }
+
+    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showRationaleForWriteExternalStorage(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+            .setMessage(R.string.permission_camera_rationale)
+            .setPositiveButton(R.string.button_allow, (dialog, button) -> request.proceed())
+            .setNegativeButton(R.string.button_deny, (dialog, button) -> request.cancel())
+            .show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showDeniedForWriteExternalStorage() {
+        ToastUtil.makeShortToast(this, getString(R.string.no_camera_permission));
+    }
+
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showNeverAskForWriteExternalStorage() {
+        ToastUtil.makeShortToast(this, getString(R.string.never_ask_again));
     }
 
     private void toCutPicture(Uri uri) {
@@ -250,7 +283,12 @@ public class UserInfoActivity extends TopBarActivity {
 
         topBar.getTxtLeft().setText("个人资料");
 
-        if (user.id == App.getInstance().getUser().id) {
+        User loginUser = App.getInstance().getUser();
+        if (loginUser == null) {
+            return;
+        }
+
+        if (user.id == loginUser.id) {
 
             topBar.getTxtRight().setText("修改");
 
@@ -281,17 +319,20 @@ public class UserInfoActivity extends TopBarActivity {
                         }
                         map.put("name", name);
                         map.put("gender", gender);
-                        RetrofitFactory.getInstance().getUserService().modify_info(map)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(response -> {
-                                    if ("1".equals(response.code)) {
-                                        user = response.data;
-                                        App.getInstance().setUser(user);
-                                        ToastUtil.makeShortToast(this, "修改成功");
-                                    }
-                                }, Throwable::printStackTrace);
 
+                        RetrofitFactory
+                            .getInstance()
+                            .getUserService()
+                            .modify_info(map)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(response -> {
+                                if ("1".equals(response.code)) {
+                                    user = response.data;
+                                    App.getInstance().setUser(user);
+                                    ToastUtil.makeShortToast(this, "修改成功");
+                                }
+                            }, Throwable::printStackTrace);
                     }
 
                 }
