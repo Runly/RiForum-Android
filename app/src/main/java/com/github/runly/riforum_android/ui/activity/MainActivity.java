@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         topBar.getTxtLeft().setOnClickListener(this);
         RelativeLayout constraintLayout = (RelativeLayout) topBar.findViewById(R.id.relativeLayout_layout);
         ViewGroup.LayoutParams lp = constraintLayout.getLayoutParams();
-        lp.height = UnitConvert.dipToPixels(this, Constants.MAIN_TOPBAR_HEIGHT);
+        lp.height = UnitConvert.dp2Px(this, Constants.MAIN_TOPBAR_HEIGHT);
         constraintLayout.setLayoutParams(lp);
 
 
@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(RecommendFrag.createInstance(), getString(R.string.tab_1));
-        pagerAdapter.addFragment(ForumFrag.createInstance(20), getString(R.string.tab_2));
+        pagerAdapter.addFragment(ForumFrag.createInstance(), getString(R.string.tab_2));
         pagerAdapter.addFragment(DiscoverFrag.createInstance(20), getString(R.string.tab_3));
 //        pagerAdapter.addFragment(NotifyFrag.createInstance(20), getString(R.string.tab_4));
         viewPager.setAdapter(pagerAdapter);
@@ -193,16 +193,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void setAvatars() {
         String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                UnitConvert.dipToPixels(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
-                UnitConvert.dipToPixels(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
+                UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
         Glide.with(this)
                 .load(avatarUrl)
                 .crossFade()
                 .into(topBar.getImgLeft());
 
         avatarUrl = user.avatar + "?imageView2/1/w/" +
-                UnitConvert.dipToPixels(this, Constants.NAVIGATION_AVATAR_SIZE) + "/h/" +
-                UnitConvert.dipToPixels(this, Constants.NAVIGATION_AVATAR_SIZE) + "/format/webp";
+                UnitConvert.dp2Px(this, Constants.NAVIGATION_AVATAR_SIZE) + "/h/" +
+                UnitConvert.dp2Px(this, Constants.NAVIGATION_AVATAR_SIZE) + "/format/webp";
         Glide.with(this)
                 .load(avatarUrl)
                 .crossFade()

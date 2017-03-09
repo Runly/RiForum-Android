@@ -53,8 +53,8 @@ public class TopBarActivity extends BaseActivity {
         topBar.getTxtLeft().setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         CircleImageView cImg = (CircleImageView) topBar.getImgLeft();
         ViewGroup.LayoutParams lp = cImg.getLayoutParams();
-        lp.height = UnitConvert.dipToPixels(this, 24);
-        lp.width = UnitConvert.dipToPixels(this, 24);
+        lp.height = UnitConvert.dp2Px(this, 24);
+        lp.width = UnitConvert.dp2Px(this, 24);
         cImg.setLayoutParams(lp);
         topBar.getImgLeft().setOnClickListener(v -> finish());
 

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,17 +25,14 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by ranly on 17-2-13.
+ * Created by ranly on 17-3-8.
  */
 
-public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;  //Header
     private static final int TYPE_FOOTER = 1;  //Footer
     private static final int TYPE_NORMAL = 2;  //Normal
-
     private Context mContext;
-
-
     private List<Entry> mItemList;
     private View mHeaderView = null;
     private View mFooterView = null;
@@ -51,7 +47,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         notifyItemInserted(getItemCount() - 1);
     }
 
-    public EntriesAdapter(Context context, List<Entry> itemList) {
+    public ForumAdapter(Context context, List<Entry> itemList) {
         this.mItemList = itemList;
         this.mContext = context;
     }
@@ -74,17 +70,16 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mHeaderView != null && viewType == TYPE_HEADER) {
-            return new ViewHolder(mHeaderView);
+            return new ForumAdapter.ViewHolder(mHeaderView);
         }
 
         if (mFooterView != null && viewType == TYPE_FOOTER) {
-            return new ViewHolder(mFooterView);
+            return new ForumAdapter.ViewHolder(mFooterView);
         }
 
-        final View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_entry_item, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_entry_item_small, parent, false);
 
-        return new ViewHolder(view);
+        return new ForumAdapter.ViewHolder(view);
     }
 
     @Override
@@ -108,12 +103,12 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 User user = itemData.user;
                 if (null != user) {
                     String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                            UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
-                            UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
+                        UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                        UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
                     Glide.with(mContext)
-                            .load(avatarUrl)
-                            .crossFade()
-                            .into(holder.userAvatar);
+                        .load(avatarUrl)
+                        .crossFade()
+                        .into(holder.userAvatar);
 
                     holder.userName.setText(user.name);
 
@@ -135,31 +130,20 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 holder.plate.setText(TxtUtils.getPlateWithId(itemData.plate));
                 holder.title.setText(itemData.title);
 
-                for (int i = 0; i < itemData.image.size(); i++) {
-                    if (i > 2)
-                        break;
+                int width = (Constants.SCREEN_WIDTH - UnitConvert.dp2Px(mContext, 56)) / 2;
+                int height = UnitConvert.dp2Px(mContext, 100);
 
-                    int width = (Constants.SCREEN_WIDTH - UnitConvert.dp2Px(mContext, 24)) / 3;
-                    int height = UnitConvert.dp2Px(mContext, 80);
-
-                    String url = itemData.image.get(i) +
-                            "?imageView2/1/w/" + width + "/h/" + height + "/format/webp";
+                if (itemData.image.size() > 0) {
+                    String url = itemData.image.get(0) +
+                        "?imageView2/1/w/" + width + "/h/" + height + "/format/webp";
                     Glide.with(mContext)
-                            .load(url)
-                            .crossFade()
-                            .into((ImageView) holder.imageLinear.getChildAt(i));
-
-                    if (itemData.image.size() == 1 && i == 0) {
-                        ((ImageView) holder.imageLinear.getChildAt(1)).setImageDrawable(null);
-                        ((ImageView) holder.imageLinear.getChildAt(2)).setImageDrawable(null);
-                        break;
-                    }
-
-                    if (itemData.image.size() == 2 && i == 1) {
-                        ((ImageView) holder.imageLinear.getChildAt(2)).setImageDrawable(null);
-                        break;
-                    }
+                        .load(url)
+                        .crossFade()
+                        .into(holder.imageOne);
+                } else {
+                    holder.imageOne.setVisibility(View.GONE);
                 }
+
                 holder.time.setText(TxtUtils.getReadableTime(String.valueOf(itemData.time)));
                 holder.readNum.setText(String.valueOf(itemData.read_num));
                 holder.commentNum.setText(String.valueOf(itemData.comment_num));
@@ -183,6 +167,10 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return mItemList == null ? 2 : mItemList.size() + 2;
     }
 
+    public boolean isHeader(int position) {
+        return position == 0;
+    }
+
     public List<Entry> getItemList() {
         return mItemList;
     }
@@ -194,7 +182,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView userName;
         TextView plate;
         TextView title;
-        LinearLayout imageLinear;
+        ImageView imageOne;
         TextView time;
         TextView readNum;
         TextView commentNum;
@@ -213,7 +201,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             userName = (TextView) itemView.findViewById(R.id.item_user_name);
             plate = (TextView) itemView.findViewById(R.id.item_plate);
             title = (TextView) itemView.findViewById(R.id.item_title);
-            imageLinear = (LinearLayout) itemView.findViewById(R.id.image_linear);
+            imageOne = (ImageView) itemView.findViewById(R.id.image_one);
             time = (TextView) itemView.findViewById(R.id.item_time);
             readNum = (TextView) itemView.findViewById(R.id.read_number);
             commentNum = (TextView) itemView.findViewById(R.id.comment_number);

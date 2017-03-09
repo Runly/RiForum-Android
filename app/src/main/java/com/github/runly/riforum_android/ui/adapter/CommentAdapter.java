@@ -36,7 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by ranly on 17-2-20.
  */
 
-public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;  //Header
     private static final int TYPE_FOOTER = 1;  //Footer
     private static final int TYPE_NORMAL = 2;  //Normal
@@ -59,7 +59,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemInserted(getItemCount() - 1);
     }
 
-    public DetailAdapter(Context context, List<Comment> itemList, EditText editText, OnCommentedListener listener) {
+    public CommentAdapter(Context context, List<Comment> itemList, EditText editText, OnCommentedListener listener) {
         this.mItemList = itemList;
         this.mContext = context;
         this.commentEdit = editText;
@@ -85,22 +85,22 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mHeaderView != null && viewType == TYPE_HEADER) {
-            return new DetailAdapter.ViewHolder(mHeaderView);
+            return new CommentAdapter.ViewHolder(mHeaderView);
         }
 
         if (mFooterView != null && viewType == TYPE_FOOTER) {
-            return new DetailAdapter.ViewHolder(mFooterView);
+            return new CommentAdapter.ViewHolder(mFooterView);
         }
 
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_comment_item, parent, false);
 
-        return new DetailAdapter.ViewHolder(view);
+        return new CommentAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if (getItemViewType(position) == TYPE_NORMAL) {
-            DetailAdapter.ViewHolder holder = (DetailAdapter.ViewHolder) viewHolder;
+            CommentAdapter.ViewHolder holder = (CommentAdapter.ViewHolder) viewHolder;
             Comment itemData;
             Comment commented;
             if (mHeaderView == null) {
@@ -113,8 +113,8 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 User user = itemData.user;
                 if (null != user) {
                     String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                            UnitConvert.dipToPixels(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
-                            UnitConvert.dipToPixels(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
+                            UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                            UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
                     Glide.with(mContext)
                             .load(avatarUrl)
                             .crossFade()
@@ -191,6 +191,10 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         return mItemList == null ? 2 : mItemList.size() + 2;
+    }
+
+    public List<Comment> getItemList() {
+        return mItemList;
     }
 
 

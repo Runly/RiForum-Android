@@ -23,7 +23,7 @@ public class ScrollingFABBehavior extends CoordinatorLayout.Behavior<FloatingAct
 //                new int[]{android.R.attr.actionBarSize});
 //        topBarHeight = styledAttributes.getDimension(0, 0);
 //        styledAttributes.recycle();
-        topBarHeight = UnitConvert.dipToPixels(context, Constants.MAIN_TOPBAR_HEIGHT);
+        topBarHeight = UnitConvert.dp2Px(context, Constants.MAIN_TOPBAR_HEIGHT);
         sizeHide = -topBarHeight;
         sizeShow = 0;
     }

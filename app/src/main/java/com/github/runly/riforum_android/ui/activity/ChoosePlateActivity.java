@@ -35,6 +35,7 @@ public class ChoosePlateActivity extends TopBarActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setHasFixedSize(true);
         setupRecyclerView(recyclerView);
         fetchData();
     }

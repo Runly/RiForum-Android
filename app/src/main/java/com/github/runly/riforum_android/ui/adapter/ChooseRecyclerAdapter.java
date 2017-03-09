@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.github.runly.riforum_android.R;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by ranly on 17-2-9.
  */
 
-public class ChooseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class ChooseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private List<Plate> mItemList;
 

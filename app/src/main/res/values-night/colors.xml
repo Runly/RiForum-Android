@@ -34,4 +34,6 @@
 
     <color name="hint">#808080</color>
 
+    <color name="tabIndicator">@color/color_c1c1c1</color>
+
 </resources>

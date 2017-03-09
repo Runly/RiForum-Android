@@ -32,7 +32,7 @@ import com.github.runly.riforum_android.model.Comment;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
-import com.github.runly.riforum_android.ui.adapter.DetailAdapter;
+import com.github.runly.riforum_android.ui.adapter.CommentAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
@@ -59,10 +59,10 @@ import rx.schedulers.Schedulers;
 public class DetailActivity extends TopBarActivity implements View.OnClickListener {
 
     private final static int LAYOUT_HIGHER =
-            UnitConvert.dipToPixels(App.getInstance(), 32) * 2 + UnitConvert.dipToPixels(App.getInstance(), 16);
-    private final static int LAYOUT_HIGH = UnitConvert.dipToPixels(App.getInstance(), 48);
-    private final static int EDIT_HIGHER = UnitConvert.dipToPixels(App.getInstance(), 32) * 2;
-    private final static int EDIT_HIGH = UnitConvert.dipToPixels(App.getInstance(), 32);
+            UnitConvert.dp2Px(App.getInstance(), 32) * 2 + UnitConvert.dp2Px(App.getInstance(), 16);
+    private final static int LAYOUT_HIGH = UnitConvert.dp2Px(App.getInstance(), 48);
+    private final static int EDIT_HIGHER = UnitConvert.dp2Px(App.getInstance(), 32) * 2;
+    private final static int EDIT_HIGH = UnitConvert.dp2Px(App.getInstance(), 32);
 
     private EditText commentEdit;
     private RecyclerView recyclerView;
@@ -152,8 +152,8 @@ public class DetailActivity extends TopBarActivity implements View.OnClickListen
 
             if (null != user) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                        UnitConvert.dipToPixels(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
-                        UnitConvert.dipToPixels(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
+                        UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                        UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
                 Glide.with(this)
                         .load(avatarUrl)
                         .crossFade()
@@ -180,11 +180,13 @@ public class DetailActivity extends TopBarActivity implements View.OnClickListen
 
         OnCommentedListener listener =
                 (comment, position) -> commented = comment;
-        DetailAdapter adapter = new DetailAdapter(this, commentList, commentEdit, listener);
+        CommentAdapter adapter = new CommentAdapter(this, commentList, commentEdit, listener);
 
         adapter.setHeaderView(header);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new MyDecoration(this, 0, 0, 0, 1, false));
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new MyDecoration(this, 1));
+
     }
 
     private void fetchData() {

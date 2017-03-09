@@ -63,8 +63,8 @@ public class UserDetailActivity extends BaseActivity {
             avatar.setOnClickListener(v -> goToUserInfoAct());
             if (!TextUtils.isEmpty(user.avatar)) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
-                        UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
+                        UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                        UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
                 Glide.with(this)
                         .load(avatarUrl)
                         .crossFade()
@@ -126,7 +126,8 @@ public class UserDetailActivity extends BaseActivity {
     private void setupRecyclerView(RecyclerView recyclerView) {
         EntriesAdapter entriesAdapter = new EntriesAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(entriesAdapter);
-        recyclerView.addItemDecoration(new MyDecoration(this, 8));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new MyDecoration(this, 8, 8, 8, 0, true));
     }
 
     @Override
@@ -140,8 +141,8 @@ public class UserDetailActivity extends BaseActivity {
                     setGenderImgSrc(user.gender);
                     if (!TextUtils.isEmpty(user.avatar)) {
                         String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                                UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
-                                UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
+                                UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                                UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
                         Glide.with(this)
                                 .load(avatarUrl)
                                 .crossFade()
@@ -157,6 +158,6 @@ public class UserDetailActivity extends BaseActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         // TODO Auto-generated method stub
         super.onWindowFocusChanged(hasFocus);
-        genderImg.setTranslationX(nameText.getWidth()/2 + UnitConvert.dipToPixels(this, 16));
+        genderImg.setTranslationX(nameText.getWidth()/2 + UnitConvert.dp2Px(this, 16));
     }
 }

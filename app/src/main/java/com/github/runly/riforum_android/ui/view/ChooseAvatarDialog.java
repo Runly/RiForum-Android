@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -45,8 +43,8 @@ public class ChooseAvatarDialog extends Dialog {
         ImageView avatar = (ImageView) findViewById(R.id.dialog_avatar);
         if (!TextUtils.isEmpty(avatarUrl)){
             String avatar_url = avatarUrl + "?imageView2/1/w/" +
-                    UnitConvert.dipToPixels(mContext, Constants.DIALOG_AVATAR_SIZE) + "/h/" +
-                    UnitConvert.dipToPixels(mContext, Constants.DIALOG_AVATAR_SIZE) + "/format/webp";
+                    UnitConvert.dp2Px(mContext, Constants.DIALOG_AVATAR_SIZE) + "/h/" +
+                    UnitConvert.dp2Px(mContext, Constants.DIALOG_AVATAR_SIZE) + "/format/webp";
             Glide.with(mContext)
                     .load(avatar_url)
                     .crossFade()

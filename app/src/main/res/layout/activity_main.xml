@@ -50,7 +50,7 @@
                     app:tabTextColor="@color/gray_dbdbdb"
                     app:tabSelectedTextColor="@android:color/white"
                     app:tabTextAppearance="@android:style/TextAppearance.Holo.Widget.TextView"
-                    app:tabIndicatorColor="@android:color/white"
+                    app:tabIndicatorColor="@color/tabIndicator"
                     app:tabIndicatorHeight="3dp" />
 
             </android.support.design.widget.AppBarLayout>

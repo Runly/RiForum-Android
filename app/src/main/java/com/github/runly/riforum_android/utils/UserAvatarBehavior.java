@@ -29,11 +29,11 @@ public class UserAvatarBehavior extends CoordinatorLayout.Behavior<ImageView> {
 //        float topBarHeight = styledAttributes.getDimension(0, 0);
 //        styledAttributes.recycle();
 
-//        translationY = UnitConvert.dipToPixels(mContext, avatarMarginTop) -
+//        translationY = UnitConvert.dp2Px(mContext, avatarMarginTop) -
 //                (topBarHeight) / 2 -
 //                Constants.STATUS_HEIGHT;
-        avatarWidth = UnitConvert.dipToPixels(context, 72);
-        dependencyEndY = UnitConvert.dipToPixels(context, 174); // Log查看dependency.getY()的边界值后除以屏幕密度 = 190 dp
+        avatarWidth = UnitConvert.dp2Px(context, 72);
+        dependencyEndY = UnitConvert.dp2Px(context, 174); // Log查看dependency.getY()的边界值后除以屏幕密度 = 190 dp
     }
 
     @Override

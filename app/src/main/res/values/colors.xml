@@ -5,6 +5,7 @@
     <color name="colorAccent">#FFD54F</color>
     <color name="gray_dbdbdb">#dbdbdb</color>
     <color name="gray_bfbfbf">#bfbfbf</color>
+    <color name="color_515151">#515151</color>
 
     <!--白天模式背景色-->
     <color name="color_fafafa">#FAFAFA</color>
@@ -33,5 +34,7 @@
     <color name="login_button_bg">@color/colorPrimary</color>
 
     <color name="hint">#808080</color>
+
+    <color name="tabIndicator">@android:color/white</color>
 
 </resources>

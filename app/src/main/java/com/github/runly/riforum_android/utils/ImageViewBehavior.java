@@ -1,7 +1,6 @@
 package com.github.runly.riforum_android.utils;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
@@ -9,7 +8,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.github.runly.riforum_android.R;
 
@@ -27,7 +25,7 @@ public class ImageViewBehavior extends CoordinatorLayout.Behavior<ImageView> {
         super(context, attrs);
         this.mContext = context;
 
-        dependencyEndY = UnitConvert.dipToPixels(context, 174); // Log查看dependency.getY()的边界值后除以屏幕密度 = 166 dp
+        dependencyEndY = UnitConvert.dp2Px(context, 174); // Log查看dependency.getY()的边界值后除以屏幕密度 = 166 dp
     }
 
     @Override

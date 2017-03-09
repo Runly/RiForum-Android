@@ -64,19 +64,28 @@ public class TxtUtils {
         String plateName = null;
         switch(id){
             case 1:
-                plateName = Constants.NEWS;
+                plateName = Constants.FUNNY;
                 break;
             case 2:
                 plateName = Constants.MEDIA;
                 break;
             case 3:
-                plateName = Constants.TRAVEL_FOOD;
+                plateName = Constants.TRAVEL;
                 break;
             case 4:
                 plateName = Constants.GAME;
                 break;
             case 5:
                 plateName = Constants.DAILY_LIFE;
+                break;
+            case 6:
+                plateName = Constants.FOOD;
+                break;
+            case 7:
+                plateName = Constants.CARTON;
+                break;
+            default:
+
         }
 
 
@@ -108,8 +117,8 @@ public class TxtUtils {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
                             LinearLayout.LayoutParams.MATCH_PARENT, 1);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        params.setMarginStart(UnitConvert.dipToPixels(context, 35));
-                        params.setMarginEnd(UnitConvert.dipToPixels(context, 35));
+                        params.setMarginStart(UnitConvert.dp2Px(context, 35));
+                        params.setMarginEnd(UnitConvert.dp2Px(context, 35));
                     }
                     child.setLayoutParams(params);
                     child.invalidate();

@@ -98,5 +98,14 @@
     <string name="permission_WRITE_EXTERNAL_STORAGE">为应用开启读写文件权限</string>
     <string name="button_allow">开启</string>
     <string name="button_deny">拒绝</string>
-    <string name="never_ask_again">不再询问</string>
+    <string name="never_ask_again">不再询问</string>\
+
+    <string name="funny">新奇趣事</string>
+    <string name="media">影音娱乐</string>
+    <string name="travel">旅游出行</string>
+    <string name="game">游戏电竞</string>
+    <string name="daily_life">生活日常</string>
+    <string name="food">美食达人</string>
+    <string name="carton">动漫周边</string>
+    <string name="more">更多板块</string>
 </resources>

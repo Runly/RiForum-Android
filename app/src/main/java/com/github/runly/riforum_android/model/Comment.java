@@ -1,10 +1,13 @@
 package com.github.runly.riforum_android.model;
 
+import java.io.Serializable;
+
 /**
  * Created by ranly on 17-2-23.
  */
 
-public class Comment {
+public class Comment implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * content : 评论测试

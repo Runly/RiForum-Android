@@ -32,11 +32,14 @@ public class Constants {
             Environment.getExternalStorageDirectory().getPath() + "/DCIM/riforum_avatar.jpg";
 
     // plates
-    public static final String NEWS = "新奇趣事";
+    public static final String FUNNY = "新奇趣事";
     public static final String MEDIA = "影音娱乐";
-    public static final String TRAVEL_FOOD = "旅游美食";
+    public static final String TRAVEL = "旅游出行";
     public static final String GAME = "游戏电竞";
     public static final String DAILY_LIFE = "生活日常";
+    public static final String FOOD = "美食达人";
+    public static final String CARTON = "动漫周边";
+
 
     public static final String INTENT_USER_DATA = "user_data";
     public static final String INTENT_ITEM_DATA = "item_data";

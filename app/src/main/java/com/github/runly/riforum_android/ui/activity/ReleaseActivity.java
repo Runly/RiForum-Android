@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -148,8 +147,8 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
         txtRight.setGravity(Gravity.CENTER);
         txtRight.setText(getString(R.string.release_txt_right));
         ViewGroup.LayoutParams layoutParams = txtRight.getLayoutParams();
-        layoutParams.width = UnitConvert.dipToPixels(this, 48);
-        layoutParams.height = UnitConvert.dipToPixels(this, 24);
+        layoutParams.width = UnitConvert.dp2Px(this, 48);
+        layoutParams.height = UnitConvert.dp2Px(this, 24);
         txtRight.setLayoutParams(layoutParams);
         txtRight.setBackground(ContextCompat.getDrawable(this, R.drawable.release_text_border));
         txtRight.setOnClickListener(this);
@@ -312,7 +311,7 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
                                 pWidth = options.outWidth; // 原始宽度
                                 pHeight = options.outHeight; // 原始高度
                         }
-                        int width = Constants.SCREEN_WIDTH - UnitConvert.dipToPixels(this, 32);
+                        int width = Constants.SCREEN_WIDTH - UnitConvert.dp2Px(this, 32);
                         int height = (int) (((double) pHeight / (double) pWidth) * width);
                         String url;
                         // 如果原始高度大于预定的width，则在七牛的url后拼接剪切参数

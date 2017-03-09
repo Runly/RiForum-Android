@@ -109,8 +109,8 @@ public class UserInfoActivity extends TopBarActivity {
 
             if (!TextUtils.isEmpty(user.avatar)) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                    UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
-                    UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
+                    UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                    UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
 
                 Glide.with(this)
                     .load(avatarUrl)
@@ -213,8 +213,8 @@ public class UserInfoActivity extends TopBarActivity {
                         App.getInstance().setUser(user);
                         if (!TextUtils.isEmpty(user.avatar)) {
                             String avatar_url = user.avatar + "?imageView2/1/w/" +
-                                UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
-                                UnitConvert.dipToPixels(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
+                                UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                                UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
                             Glide
                                 .with(this)
                                 .load(avatar_url)

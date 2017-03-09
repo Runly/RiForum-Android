@@ -49,19 +49,19 @@ public class RecommendFrag extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
                 R.layout.fragment_rcommend, container, false);
 //        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.setOnRefreshListener(this::fetchDta);
+        swipeRefreshLayout.setOnRefreshListener(this::fetchData);
 
         recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         View header = inflater.inflate(R.layout.recycler_recommend_header, recyclerView, false);
         setupRecyclerView(recyclerView, header);
-        fetchDta();
+        fetchData();
 
         return swipeRefreshLayout;
     }
 
-    private void fetchDta() {
+    private void fetchData() {
         swipeRefreshLayout.setRefreshing(true);
         Map<String, Object> map = new HashMap<>();
         map.put("page", System.currentTimeMillis());
@@ -95,7 +95,8 @@ public class RecommendFrag extends Fragment {
                 .start();
         entriesAdapter.setHeaderView(header);
         recyclerView.setAdapter(entriesAdapter);
-        recyclerView.addItemDecoration(new MyDecoration(getActivity(), 8));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new MyDecoration(getActivity(), 8, 8, 8, 0, false));
     }
 
     class GlideImageLoader extends ImageLoader {
