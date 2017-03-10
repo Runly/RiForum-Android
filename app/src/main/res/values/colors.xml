@@ -36,5 +36,4 @@
     <color name="hint">#808080</color>
 
     <color name="tabIndicator">@android:color/white</color>
-
 </resources>

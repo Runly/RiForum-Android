@@ -45,7 +45,7 @@ public class UserDetailFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
                 R.layout.fragment_rcommend, container, false);
-//        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setColorSchemeResources(R.color.color_base);
         swipeRefreshLayout.setOnRefreshListener(this::fetchDta);
 
         recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);

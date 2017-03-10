@@ -1,6 +1,10 @@
 package com.github.runly.riforum_android.ui.activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.runly.richedittext.utils.BitmapUtils;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
@@ -18,6 +23,7 @@ import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
+import com.github.runly.riforum_android.utils.BitmapUtil;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
 import java.util.ArrayList;
@@ -28,6 +34,8 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static android.R.attr.bitmap;
 
 /**
  * Created by ranly on 17-2-27.
@@ -51,6 +59,10 @@ public class UserDetailActivity extends BaseActivity {
     }
 
     private void init() {
+        ImageView bgImage = (ImageView) findViewById(R.id.bg_image);
+        Bitmap bitmap = BitmapUtil.createScaledBitmap(this, R.mipmap.user_detail_bg);
+        bgImage.setImageBitmap(bitmap);
+
         ImageView imageView = (ImageView) findViewById(R.id.toolbar_back);
         imageView.setOnClickListener(v -> finish());
         numText = (TextView) findViewById(R.id.num);
@@ -63,12 +75,12 @@ public class UserDetailActivity extends BaseActivity {
             avatar.setOnClickListener(v -> goToUserInfoAct());
             if (!TextUtils.isEmpty(user.avatar)) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                        UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
-                        UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
+                    UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                    UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
                 Glide.with(this)
-                        .load(avatarUrl)
-                        .crossFade()
-                        .into(avatar);
+                    .load(avatarUrl)
+                    .crossFade()
+                    .into(avatar);
             }
 
             nameText = (TextView) findViewById(R.id.user_detail_name);
@@ -94,7 +106,7 @@ public class UserDetailActivity extends BaseActivity {
     private void setGenderImgSrc(int gender) {
         if (0 == gender) {
             genderImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.male));
-        } else if (1 == gender){
+        } else if (1 == gender) {
             genderImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.female));
         } else {
             genderImg.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.no_gender));
@@ -110,17 +122,17 @@ public class UserDetailActivity extends BaseActivity {
         }
         map.put("page", System.currentTimeMillis());
         RetrofitFactory.getInstance().getEntryService().user_release(map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    if ("1".equals(response.code)) {
-                        List<Entry> list = ((EntriesAdapter) recyclerView.getAdapter()).getItemList();
-                        list.clear();
-                        list.addAll(response.data);
-                        recyclerView.getAdapter().notifyDataSetChanged();
-                        numText.append(String.valueOf(list.size()));
-                    }
-                }, Throwable::printStackTrace);
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                if ("1".equals(response.code)) {
+                    List<Entry> list = ((EntriesAdapter) recyclerView.getAdapter()).getItemList();
+                    list.clear();
+                    list.addAll(response.data);
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                    numText.append(String.valueOf(list.size()));
+                }
+            }, Throwable::printStackTrace);
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
@@ -141,12 +153,12 @@ public class UserDetailActivity extends BaseActivity {
                     setGenderImgSrc(user.gender);
                     if (!TextUtils.isEmpty(user.avatar)) {
                         String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                                UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
-                                UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
+                            UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
+                            UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
                         Glide.with(this)
-                                .load(avatarUrl)
-                                .crossFade()
-                                .into(avatar);
+                            .load(avatarUrl)
+                            .crossFade()
+                            .into(avatar);
                     }
                 }
             }
@@ -158,6 +170,6 @@ public class UserDetailActivity extends BaseActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         // TODO Auto-generated method stub
         super.onWindowFocusChanged(hasFocus);
-        genderImg.setTranslationX(nameText.getWidth()/2 + UnitConvert.dp2Px(this, 16));
+        genderImg.setTranslationX(nameText.getWidth() / 2 + UnitConvert.dp2Px(this, 16));
     }
 }

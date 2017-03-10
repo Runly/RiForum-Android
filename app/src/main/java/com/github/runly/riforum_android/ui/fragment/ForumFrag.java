@@ -43,7 +43,7 @@ public class ForumFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
                 R.layout.fragment_forum, container, false);
-//        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setColorSchemeResources(R.color.color_base);
         swipeRefreshLayout.setOnRefreshListener(this::fetchData);
 
         recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);

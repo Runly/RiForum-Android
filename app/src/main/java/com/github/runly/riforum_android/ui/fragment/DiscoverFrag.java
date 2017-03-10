@@ -37,7 +37,7 @@ public class DiscoverFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
                 R.layout.fragment_discover, container, false);
-//        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setColorSchemeResources(R.color.color_base);
         swipeRefreshLayout.setOnRefreshListener(() ->
                 new Handler().postDelayed(() ->
                         swipeRefreshLayout.setRefreshing(false),500)

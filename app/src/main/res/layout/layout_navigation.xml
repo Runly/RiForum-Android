@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="171dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/navigation_bg"
             tools:ignore="ContentDescription"
             />
 

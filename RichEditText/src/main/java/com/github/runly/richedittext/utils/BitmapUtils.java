@@ -46,9 +46,7 @@ public class BitmapUtils {
         Matrix matrix = new Matrix();
         float scale = calculateScale(width, height, maxWidth, maxHeight);
         matrix.postScale(scale, scale);
-        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0
-                , width, height, matrix, false);
-        return newBitmap;
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
     }
 
     public static float calculateScale(int outWidth, int outHeight, float maxWidth, float maxHeight) {

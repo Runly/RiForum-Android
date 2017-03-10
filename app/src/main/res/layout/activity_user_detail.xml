@@ -25,10 +25,10 @@
                 app:layout_collapseParallaxMultiplier="0.55">
 
                 <ImageView
+                    android:id="@+id/bg_image"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/user_detail_bg"
                     tools:ignore="contentDescription" />
 
                 <TextView
@@ -68,7 +68,8 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_marginTop="20dp"
                 android:fitsSystemWindows="true"
-                app:layout_collapseMode="pin">
+                app:layout_collapseMode="pin"
+                android:background="@android:color/transparent">
 
             </android.support.v7.widget.Toolbar>
 
