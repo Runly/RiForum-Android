@@ -60,7 +60,7 @@ public class TxtUtils {
 //        return years + "年之前";
     }
 
-    public static String getPlateWithId(int id) {
+    public static String getPlateNameWithId(int id) {
         String plateName = null;
         switch(id){
             case 1:
@@ -90,6 +90,37 @@ public class TxtUtils {
 
 
         return plateName;
+    }
+
+    public static int getPlateIconWithId(int id) {
+        int plateIconResId = 0;
+        switch(id){
+            case 1:
+                plateIconResId = R.mipmap.funny;
+                break;
+            case 2:
+                plateIconResId = R.mipmap.media;
+                break;
+            case 3:
+                plateIconResId = R.mipmap.travel;
+                break;
+            case 4:
+                plateIconResId = R.mipmap.game;
+                break;
+            case 5:
+                plateIconResId = R.mipmap.daily_life;
+                break;
+            case 6:
+                plateIconResId = R.mipmap.food;
+                break;
+            case 7:
+                plateIconResId = R.mipmap.cartoon;
+                break;
+            default:
+
+        }
+
+        return plateIconResId;
     }
 
     /**

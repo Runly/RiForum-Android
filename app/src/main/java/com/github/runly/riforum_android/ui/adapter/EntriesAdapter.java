@@ -2,6 +2,9 @@ package com.github.runly.riforum_android.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -132,8 +135,29 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 }
 
-                holder.plate.setText(TxtUtils.getPlateWithId(itemData.plate));
+                holder.plate.setText(TxtUtils.getPlateNameWithId(itemData.plate));
                 holder.title.setText(itemData.title);
+
+                if (itemData.image.size() < 1) {
+                    holder.contentText.setVisibility(View.VISIBLE);
+                    holder.contentText.setText(itemData.content);
+                } else {
+                    holder.contentText.setVisibility(View.GONE);
+                }
+
+                for (int i = 0; i < 3; i++) {
+                    ImageView imageView = ((ImageView) holder.imageLinear.getChildAt(i));
+                    Drawable drawable = imageView.getDrawable();
+                    if (drawable instanceof BitmapDrawable) {
+                        Bitmap bmp = ((BitmapDrawable) drawable).getBitmap();
+                        if (bmp != null && !bmp.isRecycled()) {
+                            imageView.setImageBitmap(null);
+                            bmp.recycle();
+                            bmp = null;
+                        }
+                    }
+                    imageView.setImageDrawable(null);
+                }
 
                 for (int i = 0; i < itemData.image.size(); i++) {
                     if (i > 2)
@@ -148,18 +172,9 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             .load(url)
                             .crossFade()
                             .into((ImageView) holder.imageLinear.getChildAt(i));
-
-                    if (itemData.image.size() == 1 && i == 0) {
-                        ((ImageView) holder.imageLinear.getChildAt(1)).setImageDrawable(null);
-                        ((ImageView) holder.imageLinear.getChildAt(2)).setImageDrawable(null);
-                        break;
-                    }
-
-                    if (itemData.image.size() == 2 && i == 1) {
-                        ((ImageView) holder.imageLinear.getChildAt(2)).setImageDrawable(null);
-                        break;
-                    }
                 }
+
+
                 holder.time.setText(TxtUtils.getReadableTime(String.valueOf(itemData.time)));
                 holder.readNum.setText(String.valueOf(itemData.read_num));
                 holder.commentNum.setText(String.valueOf(itemData.comment_num));
@@ -195,6 +210,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView plate;
         TextView title;
         LinearLayout imageLinear;
+        TextView contentText;
         TextView time;
         TextView readNum;
         TextView commentNum;
@@ -213,6 +229,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             userName = (TextView) itemView.findViewById(R.id.item_user_name);
             plate = (TextView) itemView.findViewById(R.id.item_plate);
             title = (TextView) itemView.findViewById(R.id.item_title);
+            contentText = (TextView) itemView.findViewById(R.id.entry_item_content);
             imageLinear = (LinearLayout) itemView.findViewById(R.id.image_linear);
             time = (TextView) itemView.findViewById(R.id.item_time);
             readNum = (TextView) itemView.findViewById(R.id.read_number);

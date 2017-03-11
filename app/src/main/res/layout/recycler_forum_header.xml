@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
     app:columnCount="4"
     app:orientation="horizontal"
     app:rowCount="2"
@@ -173,7 +174,7 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/carton"
+            android:src="@mipmap/cartoon"
             tools:ignore="contentDescription"/>
 
         <TextView
@@ -186,29 +187,29 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_columnWeight="1"
-        >
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:orientation="vertical"-->
+        <!--app:layout_columnWeight="1"-->
+        <!--&gt;-->
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@mipmap/more"
-            tools:ignore="contentDescription"/>
+        <!--<ImageView-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:src="@mipmap/more"-->
+            <!--tools:ignore="contentDescription"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/more"
-            android:textSize="12sp"
-            />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:text="@string/more"-->
+            <!--android:textSize="12sp"-->
+            <!--/>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
 </android.support.v7.widget.GridLayout>

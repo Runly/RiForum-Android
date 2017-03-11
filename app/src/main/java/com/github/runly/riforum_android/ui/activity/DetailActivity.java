@@ -148,7 +148,7 @@ public class DetailActivity extends TopBarActivity implements View.OnClickListen
             timeTV.setText(TxtUtils.getReadableTime(String.valueOf(entry.time)));
             readNum.setText(String.valueOf(entry.read_num));
             commentNum.setText(String.valueOf(entry.comment_num));
-            plate.setText(TxtUtils.getPlateWithId(entry.plate));
+            plate.setText(TxtUtils.getPlateNameWithId(entry.plate));
 
             if (null != user) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +

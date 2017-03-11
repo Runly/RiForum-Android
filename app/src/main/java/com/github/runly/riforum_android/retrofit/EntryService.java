@@ -43,6 +43,13 @@ public interface EntryService {
      *
      * @return
      */
+    @GET("entry/all_plate_entries")
+    Observable<ResponseBase<List<Entry>>> all_plate_entries();
+
+    /**
+     *
+     * @return
+     */
     @GET("entry/plate")
     Observable<ResponseBase<List<Plate>>> plate();
 }

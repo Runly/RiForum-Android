@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(RecommendFrag.createInstance(), getString(R.string.tab_1));
         pagerAdapter.addFragment(ForumFrag.createInstance(), getString(R.string.tab_2));
-        pagerAdapter.addFragment(DiscoverFrag.createInstance(20), getString(R.string.tab_3));
+//        pagerAdapter.addFragment(DiscoverFrag.createInstance(20), getString(R.string.tab_3));
 //        pagerAdapter.addFragment(NotifyFrag.createInstance(20), getString(R.string.tab_4));
         viewPager.setAdapter(pagerAdapter);
 

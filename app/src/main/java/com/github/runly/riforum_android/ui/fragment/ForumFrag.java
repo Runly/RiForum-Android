@@ -16,6 +16,7 @@ import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.ForumAdapter;
 import com.github.runly.riforum_android.ui.view.MarginDecoration;
+import com.github.runly.riforum_android.utils.PlateHeaderNumUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +43,7 @@ public class ForumFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
-                R.layout.fragment_forum, container, false);
+            R.layout.fragment_forum, container, false);
         swipeRefreshLayout.setColorSchemeResources(R.color.color_base);
         swipeRefreshLayout.setOnRefreshListener(this::fetchData);
 
@@ -60,22 +61,26 @@ public class ForumFrag extends Fragment {
     private void setupRecyclerView(RecyclerView recyclerView, View header, GridLayoutManager manager) {
         ForumAdapter forumAdapter = new ForumAdapter(getActivity(), new ArrayList<>());
         forumAdapter.setHeaderView(header);
-        recyclerView.addItemDecoration(new MarginDecoration(getActivity(), 4, 8, 4, 8));
+//        recyclerView.addItemDecoration(new MarginDecoration(getActivity(), 4, 8, 4, 8));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(forumAdapter);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return forumAdapter.isHeader(position) ? manager.getSpanCount() : 1;
+                if (position % 5 == 1 || forumAdapter.isHeader(position)) {
+                    return manager.getSpanCount();
+                } else {
+                    return 1;
+                }
             }
         });
     }
 
     private void fetchData() {
         swipeRefreshLayout.setRefreshing(true);
-        Map<String, Object> map = new HashMap<>();
-        map.put("page", System.currentTimeMillis());
-        RetrofitFactory.getInstance().getEntryService().recommend(map)
+        RetrofitFactory.getInstance()
+            .getEntryService()
+            .all_plate_entries()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
