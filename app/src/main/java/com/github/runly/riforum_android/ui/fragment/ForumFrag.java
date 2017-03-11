@@ -61,7 +61,7 @@ public class ForumFrag extends Fragment {
     private void setupRecyclerView(RecyclerView recyclerView, View header, GridLayoutManager manager) {
         ForumAdapter forumAdapter = new ForumAdapter(getActivity(), new ArrayList<>());
         forumAdapter.setHeaderView(header);
-//        recyclerView.addItemDecoration(new MarginDecoration(getActivity(), 4, 8, 4, 8));
+        recyclerView.addItemDecoration(new MarginDecoration(getActivity(), 4, 8, 4, 8));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(forumAdapter);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {

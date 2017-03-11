@@ -90,7 +90,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         if (viewType == TYPE_PLATE_HEADER) {
-            final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.plate_header, parent, false);
+            final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_plate_header, parent, false);
             return new ForumAdapter.ViewHolder(view);
         }
 

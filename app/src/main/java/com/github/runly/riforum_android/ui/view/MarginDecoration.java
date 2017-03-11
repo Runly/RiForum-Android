@@ -5,6 +5,8 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.github.runly.riforum_android.application.Constants;
+import com.github.runly.riforum_android.utils.PlateHeaderNumUtil;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
 /**
@@ -25,21 +27,23 @@ public class MarginDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(
         Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        final int currentIndex = parent.getChildLayoutPosition(view);
-        final int lastPosition = state.getItemCount() - 1;
+        int currentPosition = parent.getChildLayoutPosition(view);
+        // 为了保持原来item的position的奇偶性不变，要减去当前位置之前的PlateHeader的数量
+        currentPosition -= PlateHeaderNumUtil.getPlateHeaderNumber(currentPosition);
+        final int lastPosition = state.getItemCount() - Constants.PLATE_COUNT - 1 ;
         boolean isEnd;
-        if(currentIndex == 0) {
+        if(currentPosition == 0) {
             outRect.set(0, 0, 0, 0);
             return;
         }
 
         if (lastPosition % 2 == 0) {
-            isEnd = currentIndex == lastPosition || currentIndex == lastPosition - 1;
+            isEnd = currentPosition == lastPosition || currentPosition == lastPosition - 1;
         }else {
-            isEnd = currentIndex == lastPosition;
+            isEnd = currentPosition == lastPosition;
         }
 
-        if (currentIndex % 2 == 1) {
+        if (currentPosition % 2 == 1) {
             if (isEnd) {
                 outRect.set(biggerSize, top, right, bottom);
             } else {

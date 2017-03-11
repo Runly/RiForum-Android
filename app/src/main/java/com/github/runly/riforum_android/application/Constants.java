@@ -32,6 +32,7 @@ public class Constants {
             Environment.getExternalStorageDirectory().getPath() + "/DCIM/riforum_avatar.jpg";
 
     // plates
+    public static final int PLATE_COUNT = 7;
     public static final String FUNNY = "新奇趣事";
     public static final String MEDIA = "影音娱乐";
     public static final String TRAVEL = "旅游出行";
