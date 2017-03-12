@@ -37,7 +37,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int TYPE_HEADER = 0;  //Header
     private static final int TYPE_FOOTER = 1;  //Footer
     private static final int TYPE_NORMAL = 2;  //Normal
-    private static final int TYPE_PLATE_HEADER = 3; // plate header
+    private static final int TYPE_PLATE_HEADER = 3; // plate_id header
 
     private Context mContext;
     private List<Entry> mItemList;
@@ -115,9 +115,9 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
             if (holder != null) {
                 if (holder.plateName != null) {
-                    holder.plateName.setText(TxtUtils.getPlateNameWithId(entry.plate));
+                    holder.plateName.setText(entry.plate.name);
                     Glide.with(mContext)
-                        .load(TxtUtils.getPlateIconWithId(entry.plate))
+                        .load(entry.plate.icon)
                         .crossFade()
                         .into(holder.plateIcon);
                 }
@@ -162,7 +162,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     } else {
                         View.OnClickListener listener = v -> {
                             Intent intent = new Intent(mContext, UserDetailActivity.class);
-                            intent.putExtra("user_data", user);
+                            intent.putExtra(Constants.INTENT_USER_DATA, user);
                             mContext.startActivity(intent);
                         };
                         holder.userAvatar.setOnClickListener(listener);
@@ -171,7 +171,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 }
 
-//                holder.plate.setText(TxtUtils.getPlateNameWithId(itemData.plate));
+//                holder.plate_id.setText(TxtUtils.getPlateNameWithId(itemData.plate_id));
                 holder.title.setText(itemData.title);
 
                 ImageView imageView = holder.imageOne;
@@ -237,7 +237,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         WeakReference<View> viewWeakReference;
         CircleImageView userAvatar;
         TextView userName;
-//        TextView plate;
+//        TextView plate_id;
         TextView title;
         TextView contentText;
         ImageView imageOne;
@@ -265,7 +265,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             viewWeakReference = new WeakReference<>(itemView);
             userAvatar = (CircleImageView) itemView.findViewById(R.id.item_user_avatar);
             userName = (TextView) itemView.findViewById(R.id.item_user_name);
-//            plate = (TextView) itemView.findViewById(R.id.item_plate);
+//            plate_id = (TextView) itemView.findViewById(R.id.item_plate);
             title = (TextView) itemView.findViewById(R.id.item_title);
             contentText = (TextView) itemView.findViewById(R.id.entry_item_content);
             imageOne = (ImageView) itemView.findViewById(R.id.image_one);

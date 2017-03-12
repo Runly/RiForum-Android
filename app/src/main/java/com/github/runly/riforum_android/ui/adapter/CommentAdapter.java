@@ -128,7 +128,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     } else {
                         View.OnClickListener listener = v -> {
                             Intent intent = new Intent(mContext, UserDetailActivity.class);
-                            intent.putExtra("user_data", user);
+                            intent.putExtra(Constants.INTENT_USER_DATA, user);
                             mContext.startActivity(intent);
                         };
                         holder.userAvatar.setOnClickListener(listener);
@@ -159,7 +159,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             @Override
                             public void onClick(View widget) {
                                 Intent intent = new Intent(mContext, UserDetailActivity.class);
-                                intent.putExtra("user_data", userCommented);
+                                intent.putExtra(Constants.INTENT_USER_DATA, userCommented);
                                 mContext.startActivity(intent);
                             }
                         }; //设置超链接

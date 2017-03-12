@@ -80,7 +80,7 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
     }
 
     private void init() {
-        Plate plate = (Plate) getIntent().getSerializableExtra("item_data");
+        Plate plate = (Plate) getIntent().getSerializableExtra(Constants.INTENT_PLATE_DATA);
         if (null != plate)
             ((TextView) findViewById(R.id.which_plate)).setText(plate.name);
 
@@ -377,14 +377,14 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
         }
 
         User user = App.getInstance().getUser();
-        Plate plate = (Plate) getIntent().getSerializableExtra("item_data");
+        Plate plate = (Plate) getIntent().getSerializableExtra(Constants.INTENT_PLATE_DATA);
         if (null != user && null != plate) {
             Map<String, Object> map = new HashMap<>();
             map.put("token", user.token);
             map.put("uid", user.id);
             map.put("title", title);
             map.put("content", content);
-            map.put("plate", plate.id);
+            map.put("plate_id", plate.id);
             map.put("sort", 0);
             String image = "";
             if (urlList != null && urlList.size() > 0) {

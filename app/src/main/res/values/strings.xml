@@ -69,7 +69,7 @@
 
     <string name="user_info">个人资料</string>
 
-    <string name="release_num">帖子&#160;&#160;&#160;</string>
+    <string name="release_num">帖子&#160;&#160;&#160;%1$d</string>
 
     <string name="user_info_modify_empty">昵称</string>
     <string name="choose_gender">选择性别</string>

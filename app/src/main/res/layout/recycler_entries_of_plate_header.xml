@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/navigation_bg">
+
+    <ImageView
+        android:id="@+id/plate_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="24dp"
+        android:src="@mipmap/funny"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_toEndOf="@+id/plate_icon"
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:id="@+id/plate_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/funny"
+            android:textColor="@color/normal_name"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/entries_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="帖子 1024"
+            android:textSize="12sp"
+            />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

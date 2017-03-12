@@ -126,7 +126,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     } else {
                         View.OnClickListener listener = v -> {
                             Intent intent = new Intent(mContext, UserDetailActivity.class);
-                            intent.putExtra("user_data", user);
+                            intent.putExtra(Constants.INTENT_USER_DATA, user);
                             mContext.startActivity(intent);
                         };
                         holder.userAvatar.setOnClickListener(listener);
@@ -135,7 +135,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 }
 
-                holder.plate.setText(TxtUtils.getPlateNameWithId(itemData.plate));
+                holder.plate.setText(itemData.plate.name);
                 holder.title.setText(itemData.title);
 
                 if (itemData.image.size() < 1) {

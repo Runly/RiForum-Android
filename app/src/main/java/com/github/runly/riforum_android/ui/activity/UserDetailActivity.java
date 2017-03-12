@@ -54,7 +54,7 @@ public class UserDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
 
-        user = (User) getIntent().getSerializableExtra("user_data");
+        user = (User) getIntent().getSerializableExtra(Constants.INTENT_USER_DATA);
         init();
     }
 
@@ -65,7 +65,6 @@ public class UserDetailActivity extends BaseActivity {
 
         ImageView imageView = (ImageView) findViewById(R.id.toolbar_back);
         imageView.setOnClickListener(v -> finish());
-        numText = (TextView) findViewById(R.id.num);
 
         if (null != user) {
             TextView userInfoText = (TextView) findViewById(R.id.user_info);
@@ -99,7 +98,7 @@ public class UserDetailActivity extends BaseActivity {
 
     private void goToUserInfoAct() {
         Intent intent = new Intent(this, UserInfoActivity.class);
-        intent.putExtra("user_data", user);
+        intent.putExtra(Constants.INTENT_USER_DATA, user);
         startActivityForResult(intent, Constants.START_USER_INFO);
     }
 
@@ -130,7 +129,7 @@ public class UserDetailActivity extends BaseActivity {
                     list.clear();
                     list.addAll(response.data);
                     recyclerView.getAdapter().notifyDataSetChanged();
-                    numText.append(String.valueOf(list.size()));
+                    numText.setText(String.format(getString(R.string.release_num), list.size()));
                 }
             }, Throwable::printStackTrace);
     }
@@ -139,7 +138,7 @@ public class UserDetailActivity extends BaseActivity {
         EntriesAdapter entriesAdapter = new EntriesAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(entriesAdapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new MyDecoration(this, 8, 8, 8, 0, true));
+        recyclerView.addItemDecoration(new MyDecoration(this, 8, 8, 8, 0, false));
     }
 
     @Override

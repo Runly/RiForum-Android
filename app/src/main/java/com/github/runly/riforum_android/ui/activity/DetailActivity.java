@@ -148,7 +148,7 @@ public class DetailActivity extends TopBarActivity implements View.OnClickListen
             timeTV.setText(TxtUtils.getReadableTime(String.valueOf(entry.time)));
             readNum.setText(String.valueOf(entry.read_num));
             commentNum.setText(String.valueOf(entry.comment_num));
-            plate.setText(TxtUtils.getPlateNameWithId(entry.plate));
+            plate.setText(entry.plate.name);
 
             if (null != user) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +
@@ -222,7 +222,7 @@ public class DetailActivity extends TopBarActivity implements View.OnClickListen
         map.put("token", user.token);
         map.put("uid", user.id);
         map.put("content", content);
-        map.put("plate_id", entry.plate);
+        map.put("plate_id", entry.plate_id);
         map.put("entry_id", entry.id);
         if (commented != null) {
             map.put("comment_id", commented.id);

@@ -10,7 +10,7 @@ import java.util.List;
 public class Entry implements Serializable {
     private static final long serialVersionUID = 1L;
     public int sort;
-    public int plate;
+    public int plate_id;
     public int uid;
     public int comment_num;
     public int like_num;
@@ -22,4 +22,5 @@ public class Entry implements Serializable {
     public long time;
     public List<String> image;
     public User user;
+    public Plate plate;
 }

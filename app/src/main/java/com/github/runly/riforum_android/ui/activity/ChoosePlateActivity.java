@@ -4,21 +4,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
-import com.github.runly.riforum_android.ui.adapter.ChooseRecyclerAdapter;
+import com.github.runly.riforum_android.ui.adapter.ChoosePlateAdapter;
+import com.github.runly.riforum_android.ui.view.MyDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static android.R.attr.dependency;
 
 /**
  * Created by ranly on 17-2-9.
@@ -46,7 +44,7 @@ public class ChoosePlateActivity extends TopBarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     if ("1".equals(response.code)) {
-                        itemDataList = ((ChooseRecyclerAdapter) recyclerView
+                        itemDataList = ((ChoosePlateAdapter) recyclerView
                                 .getAdapter()).getItemList();
                         itemDataList.clear();
                         itemDataList.addAll(response.data);
@@ -56,9 +54,9 @@ public class ChoosePlateActivity extends TopBarActivity {
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-        ChooseRecyclerAdapter recyclerAdapter = new ChooseRecyclerAdapter(this, itemDataList);
+        ChoosePlateAdapter recyclerAdapter = new ChoosePlateAdapter(this, itemDataList);
+        recyclerView.addItemDecoration(new MyDecoration(this, 16, 8, 16, 0, true));
         recyclerView.setAdapter(recyclerAdapter);
-        recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
     }
 
     @Override

@@ -67,7 +67,7 @@ public class UserInfoActivity extends TopBarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-        user = (User) getIntent().getSerializableExtra("user_data");
+        user = (User) getIntent().getSerializableExtra(Constants.INTENT_USER_DATA);
         init();
     }
 

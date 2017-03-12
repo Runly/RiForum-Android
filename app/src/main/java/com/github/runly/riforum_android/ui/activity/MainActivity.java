@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -108,8 +109,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(RecommendFrag.createInstance(), getString(R.string.tab_1));
         pagerAdapter.addFragment(ForumFrag.createInstance(), getString(R.string.tab_2));
-//        pagerAdapter.addFragment(DiscoverFrag.createInstance(20), getString(R.string.tab_3));
-//        pagerAdapter.addFragment(NotifyFrag.createInstance(20), getString(R.string.tab_4));
+        pagerAdapter.addFragment(DiscoverFrag.createInstance(20), getString(R.string.tab_3));
         viewPager.setAdapter(pagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -144,7 +144,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.navigation_user_avatar:
                 if (App.getInstance().islogin()) {
                     Intent intent = new Intent(this, UserDetailActivity.class);
-                    intent.putExtra("user_data", App.getInstance().getUser());
+                    intent.putExtra(Constants.INTENT_USER_DATA, App.getInstance().getUser());
                     startActivity(intent);
                 } else {
                     GoToActivity.goTo(this, LoginActivity.class);

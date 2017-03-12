@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.FitWindowsFrameLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,25 +12,28 @@ import android.view.ViewGroup;
 
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.model.Entry;
+import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
+import com.github.runly.riforum_android.ui.adapter.ChoosePlateAdapter;
 import com.github.runly.riforum_android.ui.adapter.ForumAdapter;
 import com.github.runly.riforum_android.ui.view.MarginDecoration;
-import com.github.runly.riforum_android.utils.PlateHeaderNumUtil;
+import com.github.runly.riforum_android.ui.view.MyDecoration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.github.runly.riforum_android.R.id.recyclerView;
 
 /**
  * Created by ranly on 17-2-7.
  */
 
 public class ForumFrag extends Fragment {
-    private RecyclerView recyclerView;
+    private RecyclerView entryRecyclerView;
+    private RecyclerView plateRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
@@ -47,15 +49,25 @@ public class ForumFrag extends Fragment {
         swipeRefreshLayout.setColorSchemeResources(R.color.color_base);
         swipeRefreshLayout.setOnRefreshListener(this::fetchData);
 
-        recyclerView = (RecyclerView) swipeRefreshLayout.findViewById(R.id.recyclerView);
+        entryRecyclerView = (RecyclerView) swipeRefreshLayout.findViewById(recyclerView);
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(manager);
-        View header = inflater.inflate(R.layout.recycler_forum_header, recyclerView, false);
-        setupRecyclerView(recyclerView, header, manager);
-
+        entryRecyclerView.setLayoutManager(manager);
+        View header = inflater.inflate(R.layout.recycler_forum_header, entryRecyclerView, false);
+        setupHeader(header);
+        fetchPlate();
+        setupRecyclerView(entryRecyclerView, header, manager);
         fetchData();
-
         return swipeRefreshLayout;
+    }
+
+    private void setupHeader(View header) {
+        plateRecyclerView = (RecyclerView) header.findViewById(recyclerView);
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 4);
+        plateRecyclerView.setLayoutManager(manager);
+        ChoosePlateAdapter adapter = new ChoosePlateAdapter(getActivity(), new ArrayList<>());
+//        plateRecyclerView.addItemDecoration(new MyDecoration(getActivity(), 8, 16, 16, 8, true));
+        plateRecyclerView.setHasFixedSize(true);
+        plateRecyclerView.setAdapter(adapter);
     }
 
     private void setupRecyclerView(RecyclerView recyclerView, View header, GridLayoutManager manager) {
@@ -85,15 +97,30 @@ public class ForumFrag extends Fragment {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
                 if ("1".equals(response.code)) {
-                    List<Entry> list = ((ForumAdapter) recyclerView.getAdapter()).getItemList();
+                    List<Entry> list = ((ForumAdapter) entryRecyclerView.getAdapter()).getItemList();
                     list.clear();
                     list.addAll(response.data);
-                    recyclerView.getAdapter().notifyDataSetChanged();
+                    entryRecyclerView.getAdapter().notifyDataSetChanged();
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }, throwable -> {
                 throwable.printStackTrace();
                 swipeRefreshLayout.setRefreshing(false);
             });
+    }
+
+    private void fetchPlate() {
+        RetrofitFactory.getInstance().getEntryService().plate()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                if ("1".equals(response.code)) {
+                    List<Plate> itemDataList =
+                        ((ChoosePlateAdapter) plateRecyclerView.getAdapter()).getItemList();
+                    itemDataList.clear();
+                    itemDataList.addAll(response.data);
+                    plateRecyclerView.getAdapter().notifyDataSetChanged();
+                }
+            }, Throwable::printStackTrace);
     }
 }
