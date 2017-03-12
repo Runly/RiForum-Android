@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.DetailActivity;
+import com.github.runly.riforum_android.ui.activity.EntriesOfPlateActivity;
 import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
 import com.github.runly.riforum_android.utils.PlateHeaderNumUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
@@ -113,14 +115,17 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } else {
                 entry = mItemList.get(position - 1 - PlateHeaderNumUtil.getPlateHeaderNumber(position));
             }
-            if (holder != null) {
-                if (holder.plateName != null) {
-                    holder.plateName.setText(entry.plate.name);
-                    Glide.with(mContext)
-                        .load(entry.plate.icon)
-                        .crossFade()
-                        .into(holder.plateIcon);
-                }
+            if (entry != null) {
+                holder.plateName.setText(entry.plate.name);
+                Glide.with(mContext)
+                    .load(entry.plate.icon)
+                    .crossFade()
+                    .into(holder.plateIcon);
+                holder.plateHeaderBtn.setOnClickListener(v -> {
+                    Intent intent = new Intent(mContext, EntriesOfPlateActivity.class);
+                    intent.putExtra(Constants.INTENT_PLATE_DATA, entry.plate);
+                    mContext.startActivity(intent);
+                });
             }
 
         }
@@ -134,7 +139,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 itemData = mItemList.get(position - 1 - PlateHeaderNumUtil.getPlateHeaderNumber(position));
             }
             if (null != itemData) {
-                if (itemData.id ==  -1) {
+                if (itemData.id == -1) {
                     return;
                 }
                 View.OnClickListener onClickListener = v -> {
@@ -237,7 +242,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         WeakReference<View> viewWeakReference;
         CircleImageView userAvatar;
         TextView userName;
-//        TextView plate_id;
+        //        TextView plate_id;
         TextView title;
         TextView contentText;
         ImageView imageOne;
@@ -246,6 +251,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView commentNum;
         TextView plateName;
         ImageView plateIcon;
+        Button plateHeaderBtn;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -259,6 +265,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             if (itemView instanceof RelativeLayout) {
                 plateName = (TextView) itemView.findViewById(R.id.plate_name);
                 plateIcon = (ImageView) itemView.findViewById(R.id.plate_icon);
+                plateHeaderBtn = (Button) itemView.findViewById(R.id.plate_header_button);
                 return;
             }
 

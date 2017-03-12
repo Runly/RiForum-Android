@@ -10,7 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
+import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.BitmapUtil;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
@@ -59,6 +62,10 @@ public class UserDetailActivity extends BaseActivity {
     }
 
     private void init() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) toolbar.getLayoutParams();
+        params.setMargins(0, Constants.STATUS_HEIGHT, 0, 0);
+
         ImageView bgImage = (ImageView) findViewById(R.id.bg_image);
         Bitmap bitmap = BitmapUtil.createScaledBitmap(this, R.mipmap.user_detail_bg);
         bgImage.setImageBitmap(bitmap);
@@ -129,6 +136,7 @@ public class UserDetailActivity extends BaseActivity {
                     list.clear();
                     list.addAll(response.data);
                     recyclerView.getAdapter().notifyDataSetChanged();
+                    numText = (TextView) findViewById(R.id.num);
                     numText.setText(String.format(getString(R.string.release_num), list.size()));
                 }
             }, Throwable::printStackTrace);
@@ -138,7 +146,7 @@ public class UserDetailActivity extends BaseActivity {
         EntriesAdapter entriesAdapter = new EntriesAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(entriesAdapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new MyDecoration(this, 8, 8, 8, 0, false));
+        recyclerView.addItemDecoration(new MyDecoration(this, 8, 8, 8, 0, true));
     }
 
     @Override
@@ -169,6 +177,8 @@ public class UserDetailActivity extends BaseActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         // TODO Auto-generated method stub
         super.onWindowFocusChanged(hasFocus);
-        genderImg.setTranslationX(nameText.getWidth() / 2 + UnitConvert.dp2Px(this, 16));
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) genderImg.getLayoutParams();
+        params.setMargins(nameText.getWidth() / 2 + UnitConvert.dp2Px(this, 16), params.topMargin, 0, 0);
+        genderImg.invalidate();
     }
 }

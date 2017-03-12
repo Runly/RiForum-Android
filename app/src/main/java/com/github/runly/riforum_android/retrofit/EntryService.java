@@ -50,6 +50,13 @@ public interface EntryService {
      *
      * @return
      */
+    @POST("entry/plate_entries")
+    Observable<ResponseBase<List<Entry>>> plate_entries(@Body Map<String, Object> body);
+
+    /**
+     *
+     * @return
+     */
     @GET("entry/plate")
     Observable<ResponseBase<List<Plate>>> plate();
 }

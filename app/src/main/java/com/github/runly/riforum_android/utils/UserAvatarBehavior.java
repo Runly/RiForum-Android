@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -43,7 +44,7 @@ public class UserAvatarBehavior extends CoordinatorLayout.Behavior<ImageView> {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, ImageView child, View dependency) {
-//        Log.e("Y", dependency.getY()+"");
+        Log.e("Y", dependency.getY()+"");
 //        float y = dependency.getY() / dependencyEndY * translationY / 8;
 //        child.setTranslationY(y);
 

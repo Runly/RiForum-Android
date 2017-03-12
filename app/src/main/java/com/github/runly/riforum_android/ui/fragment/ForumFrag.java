@@ -26,6 +26,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.github.runly.riforum_android.R.id.recyclerView;
+import static com.github.runly.riforum_android.R.id.tabLayout;
 
 /**
  * Created by ranly on 17-2-7.
@@ -54,9 +55,8 @@ public class ForumFrag extends Fragment {
         entryRecyclerView.setLayoutManager(manager);
         View header = inflater.inflate(R.layout.recycler_forum_header, entryRecyclerView, false);
         setupHeader(header);
-        fetchPlate();
         setupRecyclerView(entryRecyclerView, header, manager);
-        fetchData();
+        fetchPlate();
         return swipeRefreshLayout;
     }
 
@@ -88,8 +88,27 @@ public class ForumFrag extends Fragment {
         });
     }
 
-    private void fetchData() {
+    private void fetchPlate() {
         swipeRefreshLayout.setRefreshing(true);
+        RetrofitFactory.getInstance().getEntryService().plate()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                if ("1".equals(response.code)) {
+                    List<Plate> itemDataList =
+                        ((ChoosePlateAdapter) plateRecyclerView.getAdapter()).getItemList();
+                    itemDataList.clear();
+                    itemDataList.addAll(response.data);
+                    plateRecyclerView.getAdapter().notifyDataSetChanged();
+                    fetchData();
+                }
+            }, throwable -> {
+                throwable.printStackTrace();
+                swipeRefreshLayout.setRefreshing(false);
+            });
+    }
+
+    private void fetchData() {
         RetrofitFactory.getInstance()
             .getEntryService()
             .all_plate_entries()
@@ -109,18 +128,4 @@ public class ForumFrag extends Fragment {
             });
     }
 
-    private void fetchPlate() {
-        RetrofitFactory.getInstance().getEntryService().plate()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(response -> {
-                if ("1".equals(response.code)) {
-                    List<Plate> itemDataList =
-                        ((ChoosePlateAdapter) plateRecyclerView.getAdapter()).getItemList();
-                    itemDataList.clear();
-                    itemDataList.addAll(response.data);
-                    plateRecyclerView.getAdapter().notifyDataSetChanged();
-                }
-            }, Throwable::printStackTrace);
-    }
 }

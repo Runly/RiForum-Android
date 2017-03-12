@@ -78,7 +78,8 @@ public class EntriesOfPlateActivity extends TopBarActivity {
     private void fetchDta() {
         Map<String, Object> map = new HashMap<>();
         map.put("page", System.currentTimeMillis());
-        RetrofitFactory.getInstance().getEntryService().recommend(map)
+        map.put("plate_id", plate.id);
+        RetrofitFactory.getInstance().getEntryService().plate_entries(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {

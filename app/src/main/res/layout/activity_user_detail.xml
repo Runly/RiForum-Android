@@ -66,10 +66,52 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginTop="20dp"
-                android:fitsSystemWindows="true"
                 app:layout_collapseMode="pin"
                 android:background="@android:color/transparent">
+
+                <ImageView
+                    android:id="@+id/toolbar_back"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:layout_marginStart="16dp"
+                    android:src="@mipmap/back"
+                    tools:ignore="contentDescription" />
+
+                <!--<TextView-->
+                <!--android:id="@+id/follow"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:layout_gravity="top|end"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_marginTop="36dp"-->
+                <!--android:layout_marginEnd="98dp"-->
+                <!--android:text="关注"-->
+                <!--android:paddingTop="2dp"-->
+                <!--android:paddingBottom="2dp"-->
+                <!--android:paddingStart="4dp"-->
+                <!--android:paddingEnd="4dp"-->
+                <!--android:background="@drawable/color_base_text_border"-->
+                <!--android:textColor="@color/colorBase"-->
+                <!--app:layout_behavior=".utils.TextViewBehavior"/>-->
+
+
+                <TextView
+                    android:id="@+id/user_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="36dp"
+                    android:background="@drawable/color_white_text_border"
+                    android:gravity="center"
+                    android:paddingBottom="2dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingTop="2dp"
+                    android:text="@string/user_info"
+                    android:textColor="@color/normal_text"
+                    />
 
             </android.support.v7.widget.Toolbar>
 
@@ -96,49 +138,5 @@
         app:civ_border_color="@color/gray_bfbfbf"
         app:civ_border_width="1dp"
         app:layout_behavior=".utils.UserAvatarBehavior" />
-
-    <ImageView
-        android:id="@+id/toolbar_back"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
-        android:src="@mipmap/back"
-        tools:ignore="contentDescription" />
-
-    <!--<TextView-->
-    <!--android:id="@+id/follow"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="24dp"-->
-    <!--android:layout_gravity="top|end"-->
-    <!--android:gravity="center"-->
-    <!--android:layout_marginTop="36dp"-->
-    <!--android:layout_marginEnd="98dp"-->
-    <!--android:text="关注"-->
-    <!--android:paddingTop="2dp"-->
-    <!--android:paddingBottom="2dp"-->
-    <!--android:paddingStart="4dp"-->
-    <!--android:paddingEnd="4dp"-->
-    <!--android:background="@drawable/color_base_text_border"-->
-    <!--android:textColor="@color/colorBase"-->
-    <!--app:layout_behavior=".utils.TextViewBehavior"/>-->
-
-
-    <TextView
-        android:id="@+id/user_info"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_gravity="top|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/color_white_text_border"
-        android:gravity="center"
-        android:paddingBottom="2dp"
-        android:paddingEnd="4dp"
-        android:paddingStart="4dp"
-        android:paddingTop="2dp"
-        android:text="@string/user_info"
-        android:textColor="@color/normal_text"
-        />
 
 </android.support.design.widget.CoordinatorLayout>

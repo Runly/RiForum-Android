@@ -19,6 +19,7 @@ import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.DetailActivity;
+import com.github.runly.riforum_android.ui.activity.EntriesOfPlateActivity;
 import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
 import com.github.runly.riforum_android.utils.TxtUtils;
 import com.github.runly.riforum_android.utils.UnitConvert;
@@ -135,7 +136,12 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 }
 
-                holder.plate.setText(itemData.plate.name);
+                if (mContext instanceof EntriesOfPlateActivity) {
+                    holder.plate.setVisibility(View.GONE);
+                } else {
+                    holder.plate.setText(itemData.plate.name);
+                }
+
                 holder.title.setText(itemData.title);
 
                 if (itemData.image.size() < 1) {

@@ -39,7 +39,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/release_plate_text_border"
-                    android:padding="2dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
                     android:textSize="12sp" />
 
             </LinearLayout>
