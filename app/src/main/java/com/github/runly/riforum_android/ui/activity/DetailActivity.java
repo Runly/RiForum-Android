@@ -20,6 +20,7 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -306,6 +307,21 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 break;
 
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        addStatusBarView();
+    }
+
+    private void addStatusBarView() {
+        View view = new View(this);
+        view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, Constants.STATUS_HEIGHT);
+        ViewGroup decorView = (ViewGroup) findViewById(android.R.id.content);
+        decorView.addView(view, params);
     }
 
     interface OnSoftKeyWordShowListener {
