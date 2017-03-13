@@ -8,9 +8,11 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,7 @@ import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.CommentAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
+import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
 import com.github.runly.riforum_android.utils.UnitConvert;
@@ -56,7 +59,7 @@ import rx.schedulers.Schedulers;
  * Created by ranly on 17-2-20.
  */
 
-public class DetailActivity extends TopBarActivity implements View.OnClickListener {
+public class DetailActivity extends BaseActivity implements View.OnClickListener {
 
     private final static int LAYOUT_HIGHER =
             UnitConvert.dp2Px(App.getInstance(), 32) * 2 + UnitConvert.dp2Px(App.getInstance(), 16);
@@ -79,10 +82,13 @@ public class DetailActivity extends TopBarActivity implements View.OnClickListen
     }
 
     private void init() {
-//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-//            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-//            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-//        }
+        TopBar topBar = (TopBar) findViewById(R.id.top_bar);
+        topBar.getTxtLeft().setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        CircleImageView cImg = (CircleImageView) topBar.getImgLeft();
+        int padding = UnitConvert.dp2Px(this, 8);
+        cImg.setPadding(padding, padding, padding, padding);
+        topBar.getImgLeft().setOnClickListener(v -> finish());
+        topBar.setOnClickListener(v -> recyclerView.scrollToPosition(0));
 
         commentEdit = (EditText) findViewById(R.id.comment_edit_text);
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
@@ -142,6 +148,8 @@ public class DetailActivity extends TopBarActivity implements View.OnClickListen
         entry = (Entry) getIntent().getSerializableExtra(Constants.INTENT_ITEM_DATA);
 
         if (null != entry) {
+            topBar.getTxtCenter().setText(entry.title);
+
             User user = entry.user;
             setRichTextContent(entry.content, richEditText);
             titleTV.setText(entry.title);
@@ -297,16 +305,6 @@ public class DetailActivity extends TopBarActivity implements View.OnClickListen
                 sendComment();
                 break;
 
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        topBar.getImgLeft().setOnClickListener(v -> finish());
-        topBar.setOnClickListener(v -> recyclerView.scrollToPosition(0));
-        if (entry != null ) {
-            topBar.getTxtCenter().setText(entry.title);
         }
     }
 
