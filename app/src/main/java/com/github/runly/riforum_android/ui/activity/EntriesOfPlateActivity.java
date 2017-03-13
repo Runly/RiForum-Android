@@ -2,6 +2,7 @@ package com.github.runly.riforum_android.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +35,7 @@ public class EntriesOfPlateActivity extends TopBarActivity {
     private RecyclerView recyclerView;
     private TextView entriesNum;
     private Plate plate;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +49,9 @@ public class EntriesOfPlateActivity extends TopBarActivity {
     }
 
     private void init() {
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this::fetchDta);
+        swipeRefreshLayout.setColorSchemeResources(R.color.color_base);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -89,8 +94,12 @@ public class EntriesOfPlateActivity extends TopBarActivity {
                     list.addAll(response.data);
                     recyclerView.getAdapter().notifyDataSetChanged();
                     entriesNum.setText(String.format(getString(R.string.release_num), list.size()));
+                    swipeRefreshLayout.setRefreshing(false);
                 }
-            }, Throwable::printStackTrace);
+            }, throwable -> {
+                throwable.printStackTrace();
+                swipeRefreshLayout.setRefreshing(false);
+            });
     }
 
     @Override

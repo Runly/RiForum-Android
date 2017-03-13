@@ -158,6 +158,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             readNum.setText(String.valueOf(entry.read_num));
             commentNum.setText(String.valueOf(entry.comment_num));
             plate.setText(entry.plate.name);
+            plate.setOnClickListener(v -> {
+                Intent intent = new Intent(this, EntriesOfPlateActivity.class);
+                intent.putExtra(Constants.INTENT_PLATE_DATA, entry.plate);
+                startActivity(intent);
+            });
 
             if (null != user) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +

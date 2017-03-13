@@ -3,9 +3,17 @@ package com.github.runly.riforum_android.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +36,10 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.R.attr.bitmap;
+import static android.R.attr.color;
+import static android.R.attr.offset;
 
 /**
  * Created by ranly on 17-2-13.
@@ -86,7 +98,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         final View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_entry_item, parent, false);
+            .inflate(R.layout.recycler_entry_item, parent, false);
 
         return new ViewHolder(view);
     }
@@ -112,12 +124,12 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 User user = itemData.user;
                 if (null != user) {
                     String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                            UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
-                            UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
+                        UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                        UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
                     Glide.with(mContext)
-                            .load(avatarUrl)
-                            .crossFade()
-                            .into(holder.userAvatar);
+                        .load(avatarUrl)
+                        .crossFade()
+                        .into(holder.userAvatar);
 
                     holder.userName.setText(user.name);
 
@@ -140,15 +152,21 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     holder.plate.setVisibility(View.GONE);
                 } else {
                     holder.plate.setText(itemData.plate.name);
+                    holder.plate.setOnClickListener(v -> {
+                        Intent intent = new Intent(mContext, EntriesOfPlateActivity.class);
+                        intent.putExtra(Constants.INTENT_PLATE_DATA, itemData.plate);
+                        mContext.startActivity(intent);
+                    });
                 }
 
                 holder.title.setText(itemData.title);
 
                 if (itemData.image.size() < 1) {
-                    holder.contentText.setVisibility(View.VISIBLE);
                     holder.contentText.setText(itemData.content);
+                    holder.imageLinear.setVisibility(View.GONE);
                 } else {
-                    holder.contentText.setVisibility(View.GONE);
+                    holder.contentText.setText("");
+                    holder.imageLinear.setVisibility(View.VISIBLE);
                 }
 
                 for (int i = 0; i < 3; i++) {
@@ -165,19 +183,42 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     imageView.setImageDrawable(null);
                 }
 
+                ColorDrawable mDrawable = new ColorDrawable(
+                    ContextCompat.getColor(mContext, R.color.item_dividing));
+                int width, height;
+                if (itemData.image.size() == 1) {
+                    holder.imageLinear.getChildAt(1).setVisibility(View.GONE);
+                    holder.imageLinear.getChildAt(2).setVisibility(View.GONE);
+                    width = (Constants.SCREEN_WIDTH - UnitConvert.dp2Px(mContext, 32));
+                    height = width / 16 * 9;
+                } else if (itemData.image.size() == 2) {
+                    holder.imageLinear.getChildAt(1).setVisibility(View.VISIBLE);
+                    holder.imageLinear.getChildAt(2).setVisibility(View.GONE);
+                    width = ((Constants.SCREEN_WIDTH - UnitConvert.dp2Px(mContext, 40)) / 2);
+                    height = width / 4 * 3;
+                } else {
+                    holder.imageLinear.getChildAt(1).setVisibility(View.VISIBLE);
+                    holder.imageLinear.getChildAt(2).setVisibility(View.VISIBLE);
+                    width = (Constants.SCREEN_WIDTH - UnitConvert.dp2Px(mContext, 48)) / 3;
+                    height = UnitConvert.dp2Px(mContext, 80);
+                }
+
                 for (int i = 0; i < itemData.image.size(); i++) {
                     if (i > 2)
                         break;
-
-                    int width = (Constants.SCREEN_WIDTH - UnitConvert.dp2Px(mContext, 24)) / 3;
-                    int height = UnitConvert.dp2Px(mContext, 80);
-
+                    ImageView imageView = (ImageView) holder.imageLinear.getChildAt(i);
+                    ViewGroup.LayoutParams params = imageView.getLayoutParams();
+                    params.width = width;
+                    params.height = height;
+                    imageView.setLayoutParams(params);
+                    imageView.invalidate();
                     String url = itemData.image.get(i) +
-                            "?imageView2/1/w/" + width + "/h/" + height + "/format/webp";
+                        "?imageView2/1/w/" + width + "/h/" + height + "/format/webp";
                     Glide.with(mContext)
-                            .load(url)
-                            .crossFade()
-                            .into((ImageView) holder.imageLinear.getChildAt(i));
+                        .load(url)
+                        .crossFade()
+                        .placeholder(mDrawable)
+                        .into((ImageView) holder.imageLinear.getChildAt(i));
                 }
 
 

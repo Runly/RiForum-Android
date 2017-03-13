@@ -47,6 +47,7 @@
         android:layout_marginTop="4dp"
         android:background="@drawable/ripple_bg_conner"
         android:text="@string/more"
+        android:gravity="center"
         android:textColor="@color/normal_edit"
         android:textSize="13sp" />
 
