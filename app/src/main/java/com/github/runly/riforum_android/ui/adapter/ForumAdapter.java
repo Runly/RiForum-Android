@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -191,6 +193,8 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
                 imageView.setImageDrawable(null);
 
+                ColorDrawable mDrawable = new ColorDrawable(
+                    ContextCompat.getColor(mContext, R.color.item_dividing));
                 if (itemData.image.size() > 0) {
                     holder.contentText.setVisibility(View.GONE);
                     int width = (Constants.SCREEN_WIDTH - UnitConvert.dp2Px(mContext, 56)) / 2;
@@ -199,6 +203,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         "?imageView2/1/w/" + width + "/h/" + height + "/format/webp";
                     Glide.with(mContext)
                         .load(url)
+                        .placeholder(mDrawable)
                         .crossFade()
                         .into(holder.imageOne);
                 } else {
