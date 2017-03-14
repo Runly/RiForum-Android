@@ -199,7 +199,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         String avatarUrl = user.avatar + "?imageView2/1/w/" +
                 UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
                 UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
-        Glide.with(this)
+        Glide.with(App.getInstance())
                 .load(avatarUrl)
                 .crossFade()
                 .into(topBar.getImgLeft());
@@ -207,7 +207,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         avatarUrl = user.avatar + "?imageView2/1/w/" +
                 UnitConvert.dp2Px(this, Constants.NAVIGATION_AVATAR_SIZE) + "/h/" +
                 UnitConvert.dp2Px(this, Constants.NAVIGATION_AVATAR_SIZE) + "/format/webp";
-        Glide.with(this)
+        Glide.with(App.getInstance())
                 .load(avatarUrl)
                 .crossFade()
                 .into(navigationAvatar);
