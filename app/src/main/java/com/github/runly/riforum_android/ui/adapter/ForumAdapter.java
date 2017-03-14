@@ -222,16 +222,20 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
+        if (mItemList == null) {
+            return 0;
+        }
+
         if (mHeaderView == null && mFooterView == null) {
-            return mItemList == null ? 0 : mItemList.size() + 7;
+            return mItemList.size() == 0 ? 0 : mItemList.size() + 7;
         }
 
         //此时mHeaderView和mFooterView必有一个不为null
         if (mHeaderView == null || mFooterView == null) {
-            return mItemList == null ? 8 : mItemList.size() + 8;
+            return mItemList.size() == 0 ? 0 : mItemList.size() + 8;
         }
 
-        return mItemList == null ? 9 : mItemList.size() + 9;
+        return mItemList.size() == 0 ? 0 : mItemList.size() + 9;
     }
 
     public boolean isHeader(int position) {
