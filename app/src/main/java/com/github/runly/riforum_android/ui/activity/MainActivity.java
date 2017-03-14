@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -51,6 +50,7 @@ import static com.github.runly.riforum_android.R.id.fab;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
+    private ViewPager viewPager;
     private CircleImageView navigationAvatar;
     private TextView navigationName;
     private TopBar topBar;
@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initViewPagerAndTabs() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(RecommendFrag.createInstance(), getString(R.string.tab_1));
         pagerAdapter.addFragment(ForumFrag.createInstance(), getString(R.string.tab_2));
@@ -268,6 +268,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         setSwitchButton();
+    }
+
+    public TopBar getTopBar() {
+        return topBar;
+    }
+
+    public ViewPager getViewPager() {
+        return viewPager;
     }
 
     private class PagerAdapter extends FragmentPagerAdapter {

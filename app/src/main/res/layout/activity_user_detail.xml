@@ -124,6 +124,7 @@
         android:layout_height="match_parent"
         android:background="@color/item_dividing"
         android:overScrollMode="never"
+        android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 

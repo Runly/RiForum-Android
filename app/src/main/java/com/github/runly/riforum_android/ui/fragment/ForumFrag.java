@@ -3,6 +3,7 @@ package com.github.runly.riforum_android.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,10 +15,11 @@ import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
+import com.github.runly.riforum_android.ui.activity.MainActivity;
 import com.github.runly.riforum_android.ui.adapter.ChoosePlateAdapter;
 import com.github.runly.riforum_android.ui.adapter.ForumAdapter;
 import com.github.runly.riforum_android.ui.view.MarginDecoration;
-import com.github.runly.riforum_android.ui.view.MyDecoration;
+import com.github.runly.riforum_android.utils.RecyclerScrollToTop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.github.runly.riforum_android.R.id.recyclerView;
-import static com.github.runly.riforum_android.R.id.tabLayout;
 
 /**
  * Created by ranly on 17-2-7.
@@ -57,6 +58,36 @@ public class ForumFrag extends Fragment {
         setupHeader(header);
         setupRecyclerView(entryRecyclerView, header, manager);
         fetchPlate();
+
+        ((MainActivity) getActivity())
+            .getViewPager()
+            .addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == 1) {
+                        ((MainActivity) getActivity())
+                            .getTopBar()
+                            .setOnClickListener(v -> {
+                                int currentPosition = manager.findFirstVisibleItemPosition();
+                                if (currentPosition > 25) {
+                                    manager.scrollToPosition(25);
+                                }
+                                manager.smoothScrollToPosition(entryRecyclerView, null, 0);
+                            });
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+
         return swipeRefreshLayout;
     }
 
@@ -128,4 +159,9 @@ public class ForumFrag extends Fragment {
             });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        swipeRefreshLayout.setRefreshing(false);
+    }
 }

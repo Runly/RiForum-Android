@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -38,6 +37,7 @@ import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.CommentAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.ui.view.TopBar;
+import com.github.runly.riforum_android.utils.RecyclerScrollToTop;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
 import com.github.runly.riforum_android.utils.UnitConvert;
@@ -63,7 +63,7 @@ import rx.schedulers.Schedulers;
 public class DetailActivity extends BaseActivity implements View.OnClickListener {
 
     private final static int LAYOUT_HIGHER =
-            UnitConvert.dp2Px(App.getInstance(), 32) * 2 + UnitConvert.dp2Px(App.getInstance(), 16);
+        UnitConvert.dp2Px(App.getInstance(), 32) * 2 + UnitConvert.dp2Px(App.getInstance(), 16);
     private final static int LAYOUT_HIGH = UnitConvert.dp2Px(App.getInstance(), 48);
     private final static int EDIT_HIGHER = UnitConvert.dp2Px(App.getInstance(), 32) * 2;
     private final static int EDIT_HIGH = UnitConvert.dp2Px(App.getInstance(), 32);
@@ -73,6 +73,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private Entry entry;
     private List<Comment> commentList = new ArrayList<>();
     private Comment commented;
+    private boolean isFetching;
+    private String message = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         cImg.setPadding(padding, padding, padding, padding);
         topBar.getImgLeft().setOnClickListener(v -> finish());
         topBar.setOnClickListener(v -> recyclerView.scrollToPosition(0));
+        topBar.setOnClickListener(v -> RecyclerScrollToTop.scrollToTop(recyclerView));
 
         commentEdit = (EditText) findViewById(R.id.comment_edit_text);
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
@@ -97,36 +100,36 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
         // 软键盘是否弹出监听
         MyOnGlobalLayoutListener listener = new MyOnGlobalLayoutListener(rootView,
-                isShow -> {
-                    ViewGroup.LayoutParams relativeParams = relativeLayout.getLayoutParams();
-                    ViewGroup.LayoutParams editParams = commentEdit.getLayoutParams();
-                    if (isShow) {
-                        if (relativeParams.height != LAYOUT_HIGHER) {
-                            relativeParams.height = LAYOUT_HIGHER;
-                            relativeLayout.setLayoutParams(relativeParams);
+            isShow -> {
+                ViewGroup.LayoutParams relativeParams = relativeLayout.getLayoutParams();
+                ViewGroup.LayoutParams editParams = commentEdit.getLayoutParams();
+                if (isShow) {
+                    if (relativeParams.height != LAYOUT_HIGHER) {
+                        relativeParams.height = LAYOUT_HIGHER;
+                        relativeLayout.setLayoutParams(relativeParams);
 
-                            editParams.height = EDIT_HIGHER;
-                            commentEdit.setLayoutParams(editParams);
-                            commentEdit.setMinLines(3);
-                            commentEdit.setGravity(Gravity.TOP);
-                            commentEdit.requestFocus();
-                        }
-                    } else {
-                        if (relativeParams.height != LAYOUT_HIGH) {
-                            relativeParams.height = LAYOUT_HIGH;
-                            relativeLayout.setLayoutParams(relativeParams);
-
-                            editParams.height = EDIT_HIGH;
-                            commentEdit.setLayoutParams(editParams);
-                            commentEdit.setMinLines(1);
-                            commentEdit.setGravity(Gravity.CENTER_VERTICAL);
-                            commentEdit.setText("");
-                            commentEdit.setHint(getString(R.string.comment_hint));
-                            commented = null;
-                            commentEdit.clearFocus();
-                        }
+                        editParams.height = EDIT_HIGHER;
+                        commentEdit.setLayoutParams(editParams);
+                        commentEdit.setMinLines(3);
+                        commentEdit.setGravity(Gravity.TOP);
+                        commentEdit.requestFocus();
                     }
-                });
+                } else {
+                    if (relativeParams.height != LAYOUT_HIGH) {
+                        relativeParams.height = LAYOUT_HIGH;
+                        relativeLayout.setLayoutParams(relativeParams);
+
+                        editParams.height = EDIT_HIGH;
+                        commentEdit.setLayoutParams(editParams);
+                        commentEdit.setMinLines(1);
+                        commentEdit.setGravity(Gravity.CENTER_VERTICAL);
+                        commentEdit.setText("");
+                        commentEdit.setHint(getString(R.string.comment_hint));
+                        commented = null;
+                        commentEdit.clearFocus();
+                    }
+                }
+            });
 
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(listener);
 
@@ -166,12 +169,12 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
             if (null != user) {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                        UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
-                        UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
+                    UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                    UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
                 Glide.with(this)
-                        .load(avatarUrl)
-                        .crossFade()
-                        .into(userAvatar);
+                    .load(avatarUrl)
+                    .crossFade()
+                    .into(userAvatar);
                 userTV.setText(user.name);
 
                 View.OnClickListener clickListener = v -> {
@@ -187,36 +190,73 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         ImageButton imageButton = (ImageButton) findViewById(R.id.send_comment);
         imageButton.setOnClickListener(this);
 
-        fetchData();
+        fetchData(false, 0);
     }
 
     private void setupRecyclerView(RecyclerView recyclerView, View header) {
 
         OnCommentedListener listener =
-                (comment, position) -> commented = comment;
+            (comment, position) -> commented = comment;
         CommentAdapter adapter = new CommentAdapter(this, commentList, commentEdit, listener);
 
         adapter.setHeaderView(header);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new MyDecoration(this, 0, 0, 0, 1, false));
         recyclerView.setAdapter(adapter);
+        LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int itemCount = lm.getItemCount();
+                int currentPosition = lm.findFirstVisibleItemPosition();
+                if (currentPosition >= itemCount / 2) {
+                    if (!isFetching) {
+                        List<Comment> list = ((CommentAdapter) recyclerView.getAdapter()).getItemList();
+                        if (list.size() > 0) {
+                            Comment lastComment = list.get(list.size() - 1);
+                            fetchData(true, lastComment.time);
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    private void fetchData() {
+    private void fetchData(boolean isMore, long page) {
+        if ("end".equals(message)) {
+            return;
+        }
+
+        isFetching = true;
         Map<String, Object> map = new HashMap<>();
-        map.put("page", 0);
+        map.put("page", page);
         map.put("entry_id", entry.id);
-        RetrofitFactory.getInstance().getCommentService().comment_list(map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    if ("1".equals(response.code)) {
+        RetrofitFactory.getInstance()
+            .getCommentService()
+            .comment_list(map)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                if ("1".equals(response.code)) {
+                    if (!isMore) {
                         commentList.clear();
-                        commentList.addAll(response.data);
-                        recyclerView.getAdapter().notifyDataSetChanged();
                     }
-                }, Throwable::printStackTrace);
+                    commentList.addAll(response.data);
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                    message = response.message;
+                }
+                isFetching = false;
+            }, throwable -> {
+                throwable.printStackTrace();
+                isFetching = false;
+            });
     }
 
     private void sendComment() {
@@ -245,23 +285,23 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
 
         RetrofitFactory.getInstance().getCommentService().comment(map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    if ("1".equals(response.code)) {
-                        commentList.add(response.data);
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
-                        recyclerView.getAdapter().notifyItemChanged(commentList.size());
-                        recyclerView.scrollToPosition(commentList.size());
-                        if (isOpen) {
-                            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                if ("1".equals(response.code)) {
+                    commentList.add(response.data);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
+                    recyclerView.getAdapter().notifyItemChanged(commentList.size());
+                    recyclerView.scrollToPosition(commentList.size());
+                    if (isOpen) {
+                        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                     }
-                }, throwable -> {
-                    throwable.printStackTrace();
-                    ToastUtil.makeShortToast(this, getString(R.string.comment_failed));
-                });
+                }
+            }, throwable -> {
+                throwable.printStackTrace();
+                ToastUtil.makeShortToast(this, getString(R.string.comment_failed));
+            });
 
         commentEdit.setText("");
     }
@@ -277,7 +317,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         for (final FakeImageSpan imageSpan : imageSpans) {
             final String src = imageSpan.getValue();
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.zhan_wei);
-            richEditText.replaceLocalBitmap(imageSpan, bitmap,src);
+            richEditText.replaceLocalBitmap(imageSpan, bitmap, src);
         }
 
         for (final FakeImageSpan imageSpan : imageSpans) {

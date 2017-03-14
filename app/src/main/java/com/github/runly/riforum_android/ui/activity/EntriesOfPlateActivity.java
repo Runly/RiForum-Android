@@ -3,7 +3,6 @@ package com.github.runly.riforum_android.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
+import com.github.runly.riforum_android.utils.RecyclerScrollToTop;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +36,8 @@ public class EntriesOfPlateActivity extends TopBarActivity {
     private TextView entriesNum;
     private Plate plate;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private boolean isFetching;
+    private String message = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,13 +47,16 @@ public class EntriesOfPlateActivity extends TopBarActivity {
         plate = (Plate) getIntent().getSerializableExtra(Constants.INTENT_PLATE_DATA);
 
         init();
-        fetchDta();
     }
 
     private void init() {
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(this::fetchDta);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            message = "";
+            fetchData(false, System.currentTimeMillis());
+        });
         swipeRefreshLayout.setColorSchemeResources(R.color.color_base);
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -68,6 +73,9 @@ public class EntriesOfPlateActivity extends TopBarActivity {
         entriesNum = (TextView) header.findViewById(R.id.entries_number);
 
         setupRecyclerView(recyclerView, header);
+
+        swipeRefreshLayout.setRefreshing(true);
+        fetchData(false, System.currentTimeMillis());
     }
 
     private void setupRecyclerView(RecyclerView recyclerView, View header) {
@@ -77,28 +85,63 @@ public class EntriesOfPlateActivity extends TopBarActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new MyDecoration(this, 8, 8, 8, 0, false));
         recyclerView.setAdapter(adapter);
+        LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int itemCount = lm.getItemCount();
+                int currentPosition = lm.findFirstVisibleItemPosition();
+                if (currentPosition >= itemCount / 2) {
+                    if (!isFetching) {
+                        List<Entry> list = ((EntriesAdapter) recyclerView.getAdapter()).getItemList();
+                        if (list.size() > 0) {
+                            Entry lastEntry = list.get(list.size() - 1);
+                            fetchData(true, lastEntry.time);
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    private void fetchDta() {
+    private void fetchData(boolean isMore, long page) {
+        if ("end".equals(message)) {
+            return;
+        }
+
+        isFetching = true;
         Map<String, Object> map = new HashMap<>();
-        map.put("page", System.currentTimeMillis());
+        map.put("page", page);
         map.put("plate_id", plate.id);
-        RetrofitFactory.getInstance().getEntryService().plate_entries(map)
+        RetrofitFactory.getInstance()
+            .getEntryService()
+            .plate_entries(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
                 if ("1".equals(response.code)) {
                     List<Entry> list = ((EntriesAdapter) recyclerView.getAdapter()).getItemList();
-                    list.clear();
+                    if (!isMore) {
+                        list.clear();
+                    }
                     list.addAll(response.data);
                     recyclerView.getAdapter().notifyDataSetChanged();
                     entriesNum.setText(String.format(getString(R.string.release_num), list.size()));
-                    swipeRefreshLayout.setRefreshing(false);
+                    message = response.message;
                 }
+                swipeRefreshLayout.setRefreshing(false);
+                isFetching = false;
             }, throwable -> {
                 throwable.printStackTrace();
                 swipeRefreshLayout.setRefreshing(false);
+                isFetching = false;
             });
     }
 
@@ -108,5 +151,12 @@ public class EntriesOfPlateActivity extends TopBarActivity {
         if (plate != null) {
             topBar.getTxtCenter().setText(plate.name);
         }
+        topBar.setOnClickListener(v -> RecyclerScrollToTop.scrollToTop(recyclerView));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

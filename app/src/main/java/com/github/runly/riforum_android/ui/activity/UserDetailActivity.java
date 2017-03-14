@@ -1,10 +1,7 @@
 package com.github.runly.riforum_android.ui.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.github.runly.richedittext.utils.BitmapUtils;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
@@ -25,8 +21,8 @@ import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
-import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.BitmapUtil;
+import com.github.runly.riforum_android.utils.RecyclerScrollToTop;
 import com.github.runly.riforum_android.utils.UnitConvert;
 
 import java.util.ArrayList;
@@ -37,8 +33,6 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static android.R.attr.bitmap;
 
 /**
  * Created by ranly on 17-2-27.
@@ -51,6 +45,8 @@ public class UserDetailActivity extends BaseActivity {
     private ImageView genderImg;
     private User user;
     private CircleImageView avatar;
+    private boolean isFetching;
+    private String message = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +61,8 @@ public class UserDetailActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) toolbar.getLayoutParams();
         params.setMargins(0, Constants.STATUS_HEIGHT, 0, 0);
+        toolbar.setLayoutParams(params);
+        toolbar.setOnClickListener(v -> RecyclerScrollToTop.scrollToTop(recyclerView));
 
         ImageView bgImage = (ImageView) findViewById(R.id.bg_image);
         Bitmap bitmap = BitmapUtil.createScaledBitmap(this, R.mipmap.user_detail_bg);
@@ -100,7 +98,7 @@ public class UserDetailActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         setupRecyclerView(recyclerView);
-        fetchDta();
+        fetchData(false, System.currentTimeMillis());
     }
 
     private void goToUserInfoAct() {
@@ -119,27 +117,41 @@ public class UserDetailActivity extends BaseActivity {
         }
     }
 
-    private void fetchDta() {
+    private void fetchData(boolean isMore, long page) {
+        if ("end".equals(message)) {
+            return;
+        }
+
+        isFetching = true;
         Map<String, Object> map = new HashMap<>();
         if (user != null) {
             map.put("uid", user.id);
         } else {
             return;
         }
-        map.put("page", System.currentTimeMillis());
-        RetrofitFactory.getInstance().getEntryService().user_release(map)
+        map.put("page", page);
+        RetrofitFactory.getInstance()
+            .getEntryService()
+            .user_release(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
                 if ("1".equals(response.code)) {
                     List<Entry> list = ((EntriesAdapter) recyclerView.getAdapter()).getItemList();
-                    list.clear();
+                    if (!isMore) {
+                        list.clear();
+                    }
                     list.addAll(response.data);
                     recyclerView.getAdapter().notifyDataSetChanged();
                     numText = (TextView) findViewById(R.id.num);
                     numText.setText(String.format(getString(R.string.release_num), list.size()));
+                    message = response.message;
                 }
-            }, Throwable::printStackTrace);
+                isFetching = false;
+            }, throwable -> {
+                throwable.printStackTrace();
+                isFetching = false;
+            });
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
@@ -147,6 +159,30 @@ public class UserDetailActivity extends BaseActivity {
         recyclerView.setAdapter(entriesAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new MyDecoration(this, 8, 8, 8, 0, true));
+        LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int itemCount = lm.getItemCount();
+                int currentPosition = lm.findFirstVisibleItemPosition();
+                if (currentPosition >= itemCount / 2) {
+                    if (!isFetching) {
+                        List<Entry> list = ((EntriesAdapter) recyclerView.getAdapter()).getItemList();
+                        if (list.size() > 0) {
+                            Entry lastEntry = list.get(list.size() - 1);
+                            fetchData(true, lastEntry.time);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
