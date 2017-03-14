@@ -250,6 +250,16 @@ public class RichEditText extends AppCompatEditText{
         getText().replace(getText().getSpanStart(span), getText().getSpanEnd(span), spannable);
     }
 
+    public void replaceLocalBitmap(FakeImageSpan span, Bitmap bitmap, String path) {
+        if (bitmap == null) {
+            return;
+        }
+        SpannableString spannable = new SpannableString("<img src=\"" + path + "\"/>");
+        ImageSpan imageSpan = new ImageSpan(mContext, bitmap);
+        spannable.setSpan(imageSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getText().replace(getText().getSpanStart(span), getText().getSpanEnd(span), spannable);
+    }
+
     public void addLink(String linkName, String url) {
         SpannableString spannable = new SpannableString(linkName);
         spannable.setSpan(new UrlSpan(url), 0, spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
