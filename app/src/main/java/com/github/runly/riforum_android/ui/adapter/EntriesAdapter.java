@@ -211,7 +211,6 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     params.width = width;
                     params.height = height;
                     imageView.setLayoutParams(params);
-                    imageView.invalidate();
                     String url = itemData.image.get(i) +
                         "?imageView2/1/w/" + width + "/h/" + height + "/format/webp";
                     Glide.with(mContext)
