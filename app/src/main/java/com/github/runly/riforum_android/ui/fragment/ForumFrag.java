@@ -48,7 +48,7 @@ public class ForumFrag extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
             R.layout.fragment_forum, container, false);
         swipeRefreshLayout.setColorSchemeResources(R.color.color_base);
-        swipeRefreshLayout.setOnRefreshListener(this::fetchData);
+        swipeRefreshLayout.setOnRefreshListener(this::fetchPlate);
 
         entryRecyclerView = (RecyclerView) swipeRefreshLayout.findViewById(recyclerView);
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
