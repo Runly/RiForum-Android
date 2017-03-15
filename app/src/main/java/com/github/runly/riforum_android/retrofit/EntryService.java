@@ -59,4 +59,12 @@ public interface EntryService {
      */
     @GET("entry/plate")
     Observable<ResponseBase<List<Plate>>> plate();
+
+    /**
+     *
+     * @return
+     */
+    @GET("entry/banner_entries")
+    Observable<ResponseBase<List<Entry>>> banner_entries();
+
 }
