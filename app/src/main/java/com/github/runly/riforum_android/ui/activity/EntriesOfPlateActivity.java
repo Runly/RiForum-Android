@@ -112,14 +112,16 @@ public class EntriesOfPlateActivity extends TopBarActivity {
     }
 
     private void fetchData(boolean isMore, long page) {
-        if ("end".equals(message)) {
+        if ("end".equals(message) || isFetching) {
             return;
         }
 
-        isFetching = true;
         Map<String, Object> map = new HashMap<>();
         map.put("page", page);
         map.put("plate_id", plate.id);
+
+        isFetching = true;
+
         RetrofitFactory.getInstance()
             .getEntryService()
             .plate_entries(map)

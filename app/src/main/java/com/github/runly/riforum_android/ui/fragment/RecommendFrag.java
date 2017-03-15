@@ -98,13 +98,15 @@ public class RecommendFrag extends Fragment {
     }
 
     private void fetchData(boolean isMore, long page) {
-        if ("end".equals(message)) {
+        if ("end".equals(message) || isFetching) {
             return;
         }
 
-        isFetching = true;
         Map<String, Object> map = new HashMap<>();
         map.put("page", page);
+
+        isFetching = true;
+
         RetrofitFactory.getInstance()
             .getEntryService()
             .recommend(map)
@@ -164,7 +166,6 @@ public class RecommendFrag extends Fragment {
                             Entry lastEntry = list.get(list.size() - 1);
                             fetchData(true, lastEntry.time);
                         }
-
                     }
                 }
             }

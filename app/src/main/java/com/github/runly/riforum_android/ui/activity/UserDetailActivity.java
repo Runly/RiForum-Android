@@ -118,11 +118,10 @@ public class UserDetailActivity extends BaseActivity {
     }
 
     private void fetchData(boolean isMore, long page) {
-        if ("end".equals(message)) {
+        if ("end".equals(message) || isFetching) {
             return;
         }
 
-        isFetching = true;
         Map<String, Object> map = new HashMap<>();
         if (user != null) {
             map.put("uid", user.id);
@@ -130,6 +129,9 @@ public class UserDetailActivity extends BaseActivity {
             return;
         }
         map.put("page", page);
+
+        isFetching = true;
+
         RetrofitFactory.getInstance()
             .getEntryService()
             .user_release(map)

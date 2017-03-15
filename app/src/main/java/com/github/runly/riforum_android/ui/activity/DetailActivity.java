@@ -230,14 +230,16 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void fetchData(boolean isMore, long page) {
-        if ("end".equals(message)) {
+        if ("end".equals(message) || isFetching) {
             return;
         }
 
-        isFetching = true;
         Map<String, Object> map = new HashMap<>();
         map.put("page", page);
         map.put("entry_id", entry.id);
+
+        isFetching = true;
+
         RetrofitFactory.getInstance()
             .getCommentService()
             .comment_list(map)
