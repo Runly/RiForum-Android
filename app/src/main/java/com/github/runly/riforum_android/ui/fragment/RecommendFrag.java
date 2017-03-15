@@ -1,6 +1,7 @@
 package com.github.runly.riforum_android.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,14 +16,17 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
+import com.github.runly.riforum_android.ui.activity.DetailActivity;
 import com.github.runly.riforum_android.ui.activity.MainActivity;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.utils.RecyclerScrollToTop;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
@@ -133,15 +137,8 @@ public class RecommendFrag extends Fragment {
 
     private void setupRecyclerView(RecyclerView recyclerView, View header) {
         EntriesAdapter entriesAdapter = new EntriesAdapter(getActivity(), new ArrayList<>());
-        List<String> imageList = new ArrayList<>();
-        imageList.add("http://bpic.588ku.com/back_pic/00/00/40/82/72212fe3b8246b538fb94702be469a51.jpg");
-        imageList.add("http://bpic.588ku.com/back_pic/04/28/17/53583d40b2444bc.jpg");
-        imageList.add("http://bpic.588ku.com/back_pic/04/39/18/23584d519801ada.jpg");
         Banner banner = (Banner) header.findViewById(R.id.banner);
-        banner.setImageLoader(new GlideImageLoader())
-            .setIndicatorGravity(BannerConfig.RIGHT)
-            .setImages(imageList)
-            .start();
+        setupBanner(banner);
         entriesAdapter.setHeaderView(header);
         recyclerView.setAdapter(entriesAdapter);
         recyclerView.setHasFixedSize(true);
@@ -170,6 +167,32 @@ public class RecommendFrag extends Fragment {
                 }
             }
         });
+    }
+
+    private void setupBanner(Banner banner) {
+        List<String> imageList = new ArrayList<>();
+        RetrofitFactory.getInstance()
+            .getEntryService()
+            .banner_entries()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                if ("1".equals(response.code)) {
+                    List<Entry> list = response.data;
+                    for(Entry entry : list){
+                        imageList.add(entry.image.get(0));
+                    }
+                    banner.setImageLoader(new GlideImageLoader())
+                        .setIndicatorGravity(BannerConfig.RIGHT)
+                        .setImages(imageList)
+                        .start();
+                    banner.setOnBannerListener(position -> {
+                        Intent intent = new Intent(getActivity(), DetailActivity.class);
+                        intent.putExtra(Constants.INTENT_ITEM_DATA, list.get(position));
+                        getActivity().startActivity(intent);
+                    });
+                }
+            }, Throwable::printStackTrace);
     }
 
     @Override
