@@ -70,4 +70,27 @@ public class SdCardUtil {
         return user;
     }
 
+    public static void removeUserFromSdCard(Context context) {
+        String user_path = File.separator + "data"
+            + Environment.getDataDirectory().getAbsolutePath() + File.separator
+            + context.getPackageName() + File.separator + "user" + File.separator;
+        String fileName = "user.ser";
+
+        // 在io线程中写文件
+        Schedulers.io().createWorker()
+            .schedule(() -> {
+                File userFile = new File(user_path + fileName);
+
+                if (userFile.exists()) {
+                    try {
+                        userFile.delete();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            })
+            .unsubscribe();
+    }
+
+
 }

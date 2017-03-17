@@ -28,6 +28,14 @@ public interface UserService {
      * @param body
      * @return
      */
+    @POST("user/logout")
+    Observable<ResponseBase<User>> logout(@Body Map<String, Object> body);
+
+    /**
+     *
+     * @param body
+     * @return
+     */
     @POST("user/sign_in")
     Observable<ResponseBase<User>> signIn(@Body Map<String, Object> body);
 

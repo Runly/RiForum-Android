@@ -59,6 +59,10 @@ public class App extends Application{
             this.user = user;
             this.isLogin = true;
             Log.e("is login", String.valueOf(this.isLogin));
+        } else {
+            this.user = null;
+            this.isLogin = false;
+            Log.e("is login", String.valueOf(this.isLogin));
         }
     }
 

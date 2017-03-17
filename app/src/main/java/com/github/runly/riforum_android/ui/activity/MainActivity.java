@@ -194,14 +194,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
 
         LinearLayout linearSetting = (LinearLayout) findViewById(R.id.navigation_setting);
-        linearSetting.setOnClickListener(v -> {});
+        linearSetting.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            intent.putExtra(Constants.INTENT_USER_DATA, user);
+            startActivity(intent);
+        });
 
         LinearLayout linearAbout = (LinearLayout) findViewById(R.id.navigation_about);
-        linearAbout.setOnClickListener(v -> {});
+        linearAbout.setOnClickListener(v -> GoToActivity.goTo(this, AboutActivity.class));
 
     }
 
     private void setAvatars() {
+        if (user == null) {
+            Glide.with(App.getInstance())
+                .load(R.mipmap.avatar_default)
+                .crossFade()
+                .into(topBar.getImgLeft());
+
+            Glide.with(App.getInstance())
+                .load(R.mipmap.avatar_default)
+                .crossFade()
+                .into(navigationAvatar);
+
+            return;
+        }
+
         if (TextUtils.isEmpty(user.avatar)) {
 
             LetterAvatar.with(this)
@@ -298,11 +316,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         user = user1;
                         topBar.getTxtLeft().setText(user1.name);
                         navigationName.setText(user1.name);
-                        setAvatars();
+                    } else {
+                        topBar.getTxtLeft().setText(R.string.not_login);
+                        navigationName.setText(R.string.click_to_login);
                     }
                 }, throwable -> {
-
+                    topBar.getTxtLeft().setText(R.string.not_login);
+                    navigationName.setText(R.string.click_to_login);
                 }, () -> {
+                    setAvatars();
                     // 最终都要登录一次，更新用户数据
                     if (!isLogging) {
                         login();
