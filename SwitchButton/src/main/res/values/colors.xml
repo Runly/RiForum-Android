@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="ksw_md_ripple_normal">#1E000000</color>
-	<color name="ksw_md_ripple_checked">#B7C1EB</color>
+	<color name="ksw_md_ripple_normal">@android:color/transparent</color>
+	<color name="ksw_md_ripple_checked">@android:color/transparent</color>
 
 	<color name="ksw_md_solid_shadow">#33000000</color>
 
