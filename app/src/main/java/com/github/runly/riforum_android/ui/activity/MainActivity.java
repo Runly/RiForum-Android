@@ -296,10 +296,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     if (user1 != null) {
                         App.getInstance().setUser(user1);
                         user = user1;
-
                         topBar.getTxtLeft().setText(user1.name);
-                        TextView textView = (TextView) findViewById(R.id.navigation_user_name);
-                        textView.setText(user1.name);
+                        navigationName.setText(user1.name);
                         setAvatars();
                     }
                 }, throwable -> {
