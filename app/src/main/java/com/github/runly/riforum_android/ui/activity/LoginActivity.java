@@ -78,6 +78,7 @@ public class LoginActivity extends TopBarActivity implements View.OnClickListene
                                 App.getInstance().setUser(theResponse.data);
                                 SharedPreferencesUtil.saveValue(Constants.USER_ACCOUNT, account);
                                 SharedPreferencesUtil.saveValue(Constants.USER_PASSWORD, password);
+                                SdCardUtil.saveUserToSdCard(this, theResponse.data);
                                 finish();
                             }
                         },
