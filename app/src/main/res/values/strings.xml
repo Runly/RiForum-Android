@@ -108,4 +108,13 @@
     <string name="food">美食达人</string>
     <string name="carton">动漫周边</string>
     <string name="more">查看更多</string>
+
+    <string name="password_modify">修改密码</string>
+    <string name="account_bind">账号绑定</string>
+    <string name="cache_clear">清楚缓存</string>
+    <string name="version_check">检查版本</string>
+    <string name="logout">登出</string>
+    <string name="feedback">意见反馈</string>
+    <string name="email">ranli314@126.com</string>
+
 </resources>
