@@ -26,7 +26,6 @@ import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.utils.RecyclerScrollToTop;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
@@ -46,6 +45,9 @@ public class RecommendFrag extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean isFetching;
     private String message = "";
+    private Banner banner;
+    private List<Entry> bannerEntryList = new ArrayList<>();
+    private List<String> bannerImageList = new ArrayList<>();
 
     public static RecommendFrag createInstance() {
         return new RecommendFrag();
@@ -59,6 +61,7 @@ public class RecommendFrag extends Fragment {
         swipeRefreshLayout.setColorSchemeResources(R.color.color_base);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             message = "";
+            fetchBannerData();
             fetchData(false, System.currentTimeMillis());
         });
 
@@ -137,8 +140,8 @@ public class RecommendFrag extends Fragment {
 
     private void setupRecyclerView(RecyclerView recyclerView, View header) {
         EntriesAdapter entriesAdapter = new EntriesAdapter(getActivity(), new ArrayList<>());
-        Banner banner = (Banner) header.findViewById(R.id.banner);
-        setupBanner(banner);
+        banner = (Banner) header.findViewById(R.id.banner);
+        setupBanner();
         entriesAdapter.setHeaderView(header);
         recyclerView.setAdapter(entriesAdapter);
         recyclerView.setHasFixedSize(true);
@@ -169,8 +172,8 @@ public class RecommendFrag extends Fragment {
         });
     }
 
-    private void setupBanner(Banner banner) {
-        List<String> imageList = new ArrayList<>();
+    private void fetchBannerData() {
+        bannerImageList = new ArrayList<>();
         RetrofitFactory.getInstance()
             .getEntryService()
             .banner_entries()
@@ -178,21 +181,29 @@ public class RecommendFrag extends Fragment {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
                 if ("1".equals(response.code)) {
-                    List<Entry> list = response.data;
-                    for(Entry entry : list){
-                        imageList.add(entry.image.get(0));
+                    bannerEntryList = response.data;
+                    for(Entry entry : bannerEntryList){
+                        bannerImageList.add(entry.image.get(0));
                     }
-                    banner.setImageLoader(new GlideImageLoader())
-                        .setIndicatorGravity(BannerConfig.RIGHT)
-                        .setImages(imageList)
+                    banner.setImages(bannerImageList)
                         .start();
-                    banner.setOnBannerListener(position -> {
-                        Intent intent = new Intent(getActivity(), DetailActivity.class);
-                        intent.putExtra(Constants.INTENT_ITEM_DATA, list.get(position));
-                        getActivity().startActivity(intent);
-                    });
                 }
             }, Throwable::printStackTrace);
+    }
+
+    private void setupBanner() {
+        fetchBannerData();
+
+        banner.setImageLoader(new GlideImageLoader())
+            .setIndicatorGravity(BannerConfig.RIGHT);
+
+        banner.setOnBannerListener(position -> {
+            if (bannerEntryList.size() > 0 && bannerImageList.size() > 0) {
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra(Constants.INTENT_ITEM_DATA, bannerEntryList.get(position));
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
     @Override
