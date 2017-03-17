@@ -32,6 +32,7 @@ import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.BitmapUtil;
 import com.github.runly.riforum_android.utils.GoToActivity;
 import com.github.runly.riforum_android.utils.RegisterCheck;
+import com.github.runly.riforum_android.utils.SdCardUtil;
 import com.github.runly.riforum_android.utils.SharedPreferencesUtil;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
@@ -44,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -64,10 +66,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        if (!isLogging) {
-            login();
-        }
 
         init();
     }
@@ -271,6 +269,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     user = response.data;
                     if (null != user) {
                         App.getInstance().setUser(user);
+                        SdCardUtil.saveUserToSdCard(this, user);
                         topBar.getTxtLeft().setText(user.name);
                         navigationName.setText(user.name);
                         setAvatars();
@@ -287,11 +286,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         user = App.getInstance().getUser();
-
         if (user == null || !App.getInstance().islogin()) {
-            if (!isLogging) {
-                login();
-            }
+            // 在io线程中写文件
+            Observable.just(this)
+                .map(SdCardUtil::loadUserFromSdCard)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(user1 -> {
+                    if (user1 != null) {
+                        App.getInstance().setUser(user1);
+                        user = user1;
+
+                        topBar.getTxtLeft().setText(user1.name);
+                        TextView textView = (TextView) findViewById(R.id.navigation_user_name);
+                        textView.setText(user1.name);
+                        setAvatars();
+                    }
+                }, throwable -> {
+
+                }, () -> {
+                    // 最终都要登录一次，更新用户数据
+                    if (!isLogging) {
+                        login();
+                    }
+                });
         } else {
             topBar.getTxtLeft().setText(user.name);
             navigationName.setText(user.name);
