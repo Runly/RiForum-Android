@@ -1,1 +1,1 @@
-include ':app', ':RichEditText', ':SwitchButton'
+include ':app', ':RichEditText', ':SwitchButton', ':LetterAvatar'
