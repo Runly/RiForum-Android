@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.github.runly.letteravatar.LetterAvatar;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
@@ -82,14 +83,14 @@ public class UserInfoActivity extends TopBarActivity {
             User loggedUser = App.getInstance().getUser();
             if (loggedUser != null && loggedUser.id == user.id) {
                 userAvatar.setOnClickListener(v -> {
-                    ChooseAvatarDialog avatarDialog = new ChooseAvatarDialog(this, user.avatar);
+                    ChooseAvatarDialog avatarDialog = new ChooseAvatarDialog(this, user.avatar, user.name);
                     View.OnClickListener onClickListener = view -> UserInfoActivityPermissionsDispatcher.addPhotoWithCheck(this, avatarDialog);
                     avatarDialog.show();
                     avatarDialog.setButtonListener(onClickListener);
                 });
             } else {
                 userAvatar.setOnClickListener(v -> {
-                    ChooseAvatarDialog avatarDialog = new ChooseAvatarDialog(this, user.avatar);
+                    ChooseAvatarDialog avatarDialog = new ChooseAvatarDialog(this, user.avatar, user.name);
                     View.OnClickListener onClickListener = view -> addPhoto(avatarDialog);
                     avatarDialog.show();
                     LinearLayout linearLayout = (LinearLayout) avatarDialog.findViewById(R.id.action_linear);
@@ -115,6 +116,15 @@ public class UserInfoActivity extends TopBarActivity {
                 Glide.with(this)
                     .load(avatarUrl)
                     .crossFade()
+                    .into(userAvatar);
+            } else {
+
+                LetterAvatar.with(this)
+                    .canvasSizeDIP(Constants.USER_INFO_AVATAR_SIZE, Constants.USER_INFO_AVATAR_SIZE)
+                    .letterSizeDIP(Constants.USER_INFO_AVATAR_SIZE / 2)
+                    .chineseFirstLetter(user.name, true)
+                    .letterColorResId(R.color.comment_bar_dictionary)
+                    .backgroundColorResId(R.color.item_dividing)
                     .into(userAvatar);
             }
 

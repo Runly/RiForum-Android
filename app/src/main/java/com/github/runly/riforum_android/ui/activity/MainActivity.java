@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.runly.letteravatar.LetterAvatar;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
@@ -56,12 +57,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TopBar topBar;
     private User user;
     private SwitchButton switchButton;
+    private boolean isLogging;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (!isLogging) {
+            login();
+        }
+
         init();
     }
 
@@ -197,6 +204,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void setAvatars() {
+        if (TextUtils.isEmpty(user.avatar)) {
+
+            LetterAvatar.with(this)
+                .canvasSizeDIP(Constants.NORMAL_AVATAR_SIZE, Constants.NORMAL_AVATAR_SIZE)
+                .letterSizeDIP(Constants.NORMAL_AVATAR_SIZE / 2)
+                .chineseFirstLetter(user.name, true)
+                .letterColorResId(R.color.comment_bar_dictionary)
+                .backgroundColorResId(R.color.item_dividing)
+                .into(topBar.getImgLeft());
+
+            LetterAvatar.with(this)
+                .canvasSizeDIP(Constants.NAVIGATION_AVATAR_SIZE, Constants.NAVIGATION_AVATAR_SIZE)
+                .letterSizeDIP(Constants.NAVIGATION_AVATAR_SIZE / 2)
+                .chineseFirstLetter(user.name, true)
+                .letterColorResId(R.color.comment_bar_dictionary)
+                .backgroundColorResId(R.color.item_dividing)
+                .into(navigationAvatar);
+
+            return;
+        }
+
         String avatarUrl = user.avatar + "?imageView2/1/w/" +
                 UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
                 UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
@@ -214,54 +242,60 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .into(navigationAvatar);
     }
 
+    private void login() {
+        String account = SharedPreferencesUtil.getString(Constants.USER_ACCOUNT);
+        String password = SharedPreferencesUtil.getString(Constants.USER_PASSWORD);
+
+        Map<String, Object> map = new HashMap<>();
+        //判断是否为邮箱
+        if (RegisterCheck.isEmail(account)) {
+            map.put("email", account);
+        } else if (RegisterCheck.isPhone(account)) {
+            map.put("phone", account);
+        } else {
+            return;
+        }
+        if (!TextUtils.isEmpty(password)) {
+            map.put("password", password);
+        } else {
+            return;
+        }
+
+        isLogging = true;
+
+        RetrofitFactory.getInstance().getUserService().login(map)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                if ("1".equals(response.code)) {
+                    user = response.data;
+                    if (null != user) {
+                        App.getInstance().setUser(user);
+                        topBar.getTxtLeft().setText(user.name);
+                        navigationName.setText(user.name);
+                        setAvatars();
+                    }
+                }
+                isLogging = false;
+            }, throwable -> {
+                throwable.printStackTrace();
+                isLogging = false;
+            });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         user = App.getInstance().getUser();
 
         if (user == null || !App.getInstance().islogin()) {
-            String account = SharedPreferencesUtil.getString(Constants.USER_ACCOUNT);
-            String password = SharedPreferencesUtil.getString(Constants.USER_PASSWORD);
-
-            Map<String, Object> map = new HashMap<>();
-            //判断是否为邮箱
-            if (RegisterCheck.isEmail(account)) {
-                map.put("email", account);
-            } else if (RegisterCheck.isPhone(account)) {
-                map.put("phone", account);
-            } else {
-                return;
+            if (!isLogging) {
+                login();
             }
-            if (!TextUtils.isEmpty(password)) {
-                map.put("password", password);
-            } else {
-                return;
-            }
-
-            RetrofitFactory.getInstance().getUserService().login(map)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(response -> {
-                        if ("1".equals(response.code)) {
-                            user = response.data;
-                            if (null != user) {
-                                App.getInstance().setUser(user);
-                                topBar.getTxtLeft().setText(user.name);
-                                navigationName.setText(user.name);
-                                if (!TextUtils.isEmpty(user.avatar)) {
-                                    setAvatars();
-                                }
-                            }
-                        }
-
-                    }, Throwable::printStackTrace);
-
         } else {
             topBar.getTxtLeft().setText(user.name);
             navigationName.setText(user.name);
-            if (!TextUtils.isEmpty(user.avatar)) {
-                setAvatars();
-            }
+            setAvatars();
         }
     }
 

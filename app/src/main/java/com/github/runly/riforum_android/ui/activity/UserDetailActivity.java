@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.runly.letteravatar.LetterAvatar;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
@@ -84,6 +85,15 @@ public class UserDetailActivity extends BaseActivity {
                 Glide.with(this)
                     .load(avatarUrl)
                     .crossFade()
+                    .into(avatar);
+            } else {
+
+                LetterAvatar.with(this)
+                    .canvasSizeDIP(Constants.USER_INFO_AVATAR_SIZE, Constants.USER_INFO_AVATAR_SIZE)
+                    .letterSizeDIP(Constants.USER_INFO_AVATAR_SIZE / 2)
+                    .chineseFirstLetter(user.name, true)
+                    .letterColorResId(R.color.comment_bar_dictionary)
+                    .backgroundColorResId(R.color.item_dividing)
                     .into(avatar);
             }
 

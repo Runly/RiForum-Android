@@ -39,8 +39,8 @@ public class TopBar extends LinearLayout {
         mContext = context;
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.TopBar);
 
-        imgLeftWidth = UnitConvert.dp2Px(mContext, array.getInt(R.styleable.TopBar_img_left_width, 40));
-        imgLeftHeight = UnitConvert.dp2Px(mContext, array.getInt(R.styleable.TopBar_img_left_height, 40));
+        imgLeftWidth = UnitConvert.dp2Px(mContext, array.getInt(R.styleable.TopBar_img_left_width, 24));
+        imgLeftHeight = UnitConvert.dp2Px(mContext, array.getInt(R.styleable.TopBar_img_left_height, 24));
         imgLeftDefault = array.getResourceId(R.styleable.TopBar_img_left_default, R.mipmap.back);
 
         txtLeftSize = array.getInt(R.styleable.TopBar_txt_left_size, 16);

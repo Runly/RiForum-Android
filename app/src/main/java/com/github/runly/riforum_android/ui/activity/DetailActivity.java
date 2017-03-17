@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.runly.letteravatar.LetterAvatar;
 import com.github.runly.richedittext.RichEditText;
 import com.github.runly.richedittext.span.FakeImageSpan;
 import com.github.runly.riforum_android.R;
@@ -87,9 +88,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private void init() {
         TopBar topBar = (TopBar) findViewById(R.id.top_bar);
         topBar.getTxtLeft().setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        CircleImageView cImg = (CircleImageView) topBar.getImgLeft();
-        int padding = UnitConvert.dp2Px(this, 8);
-        cImg.setPadding(padding, padding, padding, padding);
         topBar.getImgLeft().setOnClickListener(v -> finish());
         topBar.setOnClickListener(v -> recyclerView.scrollToPosition(0));
         topBar.setOnClickListener(v -> RecyclerScrollToTop.scrollToTop(recyclerView));
@@ -168,13 +166,25 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             });
 
             if (null != user) {
-                String avatarUrl = user.avatar + "?imageView2/1/w/" +
-                    UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
-                    UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
-                Glide.with(this)
-                    .load(avatarUrl)
-                    .crossFade()
-                    .into(userAvatar);
+
+                if (!TextUtils.isEmpty(user.avatar)) {
+                    String avatarUrl = user.avatar + "?imageView2/1/w/" +
+                        UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+                        UnitConvert.dp2Px(this, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
+                    Glide.with(this)
+                        .load(avatarUrl)
+                        .crossFade()
+                        .into(userAvatar);
+                } else {
+                    LetterAvatar.with(this)
+                        .canvasSizeDIP(Constants.NORMAL_AVATAR_SIZE, Constants.NORMAL_AVATAR_SIZE)
+                        .letterSizeDIP(Constants.NORMAL_AVATAR_SIZE / 2)
+                        .chineseFirstLetter(user.name, true)
+                        .letterColorResId(R.color.comment_bar_dictionary)
+                        .backgroundColorResId(R.color.item_dividing)
+                        .into(userAvatar);
+                }
+
                 userTV.setText(user.name);
 
                 View.OnClickListener clickListener = v -> {
