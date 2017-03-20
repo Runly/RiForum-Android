@@ -19,4 +19,5 @@ public class User extends ModelBase {
         public long time;
         public String email;
         public String avatar;
+        public int entry_number;
 }
