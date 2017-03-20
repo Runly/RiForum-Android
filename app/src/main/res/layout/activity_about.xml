@@ -12,7 +12,7 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="112dp"
         android:src="@mipmap/app_icon"
         tools:ignore="contentDescription"
         />
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="40dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         >
@@ -36,10 +36,10 @@
             />
 
         <TextView
+            android:id="@+id/about_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Ver 1.0.0"
             android:textColor="@color/hint"
             />
 
