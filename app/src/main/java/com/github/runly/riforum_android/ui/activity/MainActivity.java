@@ -189,7 +189,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 intent.putExtra(Constants.INTENT_USER_DATA, user);
                 startActivity(intent);
             } else {
-                GoToActivity.goTo(this, SignInActivity.class);
+                GoToActivity.goTo(this, LoginActivity.class);
             }
         });
 
