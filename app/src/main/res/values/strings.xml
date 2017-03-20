@@ -117,4 +117,6 @@
     <string name="feedback">意见反馈</string>
     <string name="email">ranli314@126.com</string>
 
+    <string name="search_hint">搜索用户或帖子…</string>
+
 </resources>

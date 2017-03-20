@@ -12,6 +12,8 @@
     <color name="color_303030">#303030</color>
     <!--夜间模式字体颜色-->
     <color name="color_c1c1c1">#C1C1C1</color>
+    <!--日间模式字体颜色-->
+    <color name="color_737373">#737373</color>
 
     <color name="color_base">@color/color_c1c1c1</color>
 
