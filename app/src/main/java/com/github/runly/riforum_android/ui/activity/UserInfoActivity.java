@@ -5,10 +5,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -112,9 +114,11 @@ public class UserInfoActivity extends TopBarActivity {
                 String avatarUrl = user.avatar + "?imageView2/1/w/" +
                     UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/h/" +
                     UnitConvert.dp2Px(this, Constants.USER_INFO_AVATAR_SIZE) + "/format/webp";
-
+                ColorDrawable mDrawable = new ColorDrawable(
+                    ContextCompat.getColor(this, R.color.item_dividing));
                 Glide.with(this)
                     .load(avatarUrl)
+                    .placeholder(mDrawable)
                     .crossFade()
                     .into(userAvatar);
             } else {
