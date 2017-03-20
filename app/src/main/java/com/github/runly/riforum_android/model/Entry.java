@@ -1,14 +1,12 @@
 package com.github.runly.riforum_android.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by ranly on 17-2-15.
  */
 
-public class Entry implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Entry extends ModelBase {
     public int sort;
     public int plate_id;
     public int uid;
