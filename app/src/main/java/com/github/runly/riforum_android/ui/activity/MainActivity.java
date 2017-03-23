@@ -1,14 +1,9 @@
 package com.github.runly.riforum_android.ui.activity;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -28,6 +23,7 @@ import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
+import com.github.runly.riforum_android.ui.adapter.PagerAdapter;
 import com.github.runly.riforum_android.ui.fragment.DiscoverFrag;
 import com.github.runly.riforum_android.ui.fragment.ForumFrag;
 import com.github.runly.riforum_android.ui.fragment.RecommendFrag;
@@ -42,9 +38,7 @@ import com.github.runly.riforum_android.utils.TxtUtils;
 import com.github.runly.riforum_android.utils.UnitConvert;
 import com.kyleduo.switchbutton.SwitchButton;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -352,35 +346,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public ViewPager getViewPager() {
         return viewPager;
-    }
-
-    private class PagerAdapter extends FragmentPagerAdapter {
-
-        private final List<Fragment> fragmentList = new ArrayList<>();
-        private final List<String> fragmentTitleList = new ArrayList<>();
-
-        PagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        void addFragment(Fragment fragment, String title) {
-            fragmentList.add(fragment);
-            fragmentTitleList.add(title);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return fragmentList.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return fragmentTitleList.get(position);
-        }
     }
 }
