@@ -14,6 +14,7 @@ import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.Plate;
+import com.github.runly.riforum_android.model.ResponseBase;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
@@ -135,7 +136,7 @@ public class EntriesOfPlateActivity extends TopBarActivity {
                     }
                     list.addAll(response.data);
                     recyclerView.getAdapter().notifyDataSetChanged();
-                    entriesNum.setText(String.format(getString(R.string.release_num), list.size()));
+                    entriesNum.setText(String.format(getString(R.string.release_num), response.entry_number));
                     message = response.message;
                 }
                 swipeRefreshLayout.setRefreshing(false);

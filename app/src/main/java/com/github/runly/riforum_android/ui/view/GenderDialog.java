@@ -9,19 +9,19 @@ import android.widget.CheckBox;
 
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.Constants;
-import com.github.runly.riforum_android.interfaces.OnChooseGenderListener;
+import com.github.runly.riforum_android.interfaces.OnChooseGender;
 
 /**
  * Created by ranly on 17-3-2.
  */
 
 public class GenderDialog extends Dialog {
-    private OnChooseGenderListener listener;
+    private OnChooseGender onChooseGender;
     private int currentGender;
 
-    public GenderDialog(Context context, OnChooseGenderListener listener, int currentGender) {
+    public GenderDialog(Context context, OnChooseGender onChooseGender, int currentGender) {
         super(context);
-        this.listener = listener;
+        this.onChooseGender = onChooseGender;
         this.currentGender = currentGender;
     }
 
@@ -58,21 +58,21 @@ public class GenderDialog extends Dialog {
 
         cbxMale.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                listener.OnChooseGender(Constants.MALE);
+                onChooseGender.chooseGender(Constants.MALE);
                 cbxFemale.setChecked(false);
             }else {
                 if (!cbxFemale.isChecked() && !cbxMale.isChecked())
-                    listener.OnChooseGender(Constants.NO_GENDER);
+                    onChooseGender.chooseGender(Constants.NO_GENDER);
             }
         });
 
         cbxFemale.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                listener.OnChooseGender(Constants.FEMALE);
+                onChooseGender.chooseGender(Constants.FEMALE);
                 cbxMale.setChecked(false);
             } else {
                 if (!cbxFemale.isChecked() && !cbxMale.isChecked())
-                    listener.OnChooseGender(Constants.NO_GENDER);
+                    onChooseGender.chooseGender(Constants.NO_GENDER);
             }
         });
     }

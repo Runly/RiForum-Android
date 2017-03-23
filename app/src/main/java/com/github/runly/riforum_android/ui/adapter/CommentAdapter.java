@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.Constants;
-import com.github.runly.riforum_android.interfaces.OnCommentedListener;
+import com.github.runly.riforum_android.interfaces.OnCommented;
 import com.github.runly.riforum_android.model.Comment;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
@@ -47,7 +47,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private View mFooterView = null;
     private EditText commentEdit;
     private CommentDialog commentDialog;
-    private OnCommentedListener onCommentedListener;
+    private OnCommented onCommented;
 
     public void setHeaderView(View headerView) {
         mHeaderView = headerView;
@@ -59,11 +59,11 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         notifyItemInserted(getItemCount() - 1);
     }
 
-    public CommentAdapter(Context context, List<Comment> itemList, EditText editText, OnCommentedListener listener) {
+    public CommentAdapter(Context context, List<Comment> itemList, EditText editText, OnCommented onCommented) {
         this.mItemList = itemList;
         this.mContext = context;
         this.commentEdit = editText;
-        this.onCommentedListener = listener;
+        this.onCommented = onCommented;
         this.commentDialog = new CommentDialog(mContext);
     }
 
@@ -145,7 +145,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
                         });
-                        onCommentedListener.onCommented(itemData, position);
+                        onCommented.commented(itemData, position);
                     });
                 }
 

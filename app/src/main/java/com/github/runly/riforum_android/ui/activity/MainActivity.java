@@ -1,7 +1,10 @@
 package com.github.runly.riforum_android.ui.activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -49,13 +52,12 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.github.runly.riforum_android.R.id.fab;
-
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
     private ViewPager viewPager;
     private CircleImageView navigationAvatar;
     private TextView navigationName;
+    private FloatingActionButton fab;
     private TopBar topBar;
     private User user;
     private SwitchButton switchButton;
@@ -102,7 +104,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
         // 右下角的FloatingActionButton
-        findViewById(R.id.fab).setOnClickListener(this);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
 
         navigationAvatar.setOnClickListener(this);
 
@@ -134,8 +137,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case fab:
-                if (App.getInstance().islogin()) {
+            case R.id.fab:
+                if (App.getInstance().isLogin()) {
                     GoToActivity.goTo(this, ChoosePlateActivity.class);
                 } else {
                     ToastUtil.makeShortToast(this, getString(R.string.not_login));
@@ -148,7 +151,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.navigation_user_avatar:
-                if (App.getInstance().islogin()) {
+                if (App.getInstance().isLogin()) {
                     Intent intent = new Intent(this, UserDetailActivity.class);
                     intent.putExtra(Constants.INTENT_USER_DATA, App.getInstance().getUser());
                     startActivity(intent);
@@ -304,7 +307,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         user = App.getInstance().getUser();
-        if (user == null || !App.getInstance().islogin()) {
+        if (user == null || !App.getInstance().isLogin()) {
             // 在io线程中写文件
             Observable.just(this)
                 .map(SdCardUtil::loadUserFromSdCard)

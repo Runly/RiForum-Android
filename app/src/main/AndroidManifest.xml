@@ -66,6 +66,10 @@
         <activity android:name=".ui.activity.AboutActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.activity.SearchActivity"
+                  android:theme="@style/windowIsTranslucentTheme"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
