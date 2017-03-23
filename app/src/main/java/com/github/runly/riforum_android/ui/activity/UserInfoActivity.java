@@ -25,7 +25,7 @@ import com.github.runly.letteravatar.LetterAvatar;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
-import com.github.runly.riforum_android.interfaces.OnChooseGenderListener;
+import com.github.runly.riforum_android.interfaces.OnChooseGender;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.qiniu.QiniuToken;
 import com.github.runly.riforum_android.qiniu.UploadManagerFactory;
@@ -101,11 +101,11 @@ public class UserInfoActivity extends TopBarActivity {
                 });
             }
 
-            OnChooseGenderListener listener = genderInt -> {
+            OnChooseGender onChooseGender = genderInt -> {
                 gender = genderInt;
                 genderEdit.setText(TxtUtils.whatGender(genderInt));
             };
-            genderDialog = new GenderDialog(this, listener, user.gender);
+            genderDialog = new GenderDialog(this, onChooseGender, user.gender);
 
             genderEdit.setOnClickListener(v -> genderDialog.show());
 
