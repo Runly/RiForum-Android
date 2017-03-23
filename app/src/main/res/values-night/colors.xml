@@ -38,4 +38,5 @@
 
     <color name="tabIndicator">@color/color_c1c1c1</color>
 
+    <color name="alpha">#88000000</color>
 </resources>
