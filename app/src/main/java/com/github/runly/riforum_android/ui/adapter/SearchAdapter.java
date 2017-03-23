@@ -24,12 +24,7 @@ import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
 import com.github.runly.riforum_android.utils.SdCardUtil;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ranly on 17-3-20.

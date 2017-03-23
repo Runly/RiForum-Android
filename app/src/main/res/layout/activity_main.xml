@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.github.runly.riforum_android.ui.activity.MainActivity">
+                                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                                        xmlns:tools="http://schemas.android.com/tools"
+                                        android:id="@+id/drawer_layout"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        tools:context="com.github.runly.riforum_android.ui.activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,21 +39,21 @@
                     app:img_left_default="@mipmap/avatar_default"
                     app:img_left_height="40"
                     app:img_left_width="40"
-                    app:img_right_width="20"
                     app:img_right_height="20"
+                    app:img_right_width="20"
                     app:layout_scrollFlags="scroll|enterAlways"
-                    app:txt_left="@string/not_login" />
+                    app:txt_left="@string/not_login"/>
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@color/colorPrimary"
-                    app:tabTextColor="@color/gray_dbdbdb"
+                    app:tabIndicatorColor="@color/tabIndicator"
+                    app:tabIndicatorHeight="3dp"
                     app:tabSelectedTextColor="@android:color/white"
                     app:tabTextAppearance="@android:style/TextAppearance.Holo.Widget.TextView"
-                    app:tabIndicatorColor="@color/tabIndicator"
-                    app:tabIndicatorHeight="3dp" />
+                    app:tabTextColor="@color/gray_dbdbdb"/>
 
             </android.support.design.widget.AppBarLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
@@ -79,8 +79,7 @@
     </LinearLayout>
 
 
-
-    <include layout="@layout/layout_navigation" />
+    <include layout="@layout/layout_navigation"/>
 
 </android.support.v4.widget.DrawerLayout>
 

@@ -132,10 +132,11 @@ public class EntriesOfPlateActivity extends TopBarActivity {
 					List<Entry> list = ((EntriesAdapter) recyclerView.getAdapter()).getItemList();
 					if (!isMore) {
 						list.clear();
+						entriesNum.setText(String.format(getString(
+							R.string.release_num), response.entry_number));
 					}
 					list.addAll(response.data);
 					recyclerView.getAdapter().notifyDataSetChanged();
-					entriesNum.setText(String.format(getString(R.string.release_num), response.entry_number));
 					message = response.message;
 				}
 				swipeRefreshLayout.setRefreshing(false);

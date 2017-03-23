@@ -121,7 +121,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 				mItemList.remove(position);
 				App.getInstance().getHistoryList().remove(position);
 				notifyDataSetChanged();
-				if (position == 0) {
+				if (mItemList.size() < 1) {
 					SdCardUtil.removeHistory(mContext);
 				} else {
 					SdCardUtil.saveHistory(mContext, mItemList);

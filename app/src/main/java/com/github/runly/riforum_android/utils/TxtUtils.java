@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.App;
-import com.github.runly.riforum_android.application.Constants;
 
 import java.lang.reflect.Field;
 

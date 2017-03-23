@@ -20,7 +20,6 @@ import com.github.runly.riforum_android.ui.activity.MainActivity;
 import com.github.runly.riforum_android.ui.adapter.ChoosePlateAdapter;
 import com.github.runly.riforum_android.ui.adapter.ForumAdapter;
 import com.github.runly.riforum_android.ui.view.MarginDecoration;
-import com.github.runly.riforum_android.utils.RecyclerScrollToTop;
 
 import java.util.ArrayList;
 import java.util.List;

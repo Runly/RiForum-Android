@@ -426,12 +426,10 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
 		switch (v.getId()) {
 			case R.id.open_camera:
 				ReleaseActivityPermissionsDispatcher.openCameraWithCheck(this);
-//                openCamera();
 				break;
 
 			case R.id.add_photo:
 				ReleaseActivityPermissionsDispatcher.addPhotoWithCheck(this);
-//                addPhoto();
 				break;
 
 			case R.id.txt_right:

@@ -2,10 +2,6 @@ package com.github.runly.riforum_android.application;
 
 import android.os.Environment;
 
-import java.io.File;
-
-import rx.functions.FuncN;
-
 /**
  * Created by ranly on 17-2-7.
  */

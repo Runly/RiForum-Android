@@ -1,7 +1,7 @@
 package com.github.runly.riforum_android.retrofit;
 
-import com.github.runly.riforum_android.qiniu.QiniuToken;
 import com.github.runly.riforum_android.model.ResponseBase;
+import com.github.runly.riforum_android.qiniu.QiniuToken;
 
 import java.util.Map;
 
