@@ -7,6 +7,7 @@
     <color name="gray_bfbfbf">#bfbfbf</color>
     <color name="color_515151">#515151</color>
     <color name="color_b1b1b1">#b1b1b1</color>
+    <color name="color_8192D6">#8192D6</color>
 
     <!--白天模式背景色-->
     <color name="color_fafafa">#FAFAFA</color>
@@ -24,6 +25,7 @@
     <color name="normal_content">@android:color/black</color>
     <color name="normal_text">@android:color/white</color>
     <color name="normal_edit">#aaa</color>
+    <color name="search_text">#555555</color>
 
     <color name="normal_bg">@android:color/white</color>
 

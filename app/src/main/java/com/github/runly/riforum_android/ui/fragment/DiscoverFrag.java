@@ -17,14 +17,25 @@ import android.widget.EditText;
 
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.App;
+import com.github.runly.riforum_android.model.Entry;
+import com.github.runly.riforum_android.model.ModelBase;
+import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.activity.SearchActivity;
 import com.github.runly.riforum_android.ui.adapter.HistoryAdapter;
-import com.github.runly.riforum_android.ui.adapter.RecyclerAdapter;
+import com.github.runly.riforum_android.ui.adapter.HotAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.utils.GoToActivity;
+import com.github.runly.riforum_android.utils.SdCardUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import static com.github.runly.riforum_android.R.id.recyclerView;
 
 /**
  * Created by ranly on 17-2-7.
@@ -57,13 +68,16 @@ public class DiscoverFrag extends Fragment {
 					ActivityOptions.makeSceneTransitionAnimation(
 						getActivity(),
 						view.findViewById(R.id.linear),
-						"sharedView"
+						getString(R.string.search_bar_share)
 					);
 				getActivity().startActivity(intent, activityOptions.toBundle());
 			} else {
 				GoToActivity.goTo(getActivity(), SearchActivity.class);
 			}
 		});
+
+		fetchData();
+
 		return view;
 	}
 
@@ -77,30 +91,52 @@ public class DiscoverFrag extends Fragment {
 			.build();
 
 		recyclerView.setLayoutManager(chipsLayoutManager);
-		RecyclerAdapter recyclerAdapter = new RecyclerAdapter(createItemList());
-		recyclerView.setAdapter(recyclerAdapter);
-		recyclerView.addItemDecoration(new MyDecoration(getContext(), 8, 8 , 8 , 8, true));
+		HotAdapter hotAdapter = new HotAdapter(getContext(), new ArrayList<>());
+		recyclerView.setAdapter(hotAdapter);
+		recyclerView.addItemDecoration(new MyDecoration(getContext(), 8, 8, 8, 8, true));
 	}
 
 	private void setupHistoryRecyclerView(RecyclerView recyclerView, View footer) {
-		HistoryAdapter recyclerAdapter = new HistoryAdapter(getActivity(), createItemList());
+		HistoryAdapter recyclerAdapter = new HistoryAdapter(getActivity(), new ArrayList<>());
+		List<ModelBase> list = recyclerAdapter.getItemList();
+		list.addAll(App.getInstance().getHistoryList());
+		recyclerAdapter.notifyDataSetChanged();
+
 		Button button = (Button) footer.findViewById(R.id.clear_history);
 		button.setOnClickListener(v -> {
 			recyclerAdapter.getItemList().clear();
 			recyclerAdapter.notifyDataSetChanged();
+			SdCardUtil.removeHistory(getActivity());
 		});
 
 		recyclerAdapter.setFooterView(footer);
 		recyclerView.setAdapter(recyclerAdapter);
-		recyclerView.addItemDecoration(new MyDecoration(getContext(), 0, 1 , 0 , 0, true));
+		recyclerView.addItemDecoration(new MyDecoration(getContext(), 0, 1, 0, 0, true));
 	}
 
-	private List<String> createItemList() {
-		List<String> itemList = new ArrayList<>();
-		String[] a = {"乐天", "主播炸了", "阴阳师",  "暴走大事件", "三生三世十里桃花", "主播真会玩", "斗破苍穹"};
-		for (int i = 0; i <a.length; i++) {
-			itemList.add(a[i]);
-		}
-		return itemList;
+	private void fetchData() {
+		RetrofitFactory.getInstance()
+			.getEntryService()
+			.search_recommend()
+			.subscribeOn(Schedulers.io())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(respone -> {
+				if ("1".equals(respone.code)) {
+					HotAdapter hotAdapter = ((HotAdapter) hotRecyclerView.getAdapter());
+					List<Entry> list = hotAdapter.getItemList();
+					list.clear();
+					list.addAll(respone.data);
+					hotAdapter.notifyDataSetChanged();
+				}
+			});
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		List<ModelBase> list = ((HistoryAdapter) historyRecyclerView.getAdapter()).getItemList();
+		list.clear();
+		list.addAll(App.getInstance().getHistoryList());
+		historyRecyclerView.getAdapter().notifyDataSetChanged();
 	}
 }

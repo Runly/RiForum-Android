@@ -6,6 +6,9 @@
     <string name="tab_2">论坛</string>
     <string name="tab_3">发现</string>
 
+    <string name="search_tab_1">帖子</string>
+    <string name="search_tab_2">用户</string>
+
     <string name="not_login">未登录</string>
     <string name="click_to_login">点击头像登录</string>
     <string name="sign_in_hint">邮箱或手机号</string>
@@ -118,5 +121,7 @@
     <string name="search_hot">大家都在搜</string>
     <string name="search_history">搜索记录</string>
     <string name="clear_history">清除记录</string>
+
+    <string name="search_bar_share">search_bar_share</string>
 
 </resources>

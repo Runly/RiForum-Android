@@ -68,8 +68,11 @@
 
         <activity android:name=".ui.activity.SearchActivity"
                   android:theme="@style/windowIsTranslucentTheme"
-                  android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="adjustResize" />
 
+        <activity android:name=".ui.activity.SearchDetailActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

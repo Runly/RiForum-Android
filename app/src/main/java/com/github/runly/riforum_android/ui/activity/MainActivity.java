@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
-        TxtUtils.setUpIndicatorWidth(this, tabLayout);
+        TxtUtils.setUpIndicatorWidth(this, tabLayout, 35);
     }
 
     private void openDrawer() {

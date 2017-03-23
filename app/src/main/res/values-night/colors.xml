@@ -23,6 +23,7 @@
     <color name="normal_content">@color/color_c1c1c1</color>
     <color name="normal_text">@color/color_c1c1c1</color>
     <color name="normal_edit">#aaa</color>
+    <color name="search_text">@color/color_c1c1c1</color>
 
     <color name="normal_bg">#383838</color>
 

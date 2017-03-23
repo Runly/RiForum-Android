@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.github.runly.riforum_android.R;
@@ -60,7 +61,7 @@ public class SearchActivity extends BaseActivity {
 
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_ctrl_height);
 		ViewGroup.LayoutParams params = linearLayout.getLayoutParams();
-		params.height = Constants.SCREEN_HEIGHT / 3 * 2;
+		params.height = Constants.SCREEN_HEIGHT / 2;
 		linearLayout.setLayoutParams(params);
 
 		recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -92,6 +93,9 @@ public class SearchActivity extends BaseActivity {
 
 			}
 		});
+
+		ImageView toSearch = (ImageView) findViewById(R.id.to_search);
+		toSearch.setOnClickListener(v -> {});
 
 	}
 

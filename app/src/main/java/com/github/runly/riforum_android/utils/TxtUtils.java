@@ -126,7 +126,7 @@ public class TxtUtils {
     /**
      * 通过反射修改TabLayout Indicator的宽度（仅在Android 4.2及以上生效）
      */
-    public static void setUpIndicatorWidth(Context context, TabLayout tabLayout) {
+    public static void setUpIndicatorWidth(Context context, TabLayout tabLayout, int margin) {
         Class<?> tabLayoutClass = tabLayout.getClass();
         Field tabStrip = null;
         try {
@@ -148,8 +148,8 @@ public class TxtUtils {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
                             LinearLayout.LayoutParams.MATCH_PARENT, 1);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        params.setMarginStart(UnitConvert.dp2Px(context, 35));
-                        params.setMarginEnd(UnitConvert.dp2Px(context, 35));
+                        params.setMarginStart(UnitConvert.dp2Px(context, margin));
+                        params.setMarginEnd(UnitConvert.dp2Px(context, margin));
                     }
                     child.setLayoutParams(params);
                     child.invalidate();

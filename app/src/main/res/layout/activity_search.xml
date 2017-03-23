@@ -1,72 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     >
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:gravity="center"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/choose_text_border"
-        android:orientation="horizontal"
-        >
-
-        <ImageView
-            android:id="@+id/send_comment"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:src="@mipmap/back_80"
-            android:scaleType="fitCenter"
-            tools:ignore="contentDescription"/>
-
-        <EditText
-            android:id="@+id/search_edit_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="@string/search_hint"
-            android:layout_marginStart="8dp"
-            android:textCursorDrawable="@drawable/edit_cursor"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:id="@+id/to_search"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="10dp"
-            android:src="@mipmap/search_80"
-            android:scaleType="fitCenter"
-            tools:ignore="contentDescription"/>
-
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/linear_ctrl_height"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:background="@drawable/choose_text_border" />
-
-
-
-    <LinearLayout
-        android:id="@+id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
         android:orientation="vertical"
-        android:background="@android:color/transparent"/>
+        >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/choose_text_border"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:id="@+id/send_comment"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/back_80"
+                tools:ignore="contentDescription"/>
+
+            <EditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/search_hint"
+                android:textCursorDrawable="@drawable/edit_cursor"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/to_search"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="8dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/search_80"
+                tools:ignore="contentDescription"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/choose_text_border"
+            android:overScrollMode="never"
+            android:scrollbars="vertical"/>
+
+
+        <LinearLayout
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@android:color/transparent"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
 
 </LinearLayout>

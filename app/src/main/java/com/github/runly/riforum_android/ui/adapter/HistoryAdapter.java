@@ -1,6 +1,7 @@
 package com.github.runly.riforum_android.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.App;
+import com.github.runly.riforum_android.application.Constants;
+import com.github.runly.riforum_android.model.Entry;
+import com.github.runly.riforum_android.model.ModelBase;
+import com.github.runly.riforum_android.model.User;
+import com.github.runly.riforum_android.ui.activity.DetailActivity;
+import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
+import com.github.runly.riforum_android.utils.SdCardUtil;
 import com.github.runly.riforum_android.utils.ToastUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import static com.github.runly.riforum_android.R.mipmap.user;
 
 /**
  * Created by ranly on 17-3-21.
@@ -26,12 +37,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 	private Context mContext;
 
 
-	private List<String> mItemList;
+	private List<ModelBase> mItemList;
 	private View mHeaderView = null;
 	private View mFooterView = null;
 
 
-	public List<String> getItemList() {
+	public List<ModelBase> getItemList() {
 		return mItemList;
 	}
 
@@ -45,7 +56,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 		notifyItemInserted(getItemCount() - 1);
 	}
 
-	public HistoryAdapter(Context context, List<String> itemList) {
+	public HistoryAdapter(Context context, List<ModelBase> itemList) {
 		this.mItemList = itemList;
 		this.mContext = context;
 	}
@@ -89,13 +100,35 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 		if (getItemViewType(position) == TYPE_NORMAL) {
 			ViewHolder holder = (ViewHolder) viewHolder;
-			holder.textView.setText(mItemList.get(position));
-			holder.viewWeakReference.get().setOnClickListener(v -> {
-				ToastUtil.makeShortToast(mContext, "clicked");
-			});
+			ModelBase itemData = mItemList.get(position);
+
+			if (itemData instanceof User) {
+				User user = (User) itemData;
+				holder.textView.setText(user.name);
+				holder.viewWeakReference.get().setOnClickListener(v -> {
+					Intent intent = new Intent(mContext, UserDetailActivity.class);
+					intent.putExtra(Constants.INTENT_USER_DATA, user);
+					mContext.startActivity(intent);
+				});
+			} else {
+				Entry entry = (Entry) itemData;
+				holder.textView.setText(entry.title);
+				holder.viewWeakReference.get().setOnClickListener(v -> {
+					Intent intent = new Intent(mContext, DetailActivity.class);
+					intent.putExtra(Constants.INTENT_ENTRY_DATA, entry);
+					mContext.startActivity(intent);
+				});
+			}
+
 			holder.clearImage.setOnClickListener(v -> {
 				mItemList.remove(position);
+				App.getInstance().getHistoryList().remove(position);
 				notifyDataSetChanged();
+				if (position == 0) {
+					SdCardUtil.removeHistory(mContext);
+				} else {
+					SdCardUtil.saveHistory(mContext, mItemList);
+				}
 			});
 		}
 

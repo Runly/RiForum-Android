@@ -68,7 +68,16 @@ public interface EntryService {
     Observable<ResponseBase<List<Entry>>> banner_entries();
 
 
+    /**
+     *
+     * @param body
+     * @return
+     */
     @POST("entry/search")
     Observable<ResponseBase<Entry>> search(@Body Map<String, Object> body);
+
+
+    @GET("entry/search_recommend")
+    Observable<ResponseBase<List<Entry>>> search_recommend();
 
 }

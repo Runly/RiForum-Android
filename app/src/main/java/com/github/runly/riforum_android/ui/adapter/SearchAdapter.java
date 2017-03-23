@@ -2,7 +2,11 @@ package com.github.runly.riforum_android.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +14,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.ModelBase;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.DetailActivity;
 import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
+import com.github.runly.riforum_android.utils.SdCardUtil;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ranly on 17-3-20.
@@ -103,8 +114,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			if (itemData instanceof User) {
 				User user = (User) itemData;
 				holder.userOrEntry.setImageResource(R.mipmap.user);
-				holder.nameOrTitle.setText(user.name);
+				holder.nameOrTitle.setText(getSpanned(user.name));
 				holder.viewWeakReference.get().setOnClickListener(v -> {
+					saveHistory(itemData);
 					Intent intent = new Intent(mContext, UserDetailActivity.class);
 					intent.putExtra(Constants.INTENT_USER_DATA, user);
 					mContext.startActivity(intent);
@@ -114,14 +126,37 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			if (itemData instanceof Entry) {
 				Entry entry = (Entry) itemData;
 				holder.userOrEntry.setImageResource(R.mipmap.entry);
-				holder.nameOrTitle.setText(entry.title);
+				holder.nameOrTitle.setText(getSpanned(entry.title));
 				holder.viewWeakReference.get().setOnClickListener(v -> {
+					saveHistory(itemData);
 					Intent intent = new Intent(mContext, DetailActivity.class);
 					intent.putExtra(Constants.INTENT_ENTRY_DATA, entry);
 					mContext.startActivity(intent);
 				});
 			}
 		}
+	}
+
+	private void saveHistory(ModelBase modelBase) {
+		List<ModelBase> list = App.getInstance().getHistoryList();
+		list.add(0, modelBase);
+		SdCardUtil.saveHistory(mContext, list);
+	}
+
+	private SpannableStringBuilder getSpanned(String content) {
+		SpannableStringBuilder builder = new SpannableStringBuilder(content);
+		ForegroundColorSpan yellowSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_8192D6));
+		int index = 0;
+		if (content.contains(searchContent)) {
+			index = content.indexOf(searchContent);
+		} else if (content.contains(searchContent.toUpperCase())) {
+			index = content.indexOf(searchContent.toUpperCase());
+		} else if (content.contains(searchContent.toLowerCase())) {
+			index = content.indexOf(searchContent.toLowerCase());
+		}
+
+		builder.setSpan(yellowSpan, index, index + searchContent.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		return builder;
 	}
 
 	@Override
