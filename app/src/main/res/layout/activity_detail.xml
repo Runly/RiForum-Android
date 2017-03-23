@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linear_layout"
+    android:id="@+id/scroll_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -48,7 +48,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/comment_edit_text"
+                android:id="@+id/search_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
                 android:layout_weight="1"
@@ -64,7 +64,9 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="16dp"
-                android:background="@mipmap/send"
+                android:background="@drawable/ripple_bg"
+                android:src="@mipmap/send"
+                android:scaleType="fitCenter"
                 tools:ignore="contentDescription"/>
 
         </LinearLayout>

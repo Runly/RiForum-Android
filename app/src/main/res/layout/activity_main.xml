@@ -22,7 +22,7 @@
             />
 
         <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/linear_layout"
+            android:id="@+id/scroll_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -39,6 +39,8 @@
                     app:img_left_default="@mipmap/avatar_default"
                     app:img_left_height="40"
                     app:img_left_width="40"
+                    app:img_right_width="20"
+                    app:img_right_height="20"
                     app:layout_scrollFlags="scroll|enterAlways"
                     app:txt_left="@string/not_login" />
 
@@ -69,7 +71,8 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
                 app:layout_behavior=".utils.ScrollingFABBehavior"
-                app:srcCompat="@mipmap/release" />
+                app:srcCompat="@mipmap/release"
+                />
 
         </android.support.design.widget.CoordinatorLayout>
 

@@ -28,8 +28,10 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="NoTranslucentTheme" parent="AppTheme">
-        <item name="android:windowTranslucentStatus">false</item>
+    <style name="windowIsTranslucentTheme" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/alpha</item>
     </style>
 
     <style name="myEditText" parent="Theme.AppCompat.Light">
