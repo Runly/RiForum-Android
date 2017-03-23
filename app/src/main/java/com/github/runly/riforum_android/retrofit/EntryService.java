@@ -67,4 +67,8 @@ public interface EntryService {
     @GET("entry/banner_entries")
     Observable<ResponseBase<List<Entry>>> banner_entries();
 
+
+    @POST("entry/search")
+    Observable<ResponseBase<Entry>> search(@Body Map<String, Object> body);
+
 }
