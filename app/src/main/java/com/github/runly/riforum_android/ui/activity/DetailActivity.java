@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +14,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,7 +28,7 @@ import com.github.runly.richedittext.span.FakeImageSpan;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
-import com.github.runly.riforum_android.interfaces.OnCommentedListener;
+import com.github.runly.riforum_android.interfaces.OnCommented;
 import com.github.runly.riforum_android.model.Comment;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
@@ -38,6 +36,7 @@ import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.CommentAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.ui.view.TopBar;
+import com.github.runly.riforum_android.utils.MyOnGlobalLayoutListener;
 import com.github.runly.riforum_android.utils.RecyclerScrollToTop;
 import com.github.runly.riforum_android.utils.ToastUtil;
 import com.github.runly.riforum_android.utils.TxtUtils;
@@ -92,7 +91,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         topBar.setOnClickListener(v -> recyclerView.scrollToPosition(0));
         topBar.setOnClickListener(v -> RecyclerScrollToTop.scrollToTop(recyclerView));
 
-        commentEdit = (EditText) findViewById(R.id.comment_edit_text);
+        commentEdit = (EditText) findViewById(R.id.search_edit_text);
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
 
         final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
@@ -205,9 +204,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private void setupRecyclerView(RecyclerView recyclerView, View header) {
 
-        OnCommentedListener listener =
+        OnCommented onCommented =
             (comment, position) -> commented = comment;
-        CommentAdapter adapter = new CommentAdapter(this, commentList, commentEdit, listener);
+        CommentAdapter adapter = new CommentAdapter(this, commentList, commentEdit, onCommented);
 
         adapter.setHeaderView(header);
         recyclerView.setHasFixedSize(true);
@@ -273,7 +272,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private void sendComment() {
         User user = App.getInstance().getUser();
-        if (!App.getInstance().islogin() || user == null) {
+        if (!App.getInstance().isLogin() || user == null) {
             ToastUtil.makeShortToast(this, getString(R.string.not_login));
             return;
         }
@@ -387,34 +386,4 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         ViewGroup decorView = (ViewGroup) findViewById(android.R.id.content);
         decorView.addView(view, params);
     }
-
-    interface OnSoftKeyWordShowListener {
-        void hasShow(boolean isShow);
-    }
-
-    /**
-     * 判断软键盘是否弹出
-     */
-    private class MyOnGlobalLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
-        private OnSoftKeyWordShowListener listener;
-        private View rootView;
-
-        MyOnGlobalLayoutListener(View rootView, OnSoftKeyWordShowListener listener) {
-            this.listener = listener;
-            this.rootView = rootView;
-        }
-
-        @Override
-        public void onGlobalLayout() {
-            final Rect rect = new Rect();
-            rootView.getWindowVisibleDisplayFrame(rect);
-            final int screenHeight = rootView.getRootView().getHeight();
-            final int heightDifference = screenHeight - rect.bottom;
-            boolean visible = heightDifference > screenHeight / 3;
-
-            if (listener != null)
-                listener.hasShow(visible);
-        }
-    }
-
 }
