@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
@@ -126,12 +127,13 @@ public class ForumFrag extends Fragment {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
                 if ("1".equals(response.code)) {
+                    fetchData();
                     List<Plate> itemDataList =
                         ((ChoosePlateAdapter) plateRecyclerView.getAdapter()).getItemList();
                     itemDataList.clear();
                     itemDataList.addAll(response.data);
                     plateRecyclerView.getAdapter().notifyDataSetChanged();
-                    fetchData();
+                    App.getInstance().setPlateList(itemDataList);
                 }
             }, throwable -> {
                 throwable.printStackTrace();
