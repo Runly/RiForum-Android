@@ -17,31 +17,31 @@ import com.github.runly.riforum_android.R;
 
 public class ImageViewBehavior extends CoordinatorLayout.Behavior<ImageView> {
 
-    private Context mContext;
+	private Context mContext;
 
-    private int dependencyEndY;
+	private int dependencyEndY;
 
-    public ImageViewBehavior(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.mContext = context;
+	public ImageViewBehavior(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		this.mContext = context;
 
-        dependencyEndY = UnitConvert.dp2Px(context, 174); // Log查看dependency.getY()的边界值后除以屏幕密度 = 166 dp
-    }
+		dependencyEndY = UnitConvert.dp2Px(context, 174); // Log查看dependency.getY()的边界值后除以屏幕密度 = 166 dp
+	}
 
-    @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, ImageView child, View dependency) {
-        return dependency instanceof AppBarLayout;
-    }
+	@Override
+	public boolean layoutDependsOn(CoordinatorLayout parent, ImageView child, View dependency) {
+		return dependency instanceof AppBarLayout;
+	}
 
-    @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, ImageView child, View dependency) {
-        Log.e("Y", dependency.getY()+"");
-        if (-dependency.getY() == dependencyEndY) {
-            child.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.back));
-        } else {
-            child.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.back_base_color));
-        }
+	@Override
+	public boolean onDependentViewChanged(CoordinatorLayout parent, ImageView child, View dependency) {
+		Log.e("Y", dependency.getY() + "");
+		if (-dependency.getY() == dependencyEndY) {
+			child.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.back));
+		} else {
+			child.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.back_base_color));
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

@@ -13,7 +13,7 @@ import com.github.runly.riforum_android.R;
  * Created by ranly on 17-3-23.
  */
 
-public class SearchEntryFrag extends Fragment{
+public class SearchEntryFrag extends Fragment {
 
 	@Nullable
 	@Override

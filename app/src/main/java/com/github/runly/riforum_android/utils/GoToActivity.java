@@ -10,8 +10,8 @@ import com.github.runly.riforum_android.ui.activity.BaseActivity;
  */
 
 public class GoToActivity {
-    public static void goTo(Activity activity, Class<? extends BaseActivity> activityClass) {
-        Intent intent = new Intent(activity, activityClass);
-        activity.startActivity(intent);
-    }
+	public static void goTo(Activity activity, Class<? extends BaseActivity> activityClass) {
+		Intent intent = new Intent(activity, activityClass);
+		activity.startActivity(intent);
+	}
 }

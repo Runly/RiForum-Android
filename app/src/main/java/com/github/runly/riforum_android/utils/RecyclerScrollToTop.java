@@ -8,12 +8,12 @@ import android.support.v7.widget.RecyclerView;
  */
 
 public class RecyclerScrollToTop {
-    public static void scrollToTop(RecyclerView recyclerView) {
-        LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
-        int currentPosition = lm.findFirstVisibleItemPosition();
-        if (currentPosition > 10) {
-            lm.scrollToPosition(10);
-        }
-        lm.smoothScrollToPosition(recyclerView, null, 0);
-    }
+	public static void scrollToTop(RecyclerView recyclerView) {
+		LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+		int currentPosition = lm.findFirstVisibleItemPosition();
+		if (currentPosition > 10) {
+			lm.scrollToPosition(10);
+		}
+		lm.smoothScrollToPosition(recyclerView, null, 0);
+	}
 }

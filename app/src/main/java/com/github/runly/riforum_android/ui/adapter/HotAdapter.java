@@ -31,61 +31,61 @@ import static android.R.id.list;
  */
 
 public class HotAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Entry> mItemList;
-    private Context mContext;
+	private List<Entry> mItemList;
+	private Context mContext;
 
-    public HotAdapter(Context context, List<Entry> itemList) {
-        this.mItemList = itemList;
-        this.mContext = context;
-    }
+	public HotAdapter(Context context, List<Entry> itemList) {
+		this.mItemList = itemList;
+		this.mContext = context;
+	}
 
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_hot_item, parent, false);
-        return new ViewHolder(view);
-    }
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_hot_item, parent, false);
+		return new ViewHolder(view);
+	}
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        if (mItemList.size() <= 0) {
-            return;
-        }
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+		if (mItemList.size() <= 0) {
+			return;
+		}
 
-        ViewHolder holder = (ViewHolder) viewHolder;
+		ViewHolder holder = (ViewHolder) viewHolder;
 		Entry itemData = mItemList.get(position);
-        holder.textView.setText(itemData.title);
-        holder.textView.setMaxWidth(Constants.SCREEN_WIDTH / 2);
-        holder.viewWeakReference.get().setOnClickListener(v -> {
-            List<ModelBase> list = App.getInstance().getHistoryList();
-            list.add(0, itemData);
-            SdCardUtil.saveHistory(mContext, list);
+		holder.textView.setText(itemData.title);
+		holder.textView.setMaxWidth(Constants.SCREEN_WIDTH / 2);
+		holder.viewWeakReference.get().setOnClickListener(v -> {
+			List<ModelBase> list = App.getInstance().getHistoryList();
+			list.add(0, itemData);
+			SdCardUtil.saveHistory(mContext, list);
 
-            Intent intent = new Intent(mContext, DetailActivity.class);
+			Intent intent = new Intent(mContext, DetailActivity.class);
 			intent.putExtra(Constants.INTENT_ENTRY_DATA, itemData);
-            mContext.startActivity(intent);
-        });
+			mContext.startActivity(intent);
+		});
 
-    }
+	}
 
-    public List<Entry> getItemList() {
-        return mItemList;
-    }
+	public List<Entry> getItemList() {
+		return mItemList;
+	}
 
-    @Override
-    public int getItemCount() {
-        return mItemList == null ? 0 : mItemList.size();
-    }
+	@Override
+	public int getItemCount() {
+		return mItemList == null ? 0 : mItemList.size();
+	}
 
-    private class ViewHolder extends RecyclerView.ViewHolder {
-        WeakReference<View> viewWeakReference;
-        TextView textView;
+	private class ViewHolder extends RecyclerView.ViewHolder {
+		WeakReference<View> viewWeakReference;
+		TextView textView;
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            viewWeakReference = new WeakReference<>(itemView);
-            textView = (TextView) itemView.findViewById(R.id.hot_text);
-        }
-    }
+		ViewHolder(View itemView) {
+			super(itemView);
+			viewWeakReference = new WeakReference<>(itemView);
+			textView = (TextView) itemView.findViewById(R.id.hot_text);
+		}
+	}
 
 }

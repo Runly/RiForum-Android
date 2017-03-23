@@ -23,56 +23,56 @@ import rx.schedulers.Schedulers;
  */
 
 public class ChoosePlateActivity extends TopBarActivity {
-    private List<Plate> itemDataList = new ArrayList<>();
-    private RecyclerView recyclerView;
+	private List<Plate> itemDataList = new ArrayList<>();
+	private RecyclerView recyclerView;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.acitivity_choose_plate);
+	@Override
+	protected void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.acitivity_choose_plate);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        recyclerView.setHasFixedSize(true);
-        setupRecyclerView(recyclerView);
-        initData();
-    }
+		recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+		recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+		recyclerView.setHasFixedSize(true);
+		setupRecyclerView(recyclerView);
+		initData();
+	}
 
-    private void initData() {
-        List<Plate> plateList = App.getInstance().getPlateList();
-        if (plateList != null && plateList.size() >= 0) {
-            itemDataList = ((ChoosePlateAdapter) recyclerView.getAdapter()).getItemList();
-            itemDataList.clear();
-            itemDataList.addAll(plateList);
-            recyclerView.getAdapter().notifyDataSetChanged();
-        } else {
-            fetchData();
-        }
-    }
+	private void initData() {
+		List<Plate> plateList = App.getInstance().getPlateList();
+		if (plateList != null && plateList.size() >= 0) {
+			itemDataList = ((ChoosePlateAdapter) recyclerView.getAdapter()).getItemList();
+			itemDataList.clear();
+			itemDataList.addAll(plateList);
+			recyclerView.getAdapter().notifyDataSetChanged();
+		} else {
+			fetchData();
+		}
+	}
 
-    private void fetchData() {
-        RetrofitFactory.getInstance().getEntryService().plate()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    if ("1".equals(response.code)) {
-                        itemDataList = ((ChoosePlateAdapter) recyclerView.getAdapter()).getItemList();
-                        itemDataList.clear();
-                        itemDataList.addAll(response.data);
-                        recyclerView.getAdapter().notifyDataSetChanged();
-                    }
-                }, Throwable::printStackTrace);
-    }
+	private void fetchData() {
+		RetrofitFactory.getInstance().getEntryService().plate()
+			.subscribeOn(Schedulers.io())
+			.observeOn(AndroidSchedulers.mainThread())
+			.subscribe(response -> {
+				if ("1".equals(response.code)) {
+					itemDataList = ((ChoosePlateAdapter) recyclerView.getAdapter()).getItemList();
+					itemDataList.clear();
+					itemDataList.addAll(response.data);
+					recyclerView.getAdapter().notifyDataSetChanged();
+				}
+			}, Throwable::printStackTrace);
+	}
 
-    private void setupRecyclerView(RecyclerView recyclerView) {
-        ChoosePlateAdapter recyclerAdapter = new ChoosePlateAdapter(this, itemDataList);
-        recyclerView.addItemDecoration(new MyDecoration(this, 16, 8, 16, 0, true));
-        recyclerView.setAdapter(recyclerAdapter);
-    }
+	private void setupRecyclerView(RecyclerView recyclerView) {
+		ChoosePlateAdapter recyclerAdapter = new ChoosePlateAdapter(this, itemDataList);
+		recyclerView.addItemDecoration(new MyDecoration(this, 16, 8, 16, 0, true));
+		recyclerView.setAdapter(recyclerAdapter);
+	}
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        topBar.getTxtCenter().setText(getString(R.string.choose_plate_txt_left));
-    }
+	@Override
+	protected void onStart() {
+		super.onStart();
+		topBar.getTxtCenter().setText(getString(R.string.choose_plate_txt_left));
+	}
 }

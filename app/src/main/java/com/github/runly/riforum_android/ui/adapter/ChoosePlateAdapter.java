@@ -27,75 +27,75 @@ import java.util.List;
  */
 
 public class ChoosePlateAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Context mContext;
-    private List<Plate> mItemList;
+	private Context mContext;
+	private List<Plate> mItemList;
 
-    public ChoosePlateAdapter(Context context, List<Plate> itemList) {
-        this.mItemList = itemList;
-        this.mContext = context;
-    }
+	public ChoosePlateAdapter(Context context, List<Plate> itemList) {
+		this.mItemList = itemList;
+		this.mContext = context;
+	}
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_plate_item, parent, false);
-        return new ViewHolder(view);
-    }
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_plate_item, parent, false);
+		return new ViewHolder(view);
+	}
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        if (mItemList.size() <= 0) {
-            return;
-        }
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+		if (mItemList.size() <= 0) {
+			return;
+		}
 
-        ViewHolder holder = (ViewHolder) viewHolder;
-        Plate plate = mItemList.get(position);
-        if (plate != null) {
-            String itemText = plate.name;
-            holder.plateName.setText(itemText);
-            String iconUrl = plate.icon;
-            Glide.with(mContext)
-                .load(iconUrl)
-                .crossFade()
-                .into(holder.plateIcon);
+		ViewHolder holder = (ViewHolder) viewHolder;
+		Plate plate = mItemList.get(position);
+		if (plate != null) {
+			String itemText = plate.name;
+			holder.plateName.setText(itemText);
+			String iconUrl = plate.icon;
+			Glide.with(mContext)
+				.load(iconUrl)
+				.crossFade()
+				.into(holder.plateIcon);
 
-            if (mContext instanceof MainActivity) {
-                View.OnClickListener onClickListener = v -> {
-                    Intent intent = new Intent(mContext, EntriesOfPlateActivity.class);
-                    intent.putExtra(Constants.INTENT_PLATE_DATA, plate);
-                    mContext.startActivity(intent);
-                };
-                holder.viewWeakReference.get().setOnClickListener(onClickListener);
-            } else if (mContext instanceof ChoosePlateActivity) {
-                View.OnClickListener onClickListener = v -> {
-                    Intent intent = new Intent(mContext, ReleaseActivity.class);
-                    intent.putExtra(Constants.INTENT_PLATE_DATA, plate);
-                    mContext.startActivity(intent);
-                    ((Activity)mContext).finish();
-                };
-                holder.viewWeakReference.get().setOnClickListener(onClickListener);
-            }
-        }
-    }
+			if (mContext instanceof MainActivity) {
+				View.OnClickListener onClickListener = v -> {
+					Intent intent = new Intent(mContext, EntriesOfPlateActivity.class);
+					intent.putExtra(Constants.INTENT_PLATE_DATA, plate);
+					mContext.startActivity(intent);
+				};
+				holder.viewWeakReference.get().setOnClickListener(onClickListener);
+			} else if (mContext instanceof ChoosePlateActivity) {
+				View.OnClickListener onClickListener = v -> {
+					Intent intent = new Intent(mContext, ReleaseActivity.class);
+					intent.putExtra(Constants.INTENT_PLATE_DATA, plate);
+					mContext.startActivity(intent);
+					((Activity) mContext).finish();
+				};
+				holder.viewWeakReference.get().setOnClickListener(onClickListener);
+			}
+		}
+	}
 
-    @Override
-    public int getItemCount() {
-        return mItemList == null ? 0 : mItemList.size();
-    }
+	@Override
+	public int getItemCount() {
+		return mItemList == null ? 0 : mItemList.size();
+	}
 
-    public List<Plate> getItemList() {
-        return mItemList;
-    }
+	public List<Plate> getItemList() {
+		return mItemList;
+	}
 
-    private class ViewHolder extends RecyclerView.ViewHolder{
-        WeakReference<View> viewWeakReference;
-        TextView plateName;
-        ImageView plateIcon;
+	private class ViewHolder extends RecyclerView.ViewHolder {
+		WeakReference<View> viewWeakReference;
+		TextView plateName;
+		ImageView plateIcon;
 
-        ViewHolder(final View parent) {
-            super(parent);
-            plateName = (TextView) parent.findViewById(R.id.plate_name);
-            plateIcon = (ImageView) parent.findViewById(R.id.plate_icon);
-            viewWeakReference = new WeakReference<>(parent);
-        }
-    }
+		ViewHolder(final View parent) {
+			super(parent);
+			plateName = (TextView) parent.findViewById(R.id.plate_name);
+			plateIcon = (ImageView) parent.findViewById(R.id.plate_icon);
+			viewWeakReference = new WeakReference<>(parent);
+		}
+	}
 }

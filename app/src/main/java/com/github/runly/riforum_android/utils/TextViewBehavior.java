@@ -16,36 +16,36 @@ import com.github.runly.riforum_android.R;
  * Created by ranly on 17-2-28.
  */
 
-public class TextViewBehavior extends CoordinatorLayout.Behavior<TextView>  {
+public class TextViewBehavior extends CoordinatorLayout.Behavior<TextView> {
 
 
-    private Context mContext;
+	private Context mContext;
 
-    private int dependencyEndY;
+	private int dependencyEndY;
 
-    public TextViewBehavior(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.mContext = context;
+	public TextViewBehavior(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		this.mContext = context;
 
-        dependencyEndY = UnitConvert.dp2Px(context, 174); // Log查看dependency.getY()的边界值后除以屏幕密度 = 166 dp
-    }
+		dependencyEndY = UnitConvert.dp2Px(context, 174); // Log查看dependency.getY()的边界值后除以屏幕密度 = 166 dp
+	}
 
-    @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, TextView child, View dependency) {
-        return dependency instanceof AppBarLayout;
-    }
+	@Override
+	public boolean layoutDependsOn(CoordinatorLayout parent, TextView child, View dependency) {
+		return dependency instanceof AppBarLayout;
+	}
 
-    @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, TextView child, View dependency) {
-        Log.e("Y", dependency.getY()+"");
-        if (-dependency.getY() == dependencyEndY) {
-            child.setTextColor(Color.WHITE);
-            child.setBackground(ContextCompat.getDrawable(mContext, R.drawable.color_white_text_border));
-        } else {
-            child.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-            child.setBackground(ContextCompat.getDrawable(mContext, R.drawable.color_base_text_border));
-        }
+	@Override
+	public boolean onDependentViewChanged(CoordinatorLayout parent, TextView child, View dependency) {
+		Log.e("Y", dependency.getY() + "");
+		if (-dependency.getY() == dependencyEndY) {
+			child.setTextColor(Color.WHITE);
+			child.setBackground(ContextCompat.getDrawable(mContext, R.drawable.color_white_text_border));
+		} else {
+			child.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+			child.setBackground(ContextCompat.getDrawable(mContext, R.drawable.color_base_text_border));
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

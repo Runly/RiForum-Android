@@ -95,7 +95,8 @@ public class SearchActivity extends BaseActivity {
 		});
 
 		ImageView toSearch = (ImageView) findViewById(R.id.to_search);
-		toSearch.setOnClickListener(v -> {});
+		toSearch.setOnClickListener(v -> {
+		});
 
 	}
 

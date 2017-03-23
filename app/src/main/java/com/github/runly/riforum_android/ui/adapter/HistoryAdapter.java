@@ -18,12 +18,9 @@ import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.ui.activity.DetailActivity;
 import com.github.runly.riforum_android.ui.activity.UserDetailActivity;
 import com.github.runly.riforum_android.utils.SdCardUtil;
-import com.github.runly.riforum_android.utils.ToastUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
-
-import static com.github.runly.riforum_android.R.mipmap.user;
 
 /**
  * Created by ranly on 17-3-21.

@@ -15,7 +15,7 @@ import com.github.runly.riforum_android.utils.TxtUtils;
  * Created by ranly on 17-3-23.
  */
 
-public class SearchDetailActivity extends BaseActivity{
+public class SearchDetailActivity extends BaseActivity {
 	private ViewPager viewPager;
 
 	@Override

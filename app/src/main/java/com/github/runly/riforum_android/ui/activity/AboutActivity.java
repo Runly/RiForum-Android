@@ -11,7 +11,7 @@ import com.github.runly.riforum_android.utils.VersionUtil;
  * Created by ranly on 17-3-17.
  */
 
-public class AboutActivity extends TopBarActivity{
+public class AboutActivity extends TopBarActivity {
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
