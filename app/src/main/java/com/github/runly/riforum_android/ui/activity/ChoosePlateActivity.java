@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.ChoosePlateAdapter;
@@ -35,7 +35,19 @@ public class ChoosePlateActivity extends TopBarActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setHasFixedSize(true);
         setupRecyclerView(recyclerView);
-        fetchData();
+        initData();
+    }
+
+    private void initData() {
+        List<Plate> plateList = App.getInstance().getPlateList();
+        if (plateList != null && plateList.size() >= 0) {
+            itemDataList = ((ChoosePlateAdapter) recyclerView.getAdapter()).getItemList();
+            itemDataList.clear();
+            itemDataList.addAll(plateList);
+            recyclerView.getAdapter().notifyDataSetChanged();
+        } else {
+            fetchData();
+        }
     }
 
     private void fetchData() {
@@ -44,8 +56,7 @@ public class ChoosePlateActivity extends TopBarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     if ("1".equals(response.code)) {
-                        itemDataList = ((ChoosePlateAdapter) recyclerView
-                                .getAdapter()).getItemList();
+                        itemDataList = ((ChoosePlateAdapter) recyclerView.getAdapter()).getItemList();
                         itemDataList.clear();
                         itemDataList.addAll(response.data);
                         recyclerView.getAdapter().notifyDataSetChanged();
