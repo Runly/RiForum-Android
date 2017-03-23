@@ -148,7 +148,7 @@ public class ForumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
                 View.OnClickListener onClickListener = v -> {
                     Intent intent = new Intent(mContext, DetailActivity.class);
-                    intent.putExtra("item_data", itemData);
+                    intent.putExtra(Constants.INTENT_ENTRY_DATA, itemData);
                     mContext.startActivity(intent);
                 };
                 holder.viewWeakReference.get().setOnClickListener(onClickListener);

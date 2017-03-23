@@ -43,7 +43,7 @@ public class Constants {
 
 
     public static final String INTENT_USER_DATA = "user_data";
-    public static final String INTENT_ITEM_DATA = "item_data";
+    public static final String INTENT_ENTRY_DATA = "entry_data";
     public static final String INTENT_PLATE_DATA = "plate_data";
 
     public static final int MALE = 0;

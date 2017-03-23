@@ -200,7 +200,7 @@ public class RecommendFrag extends Fragment {
         banner.setOnBannerListener(position -> {
             if (bannerEntryList.size() > 0 && bannerImageList.size() > 0) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra(Constants.INTENT_ITEM_DATA, bannerEntryList.get(position));
+                intent.putExtra(Constants.INTENT_ENTRY_DATA, bannerEntryList.get(position));
                 getActivity().startActivity(intent);
             }
         });

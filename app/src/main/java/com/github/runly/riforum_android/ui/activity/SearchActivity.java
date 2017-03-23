@@ -81,8 +81,15 @@ public class SearchActivity extends BaseActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				fetchData(content);
-				((SearchAdapter) recyclerView.getAdapter()).setSearchContent(content);
+				if (TextUtils.isEmpty(content)) {
+					((SearchAdapter) recyclerView.getAdapter()).getItemList().clear();
+					recyclerView.getAdapter().notifyDataSetChanged();
+				} else {
+					fetchData(content);
+					((SearchAdapter) recyclerView.getAdapter()).setSearchContent(content);
+				}
+
+
 			}
 		});
 

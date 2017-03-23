@@ -146,7 +146,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         TextView commentNum = (TextView) header.findViewById(R.id.comment_number);
         TextView plate = (TextView) header.findViewById(R.id.detail_plate);
 
-        entry = (Entry) getIntent().getSerializableExtra(Constants.INTENT_ITEM_DATA);
+        entry = (Entry) getIntent().getSerializableExtra(Constants.INTENT_ENTRY_DATA);
 
         if (null != entry) {
             topBar.getTxtCenter().setText(entry.title);
