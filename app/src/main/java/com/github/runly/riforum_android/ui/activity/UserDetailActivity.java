@@ -75,6 +75,8 @@ public class UserDetailActivity extends BaseActivity {
         if (null != user) {
             TextView userInfoText = (TextView) findViewById(R.id.user_info);
             userInfoText.setOnClickListener(v -> goToUserInfoAct());
+            numText = (TextView) findViewById(R.id.num);
+            numText.setText(String.format(getString(R.string.release_num), user.entry_number));
 
             avatar = (CircleImageView) findViewById(R.id.user_detail_avatar);
             avatar.setOnClickListener(v -> goToUserInfoAct());
@@ -155,8 +157,6 @@ public class UserDetailActivity extends BaseActivity {
                     }
                     list.addAll(response.data);
                     recyclerView.getAdapter().notifyDataSetChanged();
-                    numText = (TextView) findViewById(R.id.num);
-                    numText.setText(String.format(getString(R.string.release_num), list.size()));
                     message = response.message;
                 }
                 isFetching = false;
@@ -221,12 +221,12 @@ public class UserDetailActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        // TODO Auto-generated method stub
-        super.onWindowFocusChanged(hasFocus);
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) genderImg.getLayoutParams();
-        params.setMargins(nameText.getWidth() / 2 + UnitConvert.dp2Px(this, 16), params.topMargin, 0, 0);
-        genderImg.invalidate();
-    }
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        // TODO Auto-generated method stub
+//        super.onWindowFocusChanged(hasFocus);
+//        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) genderImg.getLayoutParams();
+//        params.setMargins(nameText.getWidth() / 2 + UnitConvert.dp2Px(this, 16), params.topMargin, 0, 0);
+//        genderImg.invalidate();
+//    }
 }
