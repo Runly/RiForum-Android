@@ -8,7 +8,10 @@ import android.view.WindowManager;
 
 import com.github.runly.richedittext.utils.ContextUtils;
 import com.github.runly.richedittext.utils.DisplayUtils;
+import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.model.User;
+
+import java.util.List;
 
 /**
  * Created by ranly on 17-2-7.
@@ -18,6 +21,7 @@ public class App extends Application{
     private static App instance;
     private User user;
     private boolean isLogin = false;
+    private List<Plate> plateList;
 
     public static App getInstance() {
         return instance;
@@ -66,7 +70,15 @@ public class App extends Application{
         }
     }
 
-    public boolean islogin() {
+    public List<Plate> getPlateList() {
+        return plateList;
+    }
+
+    public void setPlateList(List<Plate> plateList) {
+        this.plateList = plateList;
+    }
+
+    public boolean isLogin() {
         return isLogin;
     }
 }
