@@ -167,7 +167,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 						holder.content.setText("");
 						holder.content.append("回复" + " ");
 						holder.content.append(spStr);
-						holder.content.append(": " + itemData.content);
+						holder.content.append(" :  " + itemData.content);
 						holder.content.setMovementMethod(LinkMovementMethod.getInstance());
 					}
 				} else {
@@ -237,7 +237,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 		@Override
 		public void updateDrawState(TextPaint ds) {
-			ds.setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+			ds.setColor(ContextCompat.getColor(mContext, R.color.color_8192D6));
 			ds.setUnderlineText(false); //去掉下划线
 		}
 	}
