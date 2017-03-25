@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,12 +13,14 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,6 +37,7 @@ import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.adapter.CommentAdapter;
+import com.github.runly.riforum_android.ui.view.DeleteDialog;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.ui.view.TopBar;
 import com.github.runly.riforum_android.utils.MyOnGlobalLayoutListener;
@@ -49,6 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -81,6 +86,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detail);
 
+		entry = (Entry) getIntent().getSerializableExtra(Constants.INTENT_ENTRY_DATA);
 		init();
 	}
 
@@ -90,6 +96,50 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 		topBar.getImgLeft().setOnClickListener(v -> finish());
 		topBar.setOnClickListener(v -> recyclerView.scrollToPosition(0));
 		topBar.setOnClickListener(v -> RecyclerScrollToTop.scrollToTop(recyclerView));
+
+		View view = LayoutInflater.from(this).inflate(R.layout.popup_window_detail, null);
+		PopupWindow popupWindow = new PopupWindow(this);
+		popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+		popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+		popupWindow.setContentView(view);
+		popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+		popupWindow.setOutsideTouchable(true);
+		popupWindow.setFocusable(true);
+		topBar.getImgRight().setOnClickListener(v -> {
+			popupWindow.showAsDropDown(topBar.getImgRight(), -UnitConvert.dp2Px(this, 70), UnitConvert.dp2Px(this, 4));
+		});
+		LinearLayout deleteLinear = (LinearLayout) view.findViewById(R.id.linear_delete);
+		deleteLinear.setOnClickListener(v -> {
+			DeleteDialog deleteDialog = new DeleteDialog(this);
+			deleteDialog.show();
+			deleteDialog.setPositiveListener(v1 -> {
+				if (entry != null) {
+					Map<String, Object> map = new HashMap<>();
+					map.put("entry_id", entry.id);
+					map.put("uid", entry.user.id);
+					RetrofitFactory.getInstance()
+						.getEntryService()
+						.delete(map)
+						.subscribeOn(Schedulers.io())
+						.observeOn(AndroidSchedulers.mainThread())
+						.subscribe(response -> {
+							ToastUtil.makeShortToast(this, getString(R.string.delete_successfully));
+							App.getInstance().setDeleteEntry(entry);
+							deleteDialog.cancel();
+							finish();
+						}, throwable -> {
+							throwable.printStackTrace();
+							ToastUtil.makeShortToast(this, getString(R.string.delete_failed));
+							deleteDialog.cancel();
+						});
+
+				} else {
+					ToastUtil.makeShortToast(this, getString(R.string.delete_failed));
+					deleteDialog.cancel();
+				}
+			});
+			popupWindow.dismiss();
+		});
 
 		commentEdit = (EditText) findViewById(R.id.search_edit_text);
 		RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
@@ -146,10 +196,13 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 		TextView commentNum = (TextView) header.findViewById(R.id.comment_number);
 		TextView plate = (TextView) header.findViewById(R.id.detail_plate);
 
-		entry = (Entry) getIntent().getSerializableExtra(Constants.INTENT_ENTRY_DATA);
-
 		if (null != entry) {
 			topBar.getTxtCenter().setText(entry.title);
+			if (App.getInstance().getUser() != null) {
+				if (App.getInstance().getUser().id != entry.user.id) {
+					topBar.getImgRight().setVisibility(View.GONE);
+				}
+			}
 
 			User user = entry.user;
 			setRichTextContent(entry.content, richEditText);

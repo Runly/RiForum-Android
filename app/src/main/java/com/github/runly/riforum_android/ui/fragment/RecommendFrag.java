@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
@@ -210,6 +211,27 @@ public class RecommendFrag extends Fragment {
 	public void onPause() {
 		super.onPause();
 		swipeRefreshLayout.setRefreshing(false);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		Entry deleteEntry = App.getInstance().getDeleteEntry();
+		if (deleteEntry != null) {
+			List<Entry> lists = ((EntriesAdapter) recyclerView.getAdapter()).getItemList();
+			if (lists.contains(deleteEntry)) {
+				lists.remove(deleteEntry);
+				recyclerView.getAdapter().notifyDataSetChanged();
+			}
+
+			if (bannerEntryList.contains(deleteEntry)) {
+				bannerEntryList.remove(deleteEntry);
+				bannerImageList.remove(deleteEntry.image.get(0));
+				banner.setImages(bannerImageList);
+				banner.start();
+			}
+		}
 	}
 
 	private class GlideImageLoader extends ImageLoader {

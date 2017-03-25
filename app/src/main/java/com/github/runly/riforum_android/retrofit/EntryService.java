@@ -25,6 +25,10 @@ public interface EntryService {
     @POST("entry/release")
     Observable<ResponseBase<Entry>> release(@Body Map<String, Object> body);
 
+
+    @POST("entry/delete")
+    Observable<ResponseBase<Entry>> delete(@Body Map<String, Object> body);
+
     /**
      * @param body
      * @return

@@ -124,4 +124,10 @@
 
     <string name="search_bar_share">search_bar_share</string>
 
+    <string name="delete">删除</string>
+    <string name="sure_delete">确定要删除吗？</string>
+    <string name="delete_successfully">删除成功</string>
+    <string name="delete_failed">删除失败， 请重试</string>
+
+
 </resources>

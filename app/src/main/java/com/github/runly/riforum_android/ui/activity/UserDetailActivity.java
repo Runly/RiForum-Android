@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.github.runly.letteravatar.LetterAvatar;
 import com.github.runly.riforum_android.R;
+import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.User;
@@ -218,6 +219,20 @@ public class UserDetailActivity extends BaseActivity {
 				}
 			}
 
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		Entry deleteEntry = App.getInstance().getDeleteEntry();
+		if (deleteEntry != null) {
+			List<Entry> lists = ((EntriesAdapter) recyclerView.getAdapter()).getItemList();
+			if (lists.contains(deleteEntry)) {
+				lists.remove(deleteEntry);
+				recyclerView.getAdapter().notifyDataSetChanged();
+			}
 		}
 	}
 }

@@ -9,7 +9,6 @@ import java.util.List;
 public class Entry extends ModelBase {
     public int sort;
     public int plate_id;
-    public int uid;
     public int comment_num;
     public int like_num;
     public String file;
@@ -21,4 +20,10 @@ public class Entry extends ModelBase {
     public List<String> image;
     public User user;
     public Plate plate;
+
+    @Override
+    public boolean equals(Object obj) {
+        Entry entry = (Entry) obj;
+        return this.id == entry.id;
+    }
 }

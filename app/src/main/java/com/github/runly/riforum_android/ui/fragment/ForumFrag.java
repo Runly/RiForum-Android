@@ -18,6 +18,8 @@ import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.activity.MainActivity;
 import com.github.runly.riforum_android.ui.adapter.ChoosePlateAdapter;
+import com.github.runly.riforum_android.ui.adapter.CommentAdapter;
+import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
 import com.github.runly.riforum_android.ui.adapter.ForumAdapter;
 import com.github.runly.riforum_android.ui.view.MarginDecoration;
 
@@ -164,5 +166,18 @@ public class ForumFrag extends Fragment {
 	public void onPause() {
 		super.onPause();
 		swipeRefreshLayout.setRefreshing(false);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		Entry deleteEntry = App.getInstance().getDeleteEntry();
+		if (deleteEntry != null) {
+			List<Entry> lists = ((ForumAdapter) entryRecyclerView.getAdapter()).getItemList();
+			if (lists.contains(deleteEntry)) {
+				fetchData();
+			}
+		}
 	}
 }

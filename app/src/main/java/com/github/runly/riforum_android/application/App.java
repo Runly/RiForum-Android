@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 import com.github.runly.richedittext.utils.ContextUtils;
 import com.github.runly.richedittext.utils.DisplayUtils;
+import com.github.runly.riforum_android.model.Entry;
 import com.github.runly.riforum_android.model.ModelBase;
 import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.model.User;
@@ -30,6 +31,7 @@ public class App extends Application{
     private boolean isLogin = false;
     private List<Plate> plateList;
     private List<ModelBase> historyList;
+    private Entry deleteEntry;
 
     public static App getInstance() {
         return instance;
@@ -109,5 +111,13 @@ public class App extends Application{
 
     public List<ModelBase> getHistoryList() {
         return historyList;
+    }
+
+    public Entry getDeleteEntry() {
+        return deleteEntry;
+    }
+
+    public void setDeleteEntry(Entry deleteEntry) {
+        this.deleteEntry = deleteEntry;
     }
 }
