@@ -53,7 +53,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -106,7 +105,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 		popupWindow.setOutsideTouchable(true);
 		popupWindow.setFocusable(true);
 		topBar.getImgRight().setOnClickListener(v -> {
-			popupWindow.showAsDropDown(topBar.getImgRight(), -UnitConvert.dp2Px(this, 70), UnitConvert.dp2Px(this, 4));
+			// 108dp 是 R.layout.popup_window_detail 的宽度
+			int x = UnitConvert.dp2Px(this, 108 / 2 + 8) + topBar.getImgRight().getWidth() / 2;
+			int y = UnitConvert.dp2Px(this, 4);
+			popupWindow.showAsDropDown(topBar.getImgRight(), -x, y);
 		});
 		LinearLayout deleteLinear = (LinearLayout) view.findViewById(R.id.linear_delete);
 		deleteLinear.setOnClickListener(v -> {

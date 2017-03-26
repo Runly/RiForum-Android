@@ -73,6 +73,10 @@
 
         <activity android:name=".ui.activity.SearchDetailActivity"
                   android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.activity.ModifyPasswordActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

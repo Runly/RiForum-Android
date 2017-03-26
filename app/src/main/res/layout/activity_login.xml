@@ -18,6 +18,9 @@
         android:textCursorDrawable="@drawable/edit_cursor"
         android:textColor="@color/normal_content"
         android:theme="@style/myEditText"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textSize="16sp"
         />
 
     <EditText
@@ -32,7 +35,10 @@
         android:theme="@style/myEditText"
         android:textCursorDrawable="@drawable/edit_cursor"
         android:textColor="@color/normal_content"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/login_button"

@@ -232,6 +232,7 @@ public class UserDetailActivity extends BaseActivity {
 			if (lists.contains(deleteEntry)) {
 				lists.remove(deleteEntry);
 				recyclerView.getAdapter().notifyDataSetChanged();
+				numText.setText(String.valueOf(--user.entry_number));
 			}
 		}
 	}

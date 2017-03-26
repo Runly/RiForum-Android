@@ -1,10 +1,13 @@
 package com.github.runly.riforum_android.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +17,8 @@ import com.github.runly.riforum_android.application.App;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.model.User;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
+import com.github.runly.riforum_android.ui.view.DeleteDialog;
+import com.github.runly.riforum_android.utils.DataCleanManager;
 import com.github.runly.riforum_android.utils.SdCardUtil;
 import com.github.runly.riforum_android.utils.SharedPreferencesUtil;
 import com.github.runly.riforum_android.utils.ToastUtil;
@@ -24,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -73,11 +79,6 @@ public class SettingsActivity extends TopBarActivity {
 				map.put("uid", user.id);
 				map.put("token", user.token);
 
-				SdCardUtil.removeUserFromSdCard(this);
-				App.getInstance().setUser(null);
-				SharedPreferencesUtil.saveValue(Constants.USER_ACCOUNT, "");
-				SharedPreferencesUtil.saveValue(Constants.USER_PASSWORD, "");
-
 				RetrofitFactory.getInstance()
 					.getUserService()
 					.logout(map)
@@ -85,10 +86,17 @@ public class SettingsActivity extends TopBarActivity {
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(response -> {
 						if ("1".equals(response.code)) {
+							SdCardUtil.removeUserFromSdCard(this);
+							App.getInstance().setUser(null);
+							SharedPreferencesUtil.saveValue(Constants.USER_ACCOUNT, "");
+							SharedPreferencesUtil.saveValue(Constants.USER_PASSWORD, "");
 							ToastUtil.makeShortToast(this, response.message);
 							finish();
 						}
-					}, Throwable::printStackTrace);
+					}, throwable -> {
+						throwable.printStackTrace();
+						ToastUtil.makeShortToast(this, getString(R.string.logout_failed));
+					});
 			});
 		} else {
 			nameTxt.setText(R.string.not_login);
@@ -97,7 +105,50 @@ public class SettingsActivity extends TopBarActivity {
 		}
 
 		TextView versionTxt = (TextView) findViewById(R.id.setting_version_txt);
-		versionTxt.setText("V" + VersionUtil.getVersion(this));
+		versionTxt.setText("V " + VersionUtil.getVersion(this));
+
+		RelativeLayout settingVersionLayout = (RelativeLayout) findViewById(R.id.setting_version);
+		settingVersionLayout.setOnClickListener(v ->
+			new Handler().postDelayed(() ->
+				ToastUtil.makeShortToast(this, getString(R.string.latest_version)), 700)
+		);
+
+
+		RelativeLayout modifyPasswordLayout = (RelativeLayout) findViewById(R.id.setting_password_modify);
+		modifyPasswordLayout.setOnClickListener(v -> {
+			if (App.getInstance().isLogin()) {
+				Intent intent = new Intent(SettingsActivity.this, ModifyPasswordActivity.class);
+				intent.putExtra(Constants.INTENT_USER_DATA, user);
+				startActivity(intent);
+			} else {
+				ToastUtil.makeShortToast(this, getString(R.string.not_login));
+			}
+		});
+
+		TextView cacheSize = (TextView) findViewById(R.id.cache_size);
+		cacheSize.setText(DataCleanManager.getAllFolderSize(this));
+
+		RelativeLayout cleanCache = (RelativeLayout) findViewById(R.id.setting_clear_cache);
+		cleanCache.setOnClickListener(v -> {
+			DeleteDialog dialog = new DeleteDialog(this);
+			dialog.show();
+			dialog.setTitle(getString(R.string.cache_clear));
+			dialog.setContent(getString(R.string.cache_clear_detail));
+			dialog.setPositiveListener(v1 -> {
+				// 在io线程中删文件
+				Observable.just(this)
+					.map(settingsActivity -> {
+						DataCleanManager.cleanApplicationData(settingsActivity);
+						return true;
+					})
+					.subscribeOn(Schedulers.io())
+					.observeOn(AndroidSchedulers.mainThread())
+					.subscribe(b -> {
+						cacheSize.setText(DataCleanManager.getAllFolderSize(this));
+						dialog.cancel();
+					});
+			});
+		});
 
 	}
 

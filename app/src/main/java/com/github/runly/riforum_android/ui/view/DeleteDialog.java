@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.Constants;
@@ -19,6 +20,8 @@ import com.github.runly.riforum_android.application.Constants;
 
 public class DeleteDialog extends Dialog {
 	private Button sure;
+	private TextView title;
+	private TextView content;
 
 	public DeleteDialog(@NonNull Context context) {
 		super(context);
@@ -47,9 +50,19 @@ public class DeleteDialog extends Dialog {
 		sure = (Button) findViewById(R.id.sure);
 		Button cancel = (Button) findViewById(R.id.cancel);
 		cancel.setOnClickListener(v -> this.cancel());
+		title = (TextView) findViewById(R.id.title);
+		content = (TextView) findViewById(R.id.content);
 	}
 
 	public void setPositiveListener(View.OnClickListener positiveListener) {
 		sure.setOnClickListener(positiveListener);
+	}
+
+	public void setTitle(String title) {
+		this.title.setText(title);
+	}
+
+	public void setContent(String content) {
+		this.content.setText(content);
 	}
 }

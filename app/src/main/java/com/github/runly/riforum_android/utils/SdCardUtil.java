@@ -27,7 +27,8 @@ public class SdCardUtil {
 	public static void saveUserToSdCard(Context context, User user) {
 		String user_path = File.separator + "data"
 			+ Environment.getDataDirectory().getAbsolutePath() + File.separator
-			+ context.getPackageName() + File.separator + "user" + File.separator;
+			+ context.getPackageName() + File.separator + "files" + File.separator
+			+ "user" + File.separator;
 		String fileName = "user.ser";
 
 		// 在io线程中写文件
@@ -55,7 +56,8 @@ public class SdCardUtil {
 		User user = null;
 		String user_path = File.separator + "data"
 			+ Environment.getDataDirectory().getAbsolutePath() + File.separator
-			+ context.getPackageName() + File.separator + "user" + File.separator;
+			+ context.getPackageName() + File.separator + "files" + File.separator
+			+ "user" + File.separator;
 		String fileName = "user.ser";
 
 		File userFile = new File(user_path + fileName);
@@ -76,7 +78,8 @@ public class SdCardUtil {
 	public static void removeUserFromSdCard(Context context) {
 		String user_path = File.separator + "data"
 			+ Environment.getDataDirectory().getAbsolutePath() + File.separator
-			+ context.getPackageName() + File.separator + "user" + File.separator;
+			+ context.getPackageName() + File.separator + "files" + File.separator
+			+ "user" + File.separator;
 		String fileName = "user.ser";
 
 		// 在io线程中删文件
@@ -102,7 +105,8 @@ public class SdCardUtil {
 
 		String history_path = File.separator + "data"
 			+ Environment.getDataDirectory().getAbsolutePath() + File.separator
-			+ context.getPackageName() + File.separator + "history" + File.separator;
+			+ context.getPackageName() + File.separator + "files" + File.separator
+			+ "history" + File.separator;
 		String fileName = "history.ser";
 
 		// 在io线程中写文件
@@ -130,7 +134,8 @@ public class SdCardUtil {
 		List<ModelBase> list;
 		String history_path = File.separator + "data"
 			+ Environment.getDataDirectory().getAbsolutePath() + File.separator
-			+ context.getPackageName() + File.separator + "history" + File.separator;
+			+ context.getPackageName() + File.separator + "files" + File.separator
+			+ "history" + File.separator;
 		String fileName = "history.ser";
 
 		File file = new File(history_path + fileName);

@@ -36,6 +36,12 @@
         android:textColor="@color/normal_content"/>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/item_dividing"/>
+
     <Button
         android:id="@+id/sure"
         android:layout_width="match_parent"

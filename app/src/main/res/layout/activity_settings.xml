@@ -76,6 +76,7 @@
         android:layout_below="@+id/setting_password_modify"
         android:background="@drawable/ripple_bg"
         android:clickable="true"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <TextView
@@ -108,7 +109,7 @@
         android:id="@+id/setting_clear_cache"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_below="@+id/setting_account_bind"
         android:background="@drawable/ripple_bg"
         android:clickable="true"
@@ -123,12 +124,12 @@
             />
 
         <TextView
+            android:id="@+id/cache_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
-            android:text="24kb"/>
+            android:layout_marginEnd="16dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -177,7 +178,6 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_below="@+id/setting_version"
-        android:clickable="true"
         android:background="@drawable/ripple_bg"
         android:orientation="horizontal">
 

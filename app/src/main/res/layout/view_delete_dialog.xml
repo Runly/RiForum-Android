@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -16,21 +17,27 @@
         />
 
     <TextView
-        android:id="@+id/reply_button"
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:text="@string/sure_delete"
         android:textSize="16sp"
         android:textColor="@color/search_text"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/item_dividing"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <Button
@@ -42,6 +49,14 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/cancel"
             android:textColor="@color/normal_content"/>
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/item_dividing"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            />
 
         <Button
             android:id="@+id/sure"

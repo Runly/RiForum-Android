@@ -54,4 +54,13 @@ public interface UserService {
      */
     @POST("user/modify_avatar")
     Observable<ResponseBase<User>> modify_avatar(@Body Map<String, Object> body);
+
+    /**
+     *
+     * @param body
+     * @return
+     */
+    @POST("user/modify_password")
+    Observable<ResponseBase<User>> modify_password(@Body Map<String, Object> body);
+
 }
