@@ -18,8 +18,6 @@ import com.github.runly.riforum_android.model.Plate;
 import com.github.runly.riforum_android.retrofit.RetrofitFactory;
 import com.github.runly.riforum_android.ui.activity.MainActivity;
 import com.github.runly.riforum_android.ui.adapter.ChoosePlateAdapter;
-import com.github.runly.riforum_android.ui.adapter.CommentAdapter;
-import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
 import com.github.runly.riforum_android.ui.adapter.ForumAdapter;
 import com.github.runly.riforum_android.ui.view.MarginDecoration;
 

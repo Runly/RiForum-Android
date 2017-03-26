@@ -17,12 +17,9 @@ import com.github.runly.riforum_android.utils.ToastUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static com.github.runly.riforum_android.R.mipmap.user;
 
 /**
  * Created by ranly on 17-3-26.
