@@ -23,6 +23,21 @@ public class SearchDetailActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_detail);
 		init();
+		
+		
+		// 实现登录功能的方法
+	        public void login() {
+		    // 具体代码略去
+	        }
+
+	        Button loginButton = (Button) findViewByid(R.id.login_button);
+	        loginButton.setOnClickListener(new OnClickListener() {
+		    public void onClick(View v) {
+		        login();
+		    }
+	        });
+
+		
 	}
 
 	private void init() {
