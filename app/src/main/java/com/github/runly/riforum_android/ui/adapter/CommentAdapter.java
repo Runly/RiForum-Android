@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.runly.letteravatar.LetterAvatar;
 import com.github.runly.riforum_android.R;
 import com.github.runly.riforum_android.application.Constants;
 import com.github.runly.riforum_android.interfaces.OnCommented;
@@ -112,13 +114,23 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 			if (null != itemData) {
 				User user = itemData.user;
 				if (null != user) {
-					String avatarUrl = user.avatar + "?imageView2/1/w/" +
-						UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
-						UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
-					Glide.with(mContext)
-						.load(avatarUrl)
-						.crossFade()
-						.into(holder.userAvatar);
+					if (!TextUtils.isEmpty(user.avatar)) {
+						String avatarUrl = user.avatar + "?imageView2/1/w/" +
+								UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/h/" +
+								UnitConvert.dp2Px(mContext, Constants.NORMAL_AVATAR_SIZE) + "/format/webp";
+						Glide.with(mContext)
+								.load(avatarUrl)
+								.crossFade()
+								.into(holder.userAvatar);
+					} else {
+						LetterAvatar.with(mContext)
+								.canvasSizeDIP(Constants.NORMAL_AVATAR_SIZE, Constants.NORMAL_AVATAR_SIZE)
+								.letterSizeDIP(Constants.NORMAL_AVATAR_SIZE / 2)
+								.chineseFirstLetter(user.name, true)
+								.letterColorResId(R.color.comment_bar_dictionary)
+								.backgroundColorResId(R.color.item_dividing)
+								.into(holder.userAvatar);
+					}
 
 					holder.userName.setText(user.name);
 

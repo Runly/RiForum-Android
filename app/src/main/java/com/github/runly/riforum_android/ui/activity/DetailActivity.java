@@ -379,12 +379,12 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 			return;
 		}
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-		for (final FakeImageSpan imageSpan : imageSpans) {
-			final String src = imageSpan.getValue();
-			Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.zhan_wei);
-			richEditText.replaceLocalBitmap(imageSpan, bitmap, src);
-		}
+//
+//		for (final FakeImageSpan imageSpan : imageSpans) {
+//			final String src = imageSpan.getValue();
+//			Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.zhan_wei);
+//			richEditText.replaceLocalBitmap(imageSpan, bitmap, src);
+//		}
 
 		for (final FakeImageSpan imageSpan : imageSpans) {
 			final String src = imageSpan.getValue();

@@ -49,9 +49,8 @@
             android:layout_below="@+id/item_user_avatar"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="16dp"
-            android:maxLines="1"
             android:textColor="@color/normal_content"
-            android:textSize="15sp"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/entry_item_content"

@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="ChipsLayoutManager-0.3.7">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/cf96ec3d5cbd0dea581c77644a4fbc8e6a6ac051/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/cf96ec3d5cbd0dea581c77644a4fbc8e6a6ac051/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/b0cd77dbf1cc7d3c7d88c5003f27de1bb694ef47/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/b0cd77dbf1cc7d3c7d88c5003f27de1bb694ef47/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

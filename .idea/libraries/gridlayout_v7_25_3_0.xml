@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="gridlayout-v7-25.3.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/196a0c34cff3e1cbbda82312bed1dbefead9088d/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/196a0c34cff3e1cbbda82312bed1dbefead9088d/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/b5637ef84b07c7c5dc5fdb61e03ca8fdb6075f61/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/b5637ef84b07c7c5dc5fdb61e03ca8fdb6075f61/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../../Sdk/extras/android/m2repository/com/android/support/gridlayout-v7/25.3.0/gridlayout-v7-25.3.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/gridlayout-v7/25.3.0/gridlayout-v7-25.3.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

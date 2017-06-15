@@ -405,7 +405,7 @@ public class ReleaseActivity extends TopBarActivity implements View.OnClickListe
 							pathList.clear();
 							urlList.clear();
 							cancelDialog();
-//                                    finish();
+							finish();
 						} else {
 							ToastUtil.makeShortToast(ReleaseActivity.this, response.message);
 						}

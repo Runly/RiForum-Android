@@ -25,6 +25,7 @@ import com.github.runly.riforum_android.ui.activity.MainActivity;
 import com.github.runly.riforum_android.ui.adapter.EntriesAdapter;
 import com.github.runly.riforum_android.ui.view.MyDecoration;
 import com.github.runly.riforum_android.utils.RecyclerScrollToTop;
+import com.github.runly.riforum_android.utils.UnitConvert;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
@@ -37,11 +38,15 @@ import java.util.Map;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.github.runly.riforum_android.R.mipmap.user;
+
 /**
  * Created by ranly on 17-2-7.
  */
 
 public class RecommendFrag extends Fragment {
+	private static final int BANNER_HEIGHT = 172; // dp
+
 	private RecyclerView recyclerView;
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private boolean isFetching;
@@ -184,7 +189,10 @@ public class RecommendFrag extends Fragment {
 				if ("1".equals(response.code)) {
 					bannerEntryList = response.data;
 					for (Entry entry : bannerEntryList) {
-						bannerImageList.add(entry.image.get(0));
+						String imageUrl = entry.image.get(0) + "?imageView2/1/w/" +
+								Constants.SCREEN_WIDTH + "/h/" +
+								UnitConvert.dp2Px(getContext(), BANNER_HEIGHT) + "/format/webp";
+						bannerImageList.add(imageUrl);
 					}
 					banner.setImages(bannerImageList)
 						.start();
