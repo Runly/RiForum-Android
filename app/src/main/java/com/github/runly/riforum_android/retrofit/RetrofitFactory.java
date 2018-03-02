@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitFactory {
     private static RetrofitFactory instance;
     private static final int DEFAULT_TIMEOUT = 10;
-    private static final String baseUrl = "http://www.ranly.info:7732/";
+    private static final String baseUrl = "http://www.ranly.me:7732/";
     private Retrofit retrofit;
     private UserService userService;
     private QiuniuTokenService qiuniuTokenService;
